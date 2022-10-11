@@ -5,7 +5,7 @@ import Formats.P6
 import java.io.File
 import kotlin.math.pow
 
-class BytesParser(private var filepath: String, private var fileToPath: String) {
+class BytesParser(private val filepath: String, private val fileToPath: String) {
     fun ParseFile() {
         val byteArray = File(filepath).readBytes()
         if (byteArray[0].toInt().toChar() != 'P') {

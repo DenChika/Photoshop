@@ -7,4 +7,3 @@ pluginManagement {
     
 }
 rootProject.name = "GraphicLegends"
-include("ImageConverter")

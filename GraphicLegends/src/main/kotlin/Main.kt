@@ -11,7 +11,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 
 @Composable
 @Preview
@@ -36,13 +38,10 @@ fun App() {
 }
 
 fun main() = application {
-    /*Window(onCloseRequest = ::exitApplication,
+    Window(onCloseRequest = ::exitApplication,
     title = "Compose for Desktop",
     state = rememberWindowState(width = 300.dp, height = 300.dp)
     ) {
         App()
-    }*/
-    val file = BytesParser("src\\main\\kotlin\\sample_640x426.pgm",
-        "src\\main\\kotlin\\Storage\\test.bmp")
-    file.ParseFile()
+    }
 }
