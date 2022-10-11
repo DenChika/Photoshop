@@ -7,7 +7,7 @@ plugins {
     id("org.jetbrains.compose") version "1.1.1"
 }
 
-group = "me.crazy"
+group = "GraphicLegends"
 version = "1.0"
 
 repositories {
