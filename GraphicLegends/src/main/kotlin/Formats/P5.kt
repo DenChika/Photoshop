@@ -1,15 +1,15 @@
 package Formats
 
+import Bitmap
 import Interfaces.IFormat
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import java.awt.Dimension
 import java.awt.image.BufferedImage
-import java.io.File
-import javax.imageio.ImageIO
 
-class P5(private val fileToPath: String) : IFormat {
-    override fun Handle(width: Int, height: Int, byteArray: ByteArray) {
+class P5 : IFormat {
+    override fun Handle(width: Int, height: Int, byteArray: ByteArray) : ImageBitmap? {
         val size = Dimension(width, height)
         val img = BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB)
         for (posX in 0 until height) {
@@ -18,6 +18,6 @@ class P5(private val fileToPath: String) : IFormat {
                 img.setRGB(posY, posX, Color(shade.toInt(), shade.toInt(), shade.toInt()).toArgb())
             }
         }
-        ImageIO.write(img, "BMP", File(fileToPath))
+        return Bitmap.imageFromBuffer(img)
     }
 }
