@@ -2,6 +2,7 @@ package Formats
 
 import Configuration.MutableConfigurationsState
 import Interfaces.IFormat
+import Parsers.BytesParser
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
@@ -39,7 +40,11 @@ class P6 : IFormat {
         return Bitmap.imageFromBuffer(img)
     }
 
-    override fun HandleWriter(width: Int, height: Int, maxShade: Int, byteArray: ByteArray?): ByteArray? {
-        return null
+    override fun HandleWriter(width: Int, height: Int, maxShade: Int, byteArray: ByteArray?): ByteArray {
+        var newByteArray = byteArrayOf('P'.code.toByte(), (6 + '0'.code).toByte(),
+            10.toByte())
+        newByteArray += BytesParser.ParseValueForBytes(width) + byteArrayOf(32.toByte()) + BytesParser.ParseValueForBytes(
+            height) + 10.toByte() + BytesParser.ParseValueForBytes(maxShade) + 10.toByte() + byteArray!!
+        return newByteArray
     }
 }
