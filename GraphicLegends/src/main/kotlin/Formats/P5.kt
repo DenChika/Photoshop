@@ -9,7 +9,7 @@ import java.awt.Dimension
 import java.awt.image.BufferedImage
 
 class P5 : IFormat {
-    override fun Handle(width: Int, height: Int, maxShade: UInt, byteArray: ByteArray) : ImageBitmap? {
+    override fun HandleReader(width: Int, height: Int, maxShade: UInt, byteArray: ByteArray) : ImageBitmap? {
         val size = Dimension(width, height)
         val img = BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB)
         for (posY in 0 until height) {
@@ -19,6 +19,18 @@ class P5 : IFormat {
                 img.setRGB(posX, posY, Color(finalShade.toInt(), finalShade.toInt(), finalShade.toInt()).toArgb())
             }
         }
+        MutableConfigurationsState.mode = Modes.P5
+        MutableConfigurationsState.bufferedImage = img
+        MutableConfigurationsState.byteArray = byteArray
+        MutableConfigurationsState.shade = maxShade
         return Bitmap.imageFromBuffer(img)
+    }
+
+    override fun HandleWriter(width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) : ByteArray? {
+        var newByteArray = byteArrayOf('P'.code.toByte(), (5 + '0'.code).toByte(),
+            10.toByte())
+        newByteArray += BytesParser.ParseValueForBytes(width) + byteArrayOf(32.toByte()) + BytesParser.ParseValueForBytes(
+            height) + 10.toByte() + BytesParser.ParseValueForBytes(maxShade) + 10.toByte() + byteArray!!
+        return newByteArray
     }
 }

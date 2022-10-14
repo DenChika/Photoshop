@@ -1,16 +1,19 @@
 package Parsers
 
+import Configuration.MutableConfigurationsState
+import Formats.Modes
 import Formats.P5
 import Formats.P6
 import androidx.compose.ui.graphics.ImageBitmap
 import java.io.File
+import kotlin.math.pow
 
 class BytesParser {
     companion object {
 
         val fileTypeSet = hashSetOf<Char>('1', '2', '3', '4', '5', '6', '7')
 
-        fun ParseFile(file: File): ImageBitmap? { //TODO check return type
+        fun ParseBytesForFile(file: File): ImageBitmap? { //TODO check return type
             val byteArray = file.readBytes()
 
             println(byteArray)
@@ -82,11 +85,11 @@ class BytesParser {
 
             when(magicNumber?.get(1)) {
                 '5' -> {
-                    return P5().Handle(width, height, maxShade.toUInt(), body)
+                    return P5().HandleReader(width, height, maxShade.toUInt(), body)
                 }
 
                 '6' -> {
-                    return P6().Handle(width, height, maxShade.toUInt(), body)
+                    return P6().HandleReader(width, height, maxShade.toUInt(), body)
                 }
             }
 
@@ -103,6 +106,38 @@ class BytesParser {
 
             return str
         }
+        fun ParseFileInBytes(path: String, width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) {
+            val file = File(path)
+            File(path).createNewFile()
+            when (MutableConfigurationsState.mode) {
+                Modes.P5 -> {
+                    P5().HandleWriter(width, height, maxShade, byteArray)?.let { file.writeBytes(it)
+                    }
+                }
+                Modes.P6 -> {
+                P6().HandleWriter(width, height, maxShade, byteArray)?.let { file.writeBytes(it) }
+                }
+            }
+        }
 
+            fun ParseValueForBytes(value: Int): ByteArray {
+                var newByteArray = byteArrayOf()
+                var valueCopy = value
+                while (valueCopy != 0) {
+                    newByteArray += ((valueCopy % 10) + '0'.code).toByte()
+                    valueCopy /= 10
+                }
+                newByteArray.reverse()
+                return newByteArray
+            }
+
+            private fun ParseBytesForValue(byteArray: ByteArray): Int {
+                byteArray.reverse()
+                var value = 0
+                for (i in byteArray.indices) {
+                    value += (byteArray[i].toInt() - '0'.code) * 10.0.pow(i).toInt()
+                }
+                return value
+            }
     }
 }

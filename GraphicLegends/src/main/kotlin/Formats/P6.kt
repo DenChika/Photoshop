@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage
 
 class P6 : IFormat {
     private val colorsByPixel = 3
-    override fun Handle(width: Int, height: Int, maxShade: UInt, byteArray: ByteArray) : ImageBitmap? {
+    override fun HandleReader(width: Int, height: Int, maxShade: UInt, byteArray: ByteArray) : ImageBitmap? {
         val size = Dimension(width, height)
         val img = BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB)
         for (posY in 0 until height) {
@@ -24,5 +24,8 @@ class P6 : IFormat {
             }
         }
         return Bitmap.imageFromBuffer(img)
+    }
+    override fun HandleWriter(width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) : ByteArray? {
+        return null
     }
 }
