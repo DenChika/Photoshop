@@ -29,7 +29,7 @@ class P5 : IFormat {
         return Bitmap.imageFromBuffer(img)
     }
 
-    override fun HandleWriter(width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) : ByteArray? {
+    override fun HandleWriter(width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) : ByteArray {
         var newByteArray = byteArrayOf('P'.code.toByte(), (5 + '0'.code).toByte(),
             10.toByte())
         newByteArray += BytesParser.ParseValueForBytes(width) + byteArrayOf(32.toByte()) + BytesParser.ParseValueForBytes(
