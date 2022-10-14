@@ -22,6 +22,8 @@ class BytesParser {
         fun ParseFile(file: File): ImageBitmap? { //TODO check return type
             val byteArray = file.readBytes()
 
+            println(byteArray)
+
             var magicNumber: String? = null
             var width = -1
             var height = -1
@@ -65,10 +67,11 @@ class BytesParser {
                             //TODO exception
                         }
 
-                    } else if (maxShade == -1) {
+                    } else {
 
                         try {
                             maxShade = nextString.toInt()
+                            bodyStartIndex = index + 1
                         } catch (e: NumberFormatException) {
                             //TODO exception
                         }
@@ -76,23 +79,23 @@ class BytesParser {
 
                 } else {
                     ++index
-
-                    if (maxShade != -1) {
-                        bodyStartIndex = index
-                        break
-                    }
                 }
             }
+
+            println("magicNumber: " + magicNumber)
+            println("width: " + width)
+            println("height: " + height)
+            println("maxShade: " + maxShade)
 
             val body = byteArray.slice(bodyStartIndex until byteArray.size).toByteArray()
 
             when(magicNumber?.get(1)) {
                 '5' -> {
-                    return P5().Handle(width, height, maxShade, body)
+                    //return P5().Handle(width, height, maxShade, body)
                 }
 
                 '6' -> {
-                    return P6().Handle(width, height, maxShade, body)
+                    //return P6().Handle(width, height, maxShade, body)
                 }
             }
 
@@ -101,8 +104,10 @@ class BytesParser {
 
         private fun NextString(byteArray: ByteArray, index: Int): String {
             var str = ""
-            while (byteArray[index] != 32.toByte() && byteArray[index] != 10.toByte()) {
-                str += byteArray[index].toInt().toChar()
+            var tempIndex = index;
+            while (byteArray[tempIndex] != 32.toByte() && byteArray[tempIndex] != 10.toByte()) {
+                str += byteArray[tempIndex].toInt().toChar()
+                ++tempIndex
             }
 
             return str
