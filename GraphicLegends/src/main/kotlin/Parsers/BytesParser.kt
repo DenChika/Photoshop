@@ -8,15 +8,6 @@ import java.io.File
 class BytesParser {
     companion object {
 
-//        private fun ParseValue(byteArray: ByteArray) : Int {
-//            byteArray.reverse()
-//            var height = 0
-//            for (i in byteArray.indices) {
-//                height += (byteArray[i].toInt() - '0'.code) * 10.0.pow(i).toInt()
-//            }
-//            return height
-//        }
-
         val fileTypeSet = hashSetOf<Char>('1', '2', '3', '4', '5', '6', '7')
 
         fun ParseFile(file: File): ImageBitmap? { //TODO check return type
@@ -82,29 +73,29 @@ class BytesParser {
                 }
             }
 
-            println("magicNumber: " + magicNumber)
-            println("width: " + width)
-            println("height: " + height)
-            println("maxShade: " + maxShade)
+            println("magicNumber: $magicNumber")
+            println("width: $width")
+            println("height: $height")
+            println("maxShade: $maxShade")
 
             val body = byteArray.slice(bodyStartIndex until byteArray.size).toByteArray()
 
             when(magicNumber?.get(1)) {
                 '5' -> {
-                    //return P5().Handle(width, height, maxShade, body)
+                    return P5().Handle(width, height, maxShade.toUInt(), body)
                 }
 
                 '6' -> {
-                    //return P6().Handle(width, height, maxShade, body)
+                    return P6().Handle(width, height, maxShade.toUInt(), body)
                 }
             }
 
-            return ImageBitmap(width, height)
+            return null
         }
 
         private fun NextString(byteArray: ByteArray, index: Int): String {
             var str = ""
-            var tempIndex = index;
+            var tempIndex = index
             while (byteArray[tempIndex] != 32.toByte() && byteArray[tempIndex] != 10.toByte()) {
                 str += byteArray[tempIndex].toInt().toChar()
                 ++tempIndex
