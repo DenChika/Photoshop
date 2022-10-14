@@ -111,11 +111,10 @@ class BytesParser {
             File(path).createNewFile()
             when (MutableConfigurationsState.mode) {
                 Modes.P5 -> {
-                    P5().HandleWriter(width, height, maxShade, byteArray)?.let { file.writeBytes(it)
-                    }
+                    P5().HandleWriter(width, height, maxShade, byteArray).let { file.writeBytes(it) }
                 }
                 Modes.P6 -> {
-                P6().HandleWriter(width, height, maxShade, byteArray)?.let { file.writeBytes(it) }
+                P6().HandleWriter(width, height, maxShade, byteArray).let { file.writeBytes(it) }
                 }
             }
         }
