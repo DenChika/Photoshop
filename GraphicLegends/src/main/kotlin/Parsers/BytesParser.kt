@@ -1,43 +1,13 @@
 package Parsers
 
+import Formats.P5
+import Formats.P6
 import androidx.compose.ui.graphics.ImageBitmap
 import java.io.File
 
 class BytesParser {
     companion object {
-//        fun ParseFile(file: File) : ImageBitmap? {
-//            val byteArray = file.readBytes()
-//            if (byteArray[0].toInt().toChar() != 'P') {
-//                println("not pnm format")
-//                return null
-//            }
-//
-//            val arrayWithoutFormat = byteArray.slice(3 until byteArray.size).toByteArray()
-//
-//            val spaceIndex = arrayWithoutFormat.indexOf(32.toByte())
-//            var enterIndex = arrayWithoutFormat.indexOf(10.toByte())
-//            val width = ParseValue(arrayWithoutFormat.slice(0 until spaceIndex).toByteArray())
-//            val height = ParseValue(arrayWithoutFormat.slice(spaceIndex + 1 until enterIndex).toByteArray())
-//            val bodyWithShadeValue = arrayWithoutFormat.slice(enterIndex + 1 until arrayWithoutFormat.size).toByteArray()
-//
-//            enterIndex = bodyWithShadeValue.indexOf(10.toByte())
-//            val maxShadeValue = ParseValue(bodyWithShadeValue.slice(0 until enterIndex).toByteArray())
-//
-//            val body = bodyWithShadeValue.slice(enterIndex + 1 until bodyWithShadeValue.size).toByteArray()
-//
-//            when(byteArray[1].toInt().toChar()) {
-//                '5' -> {
-//                    val handler = P5()
-//                    return handler.Handle(width, height, body)
-//                }
-//                '6' -> {
-//                    val handler = P6()
-//                    return handler.Handle(width, height, body)
-//                }
-//            }
-//            return null
-//        }
-//
+
 //        private fun ParseValue(byteArray: ByteArray) : Int {
 //            byteArray.reverse()
 //            var height = 0
@@ -47,16 +17,19 @@ class BytesParser {
 //            return height
 //        }
 
-        fun ParseFile(file: File): ImageBitmap { //TODO check return type
+        val fileTypeSet = hashSetOf<Char>('1', '2', '3', '4', '5', '6', '7')
+
+        fun ParseFile(file: File): ImageBitmap? { //TODO check return type
             val byteArray = file.readBytes()
 
             var magicNumber: String? = null
             var width = -1
             var height = -1
-            var maxColorValue = -1
+            var maxShade = -1
+            var bodyStartIndex = -1
 
             var index = 0
-            while (maxColorValue == -1) {
+            while (maxShade == -1) {
                 if (index >= byteArray.size) {
                     break
                 }
@@ -64,30 +37,75 @@ class BytesParser {
                 val byte = byteArray[index]
 
                 if (byte != 32.toByte() && byte != 10.toByte()) {
-                    if (magicNumber != null) {
 
-                        //TODO function which find next string until space or line break
+                    val nextString = NextString(byteArray, index)
+                    index += nextString.length
+
+                    if (magicNumber == null) {
+
+                        magicNumber = nextString
+
+                        if (magicNumber.length != 2 || magicNumber[0] != 'P' || !fileTypeSet.contains(magicNumber[1])) {
+                            //TODO exception
+                        }
 
                     } else if (width == -1) {
 
+                        try {
+                            width = nextString.toInt()
+                        } catch (e: NumberFormatException) {
+                            //TODO exception
+                        }
+
                     } else if (height == -1) {
 
-                    } else if (maxColorValue == -1) {
+                        try {
+                            height = nextString.toInt()
+                        } catch (e: NumberFormatException) {
+                            //TODO exception
+                        }
 
-                    } else {
+                    } else if (maxShade == -1) {
 
+                        try {
+                            maxShade = nextString.toInt()
+                        } catch (e: NumberFormatException) {
+                            //TODO exception
+                        }
                     }
+
                 } else {
                     ++index
+
+                    if (maxShade != -1) {
+                        bodyStartIndex = index
+                        break
+                    }
+                }
+            }
+
+            val body = byteArray.slice(bodyStartIndex until byteArray.size).toByteArray()
+
+            when(magicNumber?.get(1)) {
+                '5' -> {
+                    return P5().Handle(width, height, maxShade, body)
                 }
 
+                '6' -> {
+                    return P6().Handle(width, height, maxShade, body)
+                }
             }
 
             return ImageBitmap(width, height)
         }
 
-        private fun NextString(byteArray: ByteArray, index: Int) {
+        private fun NextString(byteArray: ByteArray, index: Int): String {
+            var str = ""
+            while (byteArray[index] != 32.toByte() && byteArray[index] != 10.toByte()) {
+                str += byteArray[index].toInt().toChar()
+            }
 
+            return str
         }
 
     }
