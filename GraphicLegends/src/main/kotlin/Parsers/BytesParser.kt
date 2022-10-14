@@ -85,11 +85,11 @@ class BytesParser {
 
             when(magicNumber?.get(1)) {
                 '5' -> {
-                    return P5().HandleReader(width, height, maxShade.toUInt(), body)
+                    return P5().HandleReader(width, height, maxShade, body)
                 }
 
                 '6' -> {
-                    return P6().HandleReader(width, height, maxShade.toUInt(), body)
+                    return P6().HandleReader(width, height, maxShade, body)
                 }
             }
 
