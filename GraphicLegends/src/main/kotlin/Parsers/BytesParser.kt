@@ -4,6 +4,8 @@ import Configuration.MutableConfigurationsState
 import Formats.Modes
 import Formats.P5
 import Formats.P6
+import Tools.FormatException
+import Tools.InvalidHeaderException
 import androidx.compose.ui.graphics.ImageBitmap
 import java.io.File
 import kotlin.math.pow
@@ -42,7 +44,7 @@ class BytesParser {
                         magicNumber = nextString
 
                         if (magicNumber.length != 2 || magicNumber[0] != 'P' || !fileTypeSet.contains(magicNumber[1])) {
-                            //TODO exception
+                            throw FormatException("File format is not P5 or P6")
                         }
 
                     } else if (width == -1) {
@@ -50,24 +52,38 @@ class BytesParser {
                         try {
                             width = nextString.toInt()
                         } catch (e: NumberFormatException) {
-                            //TODO exception
+                            throw InvalidHeaderException("Invalid format for width")
                         }
-
+                        if (width <= 0)
+                        {
+                            throw InvalidHeaderException("Width can't be then zero ($width)")
+                        }
                     } else if (height == -1) {
 
                         try {
                             height = nextString.toInt()
                         } catch (e: NumberFormatException) {
-                            //TODO exception
+                            throw InvalidHeaderException("Invalid format for height")
                         }
-
+                        if (height <= 0)
+                        {
+                            throw InvalidHeaderException("Height can't be then zero ($height)")
+                        }
                     } else {
 
                         try {
                             maxShade = nextString.toInt()
                             bodyStartIndex = index + 1
                         } catch (e: NumberFormatException) {
-                            //TODO exception
+                            throw InvalidHeaderException("Invalid format for max shade")
+                        }
+                        if (maxShade <= 0)
+                        {
+                            throw InvalidHeaderException("Max shade can't be then zero ($maxShade)")
+                        }
+                        if (maxShade > 255)
+                        {
+                            throw InvalidHeaderException("Max shade can't be then zero ($maxShade)")
                         }
                     }
 
@@ -75,11 +91,6 @@ class BytesParser {
                     ++index
                 }
             }
-
-            println("magicNumber: $magicNumber")
-            println("width: $width")
-            println("height: $height")
-            println("maxShade: $maxShade")
 
             val body = byteArray.slice(bodyStartIndex until byteArray.size).toByteArray()
 

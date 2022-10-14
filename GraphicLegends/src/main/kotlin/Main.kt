@@ -2,6 +2,7 @@
 import Configuration.MutableConfigurationsState
 import Converters.Bitmap
 import Parsers.BytesParser
+import Tools.GraphicLegendsException
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -39,10 +40,16 @@ fun App() {
                         if (fd.files.isNotEmpty())
                         {
                             val file = fd.files[0]
-                            imageBMP.value = BytesParser.ParseBytesForFile(file)!!
-                            image.value.bufferedImage = MutableConfigurationsState.bufferedImage
-                            image.value.byteArray = MutableConfigurationsState.byteArray
-                            state.value = true
+                            try {
+                                imageBMP.value = BytesParser.ParseBytesForFile(file)!!
+                                image.value.bufferedImage = MutableConfigurationsState.bufferedImage
+                                image.value.byteArray = MutableConfigurationsState.byteArray
+                                state.value = true
+                            }
+                            catch (e: GraphicLegendsException)
+                            {
+                                println(e.message)
+                            }
                         }
                     },
                     colors = ButtonDefaults.buttonColors(Color.Green)
