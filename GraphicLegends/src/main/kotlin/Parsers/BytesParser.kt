@@ -8,7 +8,6 @@ import Tools.FormatException
 import Tools.InvalidHeaderException
 import androidx.compose.ui.graphics.ImageBitmap
 import java.io.File
-import kotlin.math.pow
 
 class BytesParser {
     companion object {
@@ -17,8 +16,6 @@ class BytesParser {
 
         fun ParseBytesForFile(file: File): ImageBitmap? { //TODO check return type
             val byteArray = file.readBytes()
-
-            println(byteArray)
 
             var magicNumber: String? = null
             var width = -1
@@ -117,7 +114,8 @@ class BytesParser {
 
             return str
         }
-        fun ParseFileInBytes(path: String, width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) {
+
+        fun ParseFileToBytes(path: String, width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) {
             val file = File(path)
             File(path).createNewFile()
             when (MutableConfigurationsState.mode) {
@@ -130,24 +128,15 @@ class BytesParser {
             }
         }
 
-            fun ParseValueForBytes(value: Int): ByteArray {
-                var newByteArray = byteArrayOf()
-                var valueCopy = value
-                while (valueCopy != 0) {
-                    newByteArray += ((valueCopy % 10) + '0'.code).toByte()
-                    valueCopy /= 10
-                }
-                newByteArray.reverse()
-                return newByteArray
+        fun ParseValueForBytes(value: Int): ByteArray {
+            var newByteArray = byteArrayOf()
+            var valueCopy = value
+            while (valueCopy != 0) {
+                newByteArray += ((valueCopy % 10) + '0'.code).toByte()
+                valueCopy /= 10
             }
-
-            private fun ParseBytesForValue(byteArray: ByteArray): Int {
-                byteArray.reverse()
-                var value = 0
-                for (i in byteArray.indices) {
-                    value += (byteArray[i].toInt() - '0'.code) * 10.0.pow(i).toInt()
-                }
-                return value
-            }
+            newByteArray.reverse()
+            return newByteArray
+        }
     }
 }
