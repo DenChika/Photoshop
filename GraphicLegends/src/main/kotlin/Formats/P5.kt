@@ -1,8 +1,8 @@
 package Formats
 
-import Bitmap
 import Configuration.MutableConfigurationsState
-import Interfaces.IFormat
+import Converters.Bitmap
+import Interfaces.Format
 import Parsers.BytesParser
 import Tools.InvalidHeaderException
 import androidx.compose.ui.graphics.Color
@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import java.awt.image.BufferedImage
 
-class P5 : IFormat {
+class P5 : Format {
     override fun HandleReader(width: Int, height: Int, maxShade: Int, byteArray: ByteArray) : ImageBitmap? {
         val img = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         try {
