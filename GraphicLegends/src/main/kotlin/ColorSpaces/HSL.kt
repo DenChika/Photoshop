@@ -1,11 +1,17 @@
 package ColorSpaces
 
-import Interfaces.ColorSpace
-import androidx.compose.ui.graphics.ImageBitmap
+import Interfaces.IColorSpace
 
-class HSL : ColorSpace {
-    override fun ToRGB(bodyArray: DoubleArray) : ImageBitmap? {
-        //TODO implement HSL space converter
-        return null
+class HSL : IColorSpace{
+    override fun ToRGB(): IColorSpace {
+        TODO("Not yet implemented")
+    }
+
+    override fun GetPixelValue(): IntArray {
+        TODO("Not yet implemented")
+    }
+
+    override fun GetBytes(): ByteArray {
+        TODO("Not yet implemented")
     }
 }

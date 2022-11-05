@@ -1,11 +1,17 @@
 package ColorSpaces
 
-import Interfaces.ColorSpace
-import androidx.compose.ui.graphics.ImageBitmap
+import Interfaces.IColorSpace
 
-class CMY : ColorSpace {
-    override fun ToRGB(bodyArray: DoubleArray) : ImageBitmap? {
-        //TODO implement CMY space converter
-        return null
+class CMY : IColorSpace{
+    override fun ToRGB(): IColorSpace {
+        TODO("Not yet implemented")
+    }
+
+    override fun GetPixelValue(): IntArray {
+        TODO("Not yet implemented")
+    }
+
+    override fun GetBytes(): ByteArray {
+        TODO("Not yet implemented")
     }
 }
