@@ -1,6 +1,5 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-import Configuration.MutableConfigurationsState
-import Converters.Bitmap
+import Configurations.AppConfiguration
 import Parsers.BytesParser
 import Tools.GraphicLegendsException
 import androidx.compose.foundation.Image
@@ -23,10 +22,6 @@ import java.awt.FileDialog.SAVE
 
 @Composable
 fun App() {
-    val state = remember { mutableStateOf(false) }
-    val obj = Configuration.Image()
-    val imageBMP = remember { mutableStateOf(Bitmap.imageFromBuffer(null)) }
-    val image = remember { mutableStateOf(obj) }
     MaterialTheme {
         Box(
             modifier = Modifier.background(Color.DarkGray)
@@ -41,10 +36,7 @@ fun App() {
                         {
                             val file = fd.files[0]
                             try {
-                                imageBMP.value = BytesParser.ParseBytesForFile(file)!!
-                                image.value.bufferedImage = MutableConfigurationsState.bufferedImage
-                                image.value.byteArray = MutableConfigurationsState.byteArray
-                                state.value = true
+                                AppConfiguration.Image = BytesParser.ParseBytesForFile(file)!!
                             }
                             catch (e: GraphicLegendsException)
                             {
@@ -59,25 +51,25 @@ fun App() {
 
                 Button(
                     onClick = {
-                        if (state.value) {
+                        if (AppConfiguration.HasContent()) {
                             val dialog : Dialog? = null
                             val fd = FileDialog(dialog, "Write the name of file", SAVE)
                             fd.isVisible = true
                             if (fd.files.isNotEmpty())
                             {
                                 val file = fd.files[0]
-                                val width = image.value.bufferedImage?.width
-                                val height = image.value.bufferedImage?.height
-                                if (width != null && height != null) {
-                                    BytesParser.ParseFileInBytes(file.absolutePath, width, height,
-                                        MutableConfigurationsState.shade, image.value.byteArray)
-                                }
+                                BytesParser.ParseFileInBytes(
+                                    file.absolutePath,
+                                    AppConfiguration.Image.width,
+                                    AppConfiguration.Image.height,
+                                    AppConfiguration.Image.maxShade,
+                                    AppConfiguration.Image.getByteArray())
                             }
                         }
                     },
                     colors = ButtonDefaults.buttonColors(Color.Green)
                 ) {
-                    Text("Save")
+                    Text( "Save")
                 }
             }
 
@@ -85,11 +77,11 @@ fun App() {
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                if (state.value) {
+                if (AppConfiguration.HasContent()) {
                     Card(
                         elevation = 10.dp
                     ) {
-                        imageBMP.value?.let {
+                        AppConfiguration.Image.getImageBitmap().let {
                             Image(
                                 bitmap = it,
                                 contentDescription = "image",
