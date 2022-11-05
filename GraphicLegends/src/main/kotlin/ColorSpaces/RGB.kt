@@ -1,12 +1,12 @@
 package ColorSpaces
 
-import Interfaces.ColorSpace
+import Interfaces.IColorSpace
 
-class RGB(r : Int, g : Int, b : Int) : ColorSpace {
+class RGB(r : Int, g : Int, b : Int) : IColorSpace {
     private val R = r
     private val G = g
     private val B = b
-    override fun ToRGB(): ColorSpace {
+    override fun ToRGB(): IColorSpace {
         return this
     }
 
