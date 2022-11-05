@@ -1,7 +1,7 @@
 package Interfaces
 
-interface IColorSpace {
-    fun ToRGB() : IColorSpace
+interface ColorSpace {
+    fun ToRGB() : ColorSpace
     fun GetPixelValue() : IntArray
     fun GetBytes() : ByteArray
 }

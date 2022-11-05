@@ -58,7 +58,7 @@ fun App() {
                             if (fd.files.isNotEmpty())
                             {
                                 val file = fd.files[0]
-                                BytesParser.ParseFileInBytes(
+                                BytesParser.ParseFileToBytes(
                                     file.absolutePath,
                                     AppConfiguration.Image.width,
                                     AppConfiguration.Image.height,

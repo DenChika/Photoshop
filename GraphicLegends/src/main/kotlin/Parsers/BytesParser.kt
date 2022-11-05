@@ -115,7 +115,8 @@ class BytesParser {
 
             return str
         }
-        fun ParseFileInBytes(path: String, width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) {
+
+        fun ParseFileToBytes(path: String, width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) {
             val file = File(path)
             File(path).createNewFile()
             AppConfiguration.Image.format.write(width, height, maxShade, byteArray).let { file.writeBytes(it) }

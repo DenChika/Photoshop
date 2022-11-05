@@ -1,9 +1,9 @@
 package ColorSpaces
 
-import Interfaces.IColorSpace
+import Interfaces.ColorSpace
 
-class YCbCr709 : IColorSpace {
-    override fun ToRGB(): IColorSpace {
+class YCbCr709 : ColorSpace {
+    override fun ToRGB(): ColorSpace {
         TODO("Not yet implemented")
     }
 
