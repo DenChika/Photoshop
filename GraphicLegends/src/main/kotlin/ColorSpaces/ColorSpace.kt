@@ -1,5 +1,6 @@
 package ColorSpaces
 
+
 import Interfaces.ColorSpace
 
 enum class ColorSpace {
