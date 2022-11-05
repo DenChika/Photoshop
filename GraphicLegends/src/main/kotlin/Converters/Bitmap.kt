@@ -9,21 +9,15 @@ import javax.imageio.ImageIO
 
 class Bitmap() {
     companion object{
-        fun imageFromBuffer(buffer: BufferedImage?): ImageBitmap? {
-            if (buffer != null) {
-                return Image.makeFromEncoded(
-                    toByteArray(buffer)
-                ).toComposeImageBitmap()
-            }
-            return null
+        fun imageFromBuffer(buffer: BufferedImage): ImageBitmap {
+            return Image.makeFromEncoded(
+                toByteArray(buffer)
+            ).toComposeImageBitmap()
         }
-        fun toByteArray(image: BufferedImage?) : ByteArray? {
-            if (image != null) {
-                val baos = ByteArrayOutputStream()
-                ImageIO.write(image, "bmp", baos)
-                return baos.toByteArray()
-            }
-            return null
+        fun toByteArray(image: BufferedImage) : ByteArray {
+            val baos = ByteArrayOutputStream()
+            ImageIO.write(image, "bmp", baos)
+            return baos.toByteArray()
         }
     }
 }

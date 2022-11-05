@@ -1,18 +1,15 @@
 package Formats
 
-import Configuration.MutableConfigurationsState
-import Converters.Bitmap
-import Interfaces.Format
+import Configurations.AppConfiguration
+import Configurations.ImageConfiguration
+import Interfaces.IFormat
 import Parsers.BytesParser
 import Tools.InvalidHeaderException
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.toArgb
-import java.awt.image.BufferedImage
 
-class P5 : Format {
-    override fun HandleReader(width: Int, height: Int, maxShade: Int, byteArray: ByteArray) : ImageBitmap? {
-        val img = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
+class P5 : IFormat {
+    override fun HandleReader(width: Int, height: Int, maxShade: Int, byteArray: ByteArray) : ImageConfiguration {
+        val pixels = Array(height * width) {
+            AppConfiguration.ColorSpace.GetInstance(0, 0, 0)}
         try {
             for (posY in 0 until height) {
                 for (posX in 0 until width) {
@@ -22,7 +19,7 @@ class P5 : Format {
                         throw InvalidHeaderException("Shade of pixel can't be greater than max shade")
                     }
                     val finalShade = shade * 255 / maxShade
-                    img.setRGB(posX, posY, Color(finalShade, finalShade, finalShade).toArgb())
+                    pixels[posY * width + posX] = AppConfiguration.ColorSpace.GetInstance(finalShade, finalShade, finalShade)
                 }
             }
         }
@@ -31,12 +28,7 @@ class P5 : Format {
             throw InvalidHeaderException("Byte array doesn't match width and height")
         }
 
-        MutableConfigurationsState.mode = Modes.P5
-        MutableConfigurationsState.bufferedImage = img
-        MutableConfigurationsState.byteArray = byteArray
-        MutableConfigurationsState.shade = maxShade
-
-        return Bitmap.imageFromBuffer(img)
+        return ImageConfiguration(Format.P5, width, height, maxShade, pixels)
     }
 
     override fun HandleWriter(width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) : ByteArray {

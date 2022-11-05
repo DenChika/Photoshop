@@ -1,12 +1,11 @@
 package Parsers
 
-import Configuration.MutableConfigurationsState
-import Formats.Modes
+import Configurations.AppConfiguration
+import Configurations.ImageConfiguration
 import Formats.P5
 import Formats.P6
 import Tools.FormatException
 import Tools.InvalidHeaderException
-import androidx.compose.ui.graphics.ImageBitmap
 import java.io.File
 
 class BytesParser {
@@ -14,8 +13,10 @@ class BytesParser {
 
         val fileTypeSet = hashSetOf<Char>('1', '2', '3', '4', '5', '6', '7')
 
-        fun ParseBytesForFile(file: File): ImageBitmap? { //TODO check return type
+        fun ParseBytesForFile(file: File): ImageConfiguration? { //TODO check return type
             val byteArray = file.readBytes()
+
+            println(byteArray)
 
             var magicNumber: String? = null
             var width = -1
@@ -118,14 +119,7 @@ class BytesParser {
         fun ParseFileToBytes(path: String, width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) {
             val file = File(path)
             File(path).createNewFile()
-            when (MutableConfigurationsState.mode) {
-                Modes.P5 -> {
-                    P5().HandleWriter(width, height, maxShade, byteArray).let { file.writeBytes(it) }
-                }
-                Modes.P6 -> {
-                P6().HandleWriter(width, height, maxShade, byteArray).let { file.writeBytes(it) }
-                }
-            }
+            AppConfiguration.Image.format.write(width, height, maxShade, byteArray).let { file.writeBytes(it) }
         }
 
         fun ParseValueForBytes(value: Int): ByteArray {

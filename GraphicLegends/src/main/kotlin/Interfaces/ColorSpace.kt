@@ -1,7 +1,7 @@
 package Interfaces
 
-import androidx.compose.ui.graphics.ImageBitmap
-
 interface ColorSpace {
-    fun ToRGB(bodyArray: DoubleArray) : ImageBitmap?
+    fun ToRGB() : ColorSpace
+    fun GetPixelValue() : IntArray
+    fun GetBytes() : ByteArray
 }
