@@ -69,7 +69,7 @@ fun App() {
                                 val width = image.value.bufferedImage?.width
                                 val height = image.value.bufferedImage?.height
                                 if (width != null && height != null) {
-                                    BytesParser.ParseFileInBytes(file.absolutePath, width, height,
+                                    BytesParser.ParseFileToBytes(file.absolutePath, width, height,
                                         MutableConfigurationsState.shade, image.value.byteArray)
                                 }
                             }
