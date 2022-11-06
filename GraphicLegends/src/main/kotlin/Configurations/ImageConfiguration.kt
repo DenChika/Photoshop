@@ -2,13 +2,13 @@ package Configurations
 
 import Converters.Bitmap
 import Formats.Format
-import Interfaces.ColorSpace
+import Interfaces.IColorSpace
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import java.awt.image.BufferedImage
 
-class ImageConfiguration(_format : Format, _width : Int, _height : Int, _maxShade : Int, _pixels : Array<ColorSpace>) {
+class ImageConfiguration(_format : Format, _width : Int, _height : Int, _maxShade : Int, _pixels : Array<IColorSpace>) {
     val format : Format = _format
     val width = _width
     val height = _height
