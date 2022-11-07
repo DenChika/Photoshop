@@ -2,6 +2,7 @@ package Formats
 
 import Configurations.AppConfiguration
 import Configurations.ImageConfiguration
+import Interfaces.IColorSpace
 import Interfaces.IFormat
 import Parsers.BytesParser
 import Tools.InvalidHeaderException
@@ -31,11 +32,21 @@ class P5 : IFormat {
         return ImageConfiguration(Format.P5, width, height, maxShade, pixels)
     }
 
-    override fun HandleWriter(width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) : ByteArray {
+    override fun HandleWriter(width: Int, height: Int, maxShade: Int, pixels: Array<IColorSpace>) : ByteArray {
         var newByteArray = byteArrayOf('P'.code.toByte(), (5 + '0'.code).toByte(),
             10.toByte())
         newByteArray += BytesParser.ParseValueForBytes(width) + byteArrayOf(32.toByte()) + BytesParser.ParseValueForBytes(
-            height) + 10.toByte() + BytesParser.ParseValueForBytes(maxShade) + 10.toByte() + byteArray!!
+            height) + 10.toByte() + BytesParser.ParseValueForBytes(maxShade) + 10.toByte() + ByteArrayFromPixels(pixels)
         return newByteArray
+    }
+
+    override fun ByteArrayFromPixels(pixels: Array<IColorSpace>): ByteArray {
+        val array = ByteArray(pixels.size)
+        for (pixel in pixels.indices)
+        {
+            val pp = pixels[pixel].GetBytes()[0]
+            array[pixel] = pp
+        }
+        return array
     }
 }

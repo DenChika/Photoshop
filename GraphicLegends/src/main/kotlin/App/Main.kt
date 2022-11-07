@@ -78,8 +78,7 @@ fun App() {
                                     file.absolutePath,
                                     AppConfiguration.Image.width,
                                     AppConfiguration.Image.height,
-                                    AppConfiguration.Image.maxShade,
-                                    AppConfiguration.Image.getByteArray())
+                                    AppConfiguration.Image.maxShade)
                             }
                         }
                     },

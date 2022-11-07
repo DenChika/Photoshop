@@ -1,11 +1,12 @@
 package Formats
 
 import Configurations.ImageConfiguration
+import Interfaces.IColorSpace
 
 enum class Format {
     P5 {
-        override fun write(width: Int, height: Int, maxShade: Int, byteArray: ByteArray?): ByteArray {
-            return P5().HandleWriter(width, height, maxShade, byteArray)
+        override fun write(width: Int, height: Int, maxShade: Int, pixels: Array<IColorSpace>): ByteArray {
+            return P5().HandleWriter(width, height, maxShade, pixels)
         }
 
         override fun read(width: Int, height: Int, maxShade: Int, body: ByteArray): ImageConfiguration {
@@ -14,8 +15,8 @@ enum class Format {
 
     },
     P6 {
-        override fun write(width: Int, height: Int, maxShade: Int, byteArray: ByteArray?): ByteArray {
-            return P6().HandleWriter(width, height, maxShade, byteArray)
+        override fun write(width: Int, height: Int, maxShade: Int, pixels: Array<IColorSpace>): ByteArray {
+            return P6().HandleWriter(width, height, maxShade, pixels)
         }
 
         override fun read(width: Int, height: Int, maxShade: Int, body: ByteArray): ImageConfiguration {
@@ -23,6 +24,6 @@ enum class Format {
         }
 
     };
-    abstract fun write(width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) : ByteArray
+    abstract fun write(width: Int, height: Int, maxShade: Int, pixels: Array<IColorSpace>) : ByteArray
     abstract fun read(width: Int, height: Int, maxShade: Int, body: ByteArray) : ImageConfiguration
 }
