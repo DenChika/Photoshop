@@ -168,6 +168,10 @@ fun App() {
                         AppConfiguration.Image.getImageBitmap().let {
                             Image(
                                 bitmap = it,
+                                modifier = if (it.height > 900 && it.width > 1500) Modifier.height(700.dp).width(1500.dp)
+                                else if (it.height > 900) Modifier.height(700.dp)
+                                else if (it.width > 1500) Modifier.width(1500.dp)
+                                else Modifier,
                                 contentDescription = "image",
                                 contentScale = ContentScale.Crop
                             )
