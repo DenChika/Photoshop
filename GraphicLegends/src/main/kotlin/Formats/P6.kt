@@ -1,8 +1,8 @@
 package Formats
 
+import ColorSpaces.ColorSpaceInstance
 import Configurations.AppConfiguration
 import Configurations.ImageConfiguration
-import Interfaces.IColorSpace
 import Interfaces.IFormat
 import Parsers.BytesParser
 import Tools.InvalidHeaderException
@@ -11,7 +11,7 @@ class P6 : IFormat {
     private val colorsByPixel = 3
     override fun HandleReader(width: Int, height: Int, maxShade: Int, byteArray: ByteArray): ImageConfiguration {
         val pixels = Array(height * width) {
-            AppConfiguration.ColorSpace.GetInstance(0, 0, 0) }
+            AppConfiguration.ColorSpace.GetDefault() }
         try {
             for (posY in 0 until height) {
                 for (posX in 0 until width) {
@@ -31,10 +31,9 @@ class P6 : IFormat {
                     val finalShadeSecond = shadeSecond * 255 / maxShade
                     val finalShadeThird = shadeThird * 255 / maxShade
 
-                    pixels[posY * width + posX] = AppConfiguration.ColorSpace
-                                                                  .GetInstance(finalShadeFirst,
-                                                                      finalShadeSecond,
-                                                                      finalShadeThird)
+                    pixels[posY * width + posX].firstShade = finalShadeFirst
+                    pixels[posY * width + posX].secondShade = finalShadeSecond
+                    pixels[posY * width + posX].thirdShade = finalShadeThird
                 }
             }
         }
@@ -45,7 +44,7 @@ class P6 : IFormat {
         return ImageConfiguration(Format.P6, width, height, maxShade, pixels)
     }
 
-    override fun HandleWriter(width: Int, height: Int, maxShade: Int, pixels: Array<IColorSpace>): ByteArray {
+    override fun HandleWriter(width: Int, height: Int, maxShade: Int, pixels: Array<ColorSpaceInstance>): ByteArray {
         var newByteArray = byteArrayOf('P'.code.toByte(), (6 + '0'.code).toByte(),
             10.toByte())
         newByteArray += BytesParser.ParseValueForBytes(width) + byteArrayOf(32.toByte()) + BytesParser.ParseValueForBytes(
@@ -53,7 +52,7 @@ class P6 : IFormat {
         return newByteArray
     }
 
-    override fun ByteArrayFromPixels(pixels: Array<IColorSpace>): ByteArray {
+    override fun ByteArrayFromPixels(pixels: Array<ColorSpaceInstance>): ByteArray {
         val array = ByteArray(pixels.size * 3)
         for (pixel in pixels.indices)
         {
