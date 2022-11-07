@@ -30,10 +30,13 @@ class ImageConfiguration(_format : Format, _width : Int, _height : Int, _maxShad
     }
     fun getByteArray() : ByteArray
     {
-        var array = ByteArray(0)
-        for (pixel in pixels)
+        val array = ByteArray(pixels.size * 3)
+        for (pixel in pixels.indices)
         {
-            array += pixel.GetBytes()
+            val pp = pixels[pixel].GetBytes()
+            array[pixel * 3] = pp[0]
+            array[pixel * 3 + 1] = pp[1]
+            array[pixel * 3 + 2] = pp[2]
         }
         return array
     }
