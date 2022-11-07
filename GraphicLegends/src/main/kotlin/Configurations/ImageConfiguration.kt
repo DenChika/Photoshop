@@ -17,8 +17,7 @@ class ImageConfiguration(_format : Format, _width : Int, _height : Int, _maxShad
 
     constructor() : this(Format.P6, 0, 0, 0, arrayOf())
 
-    fun getImageBitmap() : ImageBitmap
-    {
+    fun getImageBitmap() : ImageBitmap {
         val bufferedImage = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         for (posY in 0 until height) {
             for (posX in 0 until width) {
@@ -28,16 +27,7 @@ class ImageConfiguration(_format : Format, _width : Int, _height : Int, _maxShad
         }
         return Bitmap.imageFromBuffer(bufferedImage)
     }
-    fun getByteArray() : ByteArray
-    {
-        val array = ByteArray(pixels.size * 3)
-        for (pixel in pixels.indices)
-        {
-            val pp = pixels[pixel].GetBytes()
-            array[pixel * 3] = pp[0]
-            array[pixel * 3 + 1] = pp[1]
-            array[pixel * 3 + 2] = pp[2]
-        }
-        return array
+    fun getPixels() : Array<IColorSpace> {
+        return pixels
     }
 }

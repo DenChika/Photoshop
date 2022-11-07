@@ -116,10 +116,10 @@ class BytesParser {
             return str
         }
 
-        fun ParseFileToBytes(path: String, width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) {
+        fun ParseFileToBytes(path: String, width: Int, height: Int, maxShade: Int) {
             val file = File(path)
             File(path).createNewFile()
-            AppConfiguration.Image.format.write(width, height, maxShade, byteArray).let { file.writeBytes(it) }
+            AppConfiguration.Image.format.write(width, height, maxShade, AppConfiguration.Image.getPixels()).let { file.writeBytes(it) }
         }
 
         fun ParseValueForBytes(value: Int): ByteArray {
