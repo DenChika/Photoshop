@@ -4,31 +4,31 @@ import Interfaces.IColorSpace
 
 class YCbCr601 : IColorSpace {
 
-    override fun ToRGB(values: DoubleArray): DoubleArray {
+    override fun ToRGB(values: FloatArray): FloatArray {
         TODO("Not yet implemented")
     }
 
-    override fun ToCMY(values: DoubleArray): DoubleArray {
+    override fun ToCMY(values: FloatArray): FloatArray {
         TODO("Not yet implemented")
     }
 
-    override fun ToHSL(values: DoubleArray): DoubleArray {
+    override fun ToHSL(values: FloatArray): FloatArray {
         TODO("Not yet implemented")
     }
 
-    override fun ToHSV(values: DoubleArray): DoubleArray {
+    override fun ToHSV(values: FloatArray): FloatArray {
         TODO("Not yet implemented")
     }
 
-    override fun ToYCbCr601(values: DoubleArray): DoubleArray {
+    override fun ToYCbCr601(values: FloatArray): FloatArray {
         return values
     }
 
-    override fun ToYCbCr709(values: DoubleArray): DoubleArray {
+    override fun ToYCbCr709(values: FloatArray): FloatArray {
         TODO("Not yet implemented")
     }
 
-    override fun ToYCoCg(values: DoubleArray): DoubleArray {
+    override fun ToYCoCg(values: FloatArray): FloatArray {
         TODO("Not yet implemented")
     }
 }

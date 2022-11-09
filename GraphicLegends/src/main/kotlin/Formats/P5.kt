@@ -14,12 +14,12 @@ class P5 : IFormat {
         try {
             for (posY in 0 until height) {
                 for (posX in 0 until width) {
-                    val shade = (if (byteArray[posY * width + posX] < 0) byteArray[posY * width + posX] + 256 else byteArray[posY * width + posX]).toInt()
+                    val shade = (if (byteArray[posY * width + posX] < 0) byteArray[posY * width + posX] + 256 else byteArray[posY * width + posX]).toFloat()
                     if (shade > maxShade)
                     {
                         throw InvalidHeaderException("Shade of pixel can't be greater than max shade")
                     }
-                    val finalShade = shade * 255 / maxShade
+                    val finalShade = shade / maxShade
                     pixels[posY * width + posX].firstShade = finalShade
                     pixels[posY * width + posX].secondShade = finalShade
                     pixels[posY * width + posX].thirdShade = finalShade

@@ -16,20 +16,20 @@ class P6 : IFormat {
             for (posY in 0 until height) {
                 for (posX in 0 until width) {
                     val shadeFirst = (if (byteArray[posY * width * colorsByPixel + posX * colorsByPixel] < 0)
-                        byteArray[posY * width * colorsByPixel + posX * colorsByPixel] + 256 else byteArray[posY * width * colorsByPixel + posX * colorsByPixel]).toInt()
+                        byteArray[posY * width * colorsByPixel + posX * colorsByPixel] + 256 else byteArray[posY * width * colorsByPixel + posX * colorsByPixel]).toFloat()
 
                     val shadeSecond = (if (byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 1] < 0)
-                        byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 1] + 256 else byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 1]).toInt()
+                        byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 1] + 256 else byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 1]).toFloat()
 
                     val shadeThird = (if (byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 2] < 0)
-                        byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 2] + 256 else byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 2]).toInt()
+                        byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 2] + 256 else byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 2]).toFloat()
                     if (shadeThird > maxShade || shadeSecond > maxShade || shadeFirst > maxShade)
                     {
                         throw InvalidHeaderException("Shade of pixel can't be greater than max shade")
                     }
-                    val finalShadeFirst = shadeFirst * 255 / maxShade
-                    val finalShadeSecond = shadeSecond * 255 / maxShade
-                    val finalShadeThird = shadeThird * 255 / maxShade
+                    val finalShadeFirst = shadeFirst / maxShade
+                    val finalShadeSecond = shadeSecond / maxShade
+                    val finalShadeThird = shadeThird / maxShade
 
                     pixels[posY * width + posX].firstShade = finalShadeFirst
                     pixels[posY * width + posX].secondShade = finalShadeSecond

@@ -22,7 +22,7 @@ class ImageConfiguration(_format : Format, _width : Int, _height : Int, _maxShad
         for (posY in 0 until height) {
             for (posX in 0 until width) {
                 val pixel = pixels[posY * width + posX].GetRGBPixelValue()
-                bufferedImage.setRGB(posX, posY, Color(pixel[0], pixel[1], pixel[2]).toArgb())
+                bufferedImage.setRGB(posX, posY, Color((pixel[0] * 255).toInt(), (pixel[1] * 255).toInt(), (pixel[2] * 255).toInt()).toArgb())
             }
         }
         return Bitmap.imageFromBuffer(bufferedImage)

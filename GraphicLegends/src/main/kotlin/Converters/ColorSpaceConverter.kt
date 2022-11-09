@@ -5,7 +5,7 @@ import Tools.ColorSpaceException
 
 class ColorSpaceConverter {
     companion object {
-        fun convert(start : ColorSpace, end : ColorSpace, value : DoubleArray) : DoubleArray
+        fun convert(start : ColorSpace, end : ColorSpace, value : FloatArray) : FloatArray
         {
             return when(end) {
                 ColorSpace.CMY -> start.GetService().ToCMY(value)
