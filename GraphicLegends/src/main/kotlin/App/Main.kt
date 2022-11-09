@@ -42,27 +42,30 @@ fun App() {
                 contentScale = ContentScale.Crop
             )
             Row(Modifier.fillMaxSize()) {
-                Button(
-                    modifier = Modifier.padding(start = 15.dp),
-                    onClick = {
-                        val fd = FileDialog(ComposeWindow())
-                        fd.isVisible = true
-                        if (fd.files.isNotEmpty())
-                        {
-                            val file = fd.files[0]
-                            try {
-                                AppConfiguration.Image = BytesParser.ParseBytesForFile(file)!!
-                            }
-                            catch (e: GraphicLegendsException)
+                Box {
+                    Button(
+                        modifier = Modifier.padding(start = 15.dp),
+                        onClick = {
+                            val fd = FileDialog(ComposeWindow())
+                            fd.isVisible = true
+                            if (fd.files.isNotEmpty())
                             {
-                                println(e.message)
+                                val file = fd.files[0]
+                                try {
+                                    AppConfiguration.Image = BytesParser.ParseBytesForFile(file)!!
+                                }
+                                catch (e: GraphicLegendsException)
+                                {
+                                    println(e.message)
+                                }
                             }
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(Color.Green)
-                ) {
-                    Text("Open")
+                        },
+                        colors = ButtonDefaults.buttonColors(Color.Green)
+                    ) {
+                        Text("Open")
+                    }
                 }
+
 
                 Button(
                     modifier = Modifier.padding(start = 15.dp),
@@ -134,7 +137,7 @@ fun App() {
                         },
                         colors = ButtonDefaults.buttonColors(Color.Green)
                     ) {
-                        Text(text = AppConfiguration.Component.selected.value)
+                        Text(text = "Choose filtration")
                         Icon(Icons.Default.ArrowDropDown, contentDescription = "", modifier = Modifier.width(20.dp).height(20.dp))
                     }
                     DropdownMenu(
@@ -142,26 +145,23 @@ fun App() {
                         onDismissRequest = { AppConfiguration.Component.expanded.value = false }
                     ) {
                         Row {
-                            val checkedState = remember { mutableStateOf(false) }
                             Checkbox(
-                                checked = checkedState.value,
-                                onCheckedChange = { checkedState.value = it }
+                                checked = AppConfiguration.Component.checkedState1.value,
+                                onCheckedChange = { AppConfiguration.Component.checkedState1.value = it }
                             )
                             Text(text = "1st channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
                         }
                         Row {
-                            val checkedState = remember { mutableStateOf(false) }
                             Checkbox(
-                                checked = checkedState.value,
-                                onCheckedChange = { checkedState.value = it }
+                                checked = AppConfiguration.Component.checkedState2.value,
+                                onCheckedChange = { AppConfiguration.Component.checkedState2.value = it }
                             )
                             Text("2nd channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
                         }
                         Row {
-                            val checkedState = remember { mutableStateOf(false) }
                             Checkbox(
-                                checked = checkedState.value,
-                                onCheckedChange = { checkedState.value = it }
+                                checked = AppConfiguration.Component.checkedState3.value,
+                                onCheckedChange = { AppConfiguration.Component.checkedState3.value = it }
                             )
                             Text("3rd channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
                         }
