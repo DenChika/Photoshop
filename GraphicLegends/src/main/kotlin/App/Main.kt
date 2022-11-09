@@ -141,18 +141,30 @@ fun App() {
                         expanded = AppConfiguration.Component.expanded.value,
                         onDismissRequest = { AppConfiguration.Component.expanded.value = false }
                     ) {
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Component.selected.value = "Without filtration"
-                            AppConfiguration.Component.expanded.value = false }) { Text("Without filtration") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Component.selected.value = "1st channel"
-                            AppConfiguration.Component.expanded.value = false }) { Text("1st channel") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Component.selected.value = "2nd channel"
-                            AppConfiguration.Component.expanded.value = false }) { Text("2nd channel") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Component.selected.value = "3rd channel"
-                            AppConfiguration.Component.expanded.value = false }) { Text("3rd channel") }
+                        Row {
+                            val checkedState = remember { mutableStateOf(false) }
+                            Checkbox(
+                                checked = checkedState.value,
+                                onCheckedChange = { checkedState.value = it }
+                            )
+                            Text(text = "1st channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
+                        }
+                        Row {
+                            val checkedState = remember { mutableStateOf(false) }
+                            Checkbox(
+                                checked = checkedState.value,
+                                onCheckedChange = { checkedState.value = it }
+                            )
+                            Text("2nd channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
+                        }
+                        Row {
+                            val checkedState = remember { mutableStateOf(false) }
+                            Checkbox(
+                                checked = checkedState.value,
+                                onCheckedChange = { checkedState.value = it }
+                            )
+                            Text("3rd channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
+                        }
                     }
                 }
             }
