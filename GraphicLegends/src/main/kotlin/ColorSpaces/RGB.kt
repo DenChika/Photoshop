@@ -2,19 +2,33 @@ package ColorSpaces
 
 import Interfaces.IColorSpace
 
-class RGB(r : Int, g : Int, b : Int) : IColorSpace {
-    private val R = r
-    private val G = g
-    private val B = b
-    override fun ToRGB(): IColorSpace {
-        return this
+class RGB() : IColorSpace {
+
+    override fun ToRGB(values: FloatArray): FloatArray {
+        return values
     }
 
-    override fun GetPixelValue(): IntArray {
-        return intArrayOf(R, G, B)
+    override fun ToCMY(values: FloatArray): FloatArray {
+        TODO("Not yet implemented")
     }
 
-    override fun GetBytes(): ByteArray {
-        return byteArrayOf(R.toByte(), G.toByte(), B.toByte())
+    override fun ToHSL(values: FloatArray): FloatArray {
+        TODO("Not yet implemented")
+    }
+
+    override fun ToHSV(values: FloatArray): FloatArray {
+        TODO("Not yet implemented")
+    }
+
+    override fun ToYCbCr601(values: FloatArray): FloatArray {
+        TODO("Not yet implemented")
+    }
+
+    override fun ToYCbCr709(values: FloatArray): FloatArray {
+        TODO("Not yet implemented")
+    }
+
+    override fun ToYCoCg(values: FloatArray): FloatArray {
+        TODO("Not yet implemented")
     }
 }
