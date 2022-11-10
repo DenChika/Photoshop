@@ -45,7 +45,27 @@ class RGB() : IColorSpace {
     }
 
     override fun ToHSV(values: FloatArray): FloatArray {
-        TODO("Not yet implemented")
+        val max = maxOf(values[0], maxOf(values[1], values[2]))
+        val min = minOf(values[0], minOf(values[1], values[2]))
+        val value = max
+
+        var saturation = 0f
+
+        if (max != 0f) {
+            saturation = 1 - min / max
+        }
+
+        val r = values[0] * 255
+        val g = values[1] * 255
+        val b = values[2] * 255
+
+        val hue = if (g >= b) {
+            acos((r - g / 2 - b / 2 ) / sqrt(r * r + g * g + b * b - r * g - r * b - g * b)) / Math.PI.toFloat() * 180f
+        } else {
+            360 - acos((r - g / 2 - b / 2 ) / sqrt(r * r + g * g + b * b - r * g - r * b - g * b)) / Math.PI.toFloat() * 180f
+        }
+
+        return floatArrayOf(hue, saturation, value)
     }
 
     override fun ToYCbCr601(values: FloatArray): FloatArray {
