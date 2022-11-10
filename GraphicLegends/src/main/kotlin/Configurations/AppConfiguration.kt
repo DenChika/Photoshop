@@ -3,15 +3,13 @@ package Configurations
 import ColorSpaces.ColorSpace
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.res.loadImageBitmap
-import java.io.File
 
 class AppConfiguration() {
     val imageConfiguration = mutableStateOf(ImageConfiguration())
     val spaceConfiguration = mutableStateOf(SpaceConfiguration())
     val componentConfiguration = mutableStateOf(ComponentConfiguration())
+    val bitmap : MutableState<ImageBitmap?> = mutableStateOf(null)
     val hasContent =  mutableStateOf(false)
     val colorSpace = mutableStateOf(ColorSpaces.ColorSpace.RGB)
 
@@ -23,6 +21,7 @@ class AppConfiguration() {
             }
             set(value)
             {
+                configuration.bitmap.value = value.getImageBitmap()
                 configuration.hasContent.value = true
                 configuration.imageConfiguration.value = value
             }
@@ -31,6 +30,10 @@ class AppConfiguration() {
         fun HasContent() : Boolean {
             return configuration.hasContent.value
         }
+        fun GetBitmap() : ImageBitmap
+        {
+            return configuration.bitmap.value!!
+        }
         var ColorSpace : ColorSpace
             get() {
                 return configuration.colorSpace.value
@@ -38,6 +41,7 @@ class AppConfiguration() {
             set(value)
             {
                 Image.changeColorSpace(value)
+                configuration.bitmap.value = Image.getImageBitmap()
                 configuration.colorSpace.value = value
             }
     }

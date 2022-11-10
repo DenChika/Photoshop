@@ -177,7 +177,7 @@ fun App() {
                     Card(
                         elevation = 10.dp
                     ) {
-                        AppConfiguration.Image.getImageBitmap().let {
+                        AppConfiguration.GetBitmap().let {
                             Image(
                                 bitmap = it,
                                 modifier = if (it.height > 900 && it.width > 1500) Modifier.height(700.dp).width(1500.dp)
