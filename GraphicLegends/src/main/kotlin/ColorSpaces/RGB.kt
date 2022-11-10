@@ -89,6 +89,10 @@ class RGB() : IColorSpace {
     }
 
     override fun ToYCoCg(values: FloatArray): FloatArray {
-        TODO("Not yet implemented")
+        val y = values[0] / 4 + values[1] / 2 + values[2] / 4
+        val co = values[0]/ 2 - values[2] / 2
+        val cg = -values[0] / 4 + values[1] / 2 - values[2] / 4
+
+        return floatArrayOf(y, co, cg)
     }
 }

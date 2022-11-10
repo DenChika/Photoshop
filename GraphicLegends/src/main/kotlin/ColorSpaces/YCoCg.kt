@@ -5,7 +5,11 @@ import Interfaces.IColorSpace
 class YCoCg : IColorSpace {
 
     override fun ToRGB(values: FloatArray): FloatArray {
-        TODO("Not yet implemented")
+        val r = values[0] + values[1] - values[2]
+        val g = values[0] + values[2]
+        val b = values[0] - values[1] - values[2]
+
+        return floatArrayOf(r, g, b)
     }
 
     override fun ToCMY(values: FloatArray): FloatArray {
