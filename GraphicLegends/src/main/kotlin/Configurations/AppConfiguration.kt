@@ -37,6 +37,7 @@ class AppConfiguration() {
             }
             set(value)
             {
+                Image.changeColorSpace(value)
                 configuration.colorSpace.value = value
             }
     }
