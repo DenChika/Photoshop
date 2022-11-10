@@ -9,7 +9,10 @@ class RGB() : IColorSpace {
     }
 
     override fun ToCMY(values: FloatArray): FloatArray {
-        TODO("Not yet implemented")
+        val c = 1 - values[0]
+        val m = 1 - values[1]
+        val y = 1 - values[2]
+        return floatArrayOf(c, m, y)
     }
 
     override fun ToHSL(values: FloatArray): FloatArray {

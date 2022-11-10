@@ -1,4 +1,5 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+import ColorSpaces.ColorSpace
 import Configurations.AppConfiguration
 import Parsers.BytesParser
 import Tools.GraphicLegendsException
@@ -107,10 +108,12 @@ fun App() {
                     ) {
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "RGB"
-                            AppConfiguration.Space.expanded.value = false }) { Text("RGB") }
+                            AppConfiguration.Space.expanded.value = false
+                            AppConfiguration.ColorSpace = ColorSpace.RGB}) { Text("RGB") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "CMY"
-                            AppConfiguration.Space.expanded.value = false }) { Text("CMY") }
+                            AppConfiguration.Space.expanded.value = false
+                            AppConfiguration.ColorSpace = ColorSpace.CMY}) { Text("CMY") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "HSL"
                             AppConfiguration.Space.expanded.value = false }) { Text("HSL") }
