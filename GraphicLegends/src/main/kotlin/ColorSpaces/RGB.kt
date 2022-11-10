@@ -68,12 +68,24 @@ class RGB() : IColorSpace {
         return floatArrayOf(hue, saturation, value)
     }
 
+    private fun ToYCbCr(a: Float, b: Float, values: FloatArray): FloatArray{
+        val c = 1 - a - b
+        val d = 2 * (a + b)
+        val e = 2 * (1 - a)
+
+        val y  = a * values[0] + b * values[1] + c * values[2]
+        val cb = (values[2] - y) / d
+        val cr = (values[0] - y) / e
+
+        return floatArrayOf(y, cb, cr)
+    }
+
     override fun ToYCbCr601(values: FloatArray): FloatArray {
-        TODO("Not yet implemented")
+        return ToYCbCr(0.299f, 0.587f, values)
     }
 
     override fun ToYCbCr709(values: FloatArray): FloatArray {
-        TODO("Not yet implemented")
+        return ToYCbCr(0.2126f, 0.7152f, values)
     }
 
     override fun ToYCoCg(values: FloatArray): FloatArray {
