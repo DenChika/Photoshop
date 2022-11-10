@@ -26,12 +26,18 @@ import java.awt.Dialog
 import java.awt.FileDialog
 import java.awt.FileDialog.SAVE
 import java.io.File
+import java.nio.file.Paths
 
 @Composable
 fun App() {
-    val app_back_file = File("src\\main\\kotlin\\Resources\\app_background.jpg")
-    val background: ImageBitmap = remember(app_back_file) {
-        loadImageBitmap(app_back_file.inputStream())
+//    val app_back_file = File("GraphicLegends/src/main/kotlin/Resources/app_background.jpg")
+    val appBackgroundPic = File("GraphicLegends/src/main/kotlin/Resources/app_background.jpg")
+
+    val path = Paths.get("").toAbsolutePath().toString()
+    println("Working Directory = $path")
+
+    val background: ImageBitmap = remember(appBackgroundPic) {
+        loadImageBitmap(appBackgroundPic.inputStream())
     }
     MaterialTheme {
         Box(

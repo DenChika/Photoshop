@@ -5,16 +5,16 @@ import Tools.ColorSpaceException
 
 class ColorSpaceConverter {
     companion object {
-        fun convert(start : ColorSpace, end : ColorSpace, value : FloatArray) : FloatArray
+        fun convert(spaceFrom : ColorSpace, spaceTo : ColorSpace, value : FloatArray) : FloatArray
         {
-            return when(end) {
-                ColorSpace.CMY -> start.GetService().ToCMY(value)
-                ColorSpace.YCoCg -> start.GetService().ToYCoCg(value)
-                ColorSpace.YCbCr601 -> start.GetService().ToYCbCr601(value)
-                ColorSpace.YCbCr709 -> start.GetService().ToYCbCr709(value)
-                ColorSpace.HSV -> start.GetService().ToHSV(value)
-                ColorSpace.HSL -> start.GetService().ToRGB(value)
-                ColorSpace.RGB -> start.GetService().ToRGB(value)
+            return when(spaceTo) {
+                ColorSpace.CMY -> spaceFrom.GetService().ToCMY(value)
+                ColorSpace.YCoCg -> spaceFrom.GetService().ToYCoCg(value)
+                ColorSpace.YCbCr601 -> spaceFrom.GetService().ToYCbCr601(value)
+                ColorSpace.YCbCr709 -> spaceFrom.GetService().ToYCbCr709(value)
+                ColorSpace.HSV -> spaceFrom.GetService().ToHSV(value)
+                ColorSpace.HSL -> spaceFrom.GetService().ToRGB(value)
+                ColorSpace.RGB -> spaceFrom.GetService().ToRGB(value)
                 else -> throw ColorSpaceException.undefined()
             }
         }
