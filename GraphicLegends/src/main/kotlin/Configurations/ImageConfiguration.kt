@@ -1,5 +1,6 @@
 package Configurations
 
+import ColorSpaces.ColorSpace
 import ColorSpaces.ColorSpaceInstance
 import Converters.Bitmap
 import Formats.Format
@@ -29,5 +30,12 @@ class ImageConfiguration(_format : Format, _width : Int, _height : Int, _maxShad
     }
     fun getPixels() : Array<ColorSpaceInstance> {
         return pixels
+    }
+    fun changeColorSpace(colorSpace : ColorSpace)
+    {
+        for (pixel in pixels)
+        {
+            pixel.Kind = colorSpace
+        }
     }
 }
