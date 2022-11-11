@@ -94,7 +94,7 @@ fun App() {
                             },
                             colors = ButtonDefaults.buttonColors(Color.Green)
                         ) {
-                            Text(text = AppConfiguration.Space.selected.value)
+                            Text(text = AppConfiguration.Space.selected.GetName())
                             Icon(
                                 Icons.Default.ArrowDropDown,
                                 contentDescription = "",
@@ -106,40 +106,33 @@ fun App() {
                             onDismissRequest = { AppConfiguration.Space.expanded.value = false }
                         ) {
                             DropdownMenuItem(onClick = {
-                                AppConfiguration.Space.selected.value = "RGB"
+                                AppConfiguration.Space.selected = ColorSpace.RGB
                                 AppConfiguration.Space.expanded.value = false
-                                AppConfiguration.ColorSpace = ColorSpace.RGB
-                            }) { Text("RGB") }
+                            }) { Text(ColorSpace.RGB.GetName()) }
                             DropdownMenuItem(onClick = {
-                                AppConfiguration.Space.selected.value = "CMY"
+                                AppConfiguration.Space.selected = ColorSpace.CMY
                                 AppConfiguration.Space.expanded.value = false
-                                AppConfiguration.ColorSpace = ColorSpace.CMY
-                            }) { Text("CMY") }
+                            }) { Text(ColorSpace.CMY.GetName()) }
                             DropdownMenuItem(onClick = {
-                                AppConfiguration.Space.selected.value = "HSL"
+                                AppConfiguration.Space.selected = ColorSpace.HSL
                                 AppConfiguration.Space.expanded.value = false
-                                AppConfiguration.ColorSpace = ColorSpace.HSL
-                            }) { Text("HSL") }
+                            }) { Text(ColorSpace.HSL.GetName()) }
                             DropdownMenuItem(onClick = {
-                                AppConfiguration.Space.selected.value = "HSV"
+                                AppConfiguration.Space.selected = ColorSpace.HSV
                                 AppConfiguration.Space.expanded.value = false
-                                AppConfiguration.ColorSpace = ColorSpace.HSV
-                            }) { Text("HSV") }
+                            }) { Text(ColorSpace.HSV.GetName()) }
                             DropdownMenuItem(onClick = {
-                                AppConfiguration.Space.selected.value = "YCbCr_601"
+                                AppConfiguration.Space.selected = ColorSpace.YCbCr601
                                 AppConfiguration.Space.expanded.value = false
-                                AppConfiguration.ColorSpace = ColorSpace.YCbCr601
-                            }) { Text("YCbCr_601") }
+                            }) { Text(ColorSpace.YCbCr601.GetName()) }
                             DropdownMenuItem(onClick = {
-                                AppConfiguration.Space.selected.value = "YCbCr_709"
+                                AppConfiguration.Space.selected = ColorSpace.YCbCr709
                                 AppConfiguration.Space.expanded.value = false
-                                AppConfiguration.ColorSpace = ColorSpace.YCbCr709
-                            }) { Text("YCbCr_709") }
+                            }) { Text(ColorSpace.YCbCr709.GetName()) }
                             DropdownMenuItem(onClick = {
-                                AppConfiguration.Space.selected.value = "YCoCg"
+                                AppConfiguration.Space.selected = ColorSpace.YCoCg
                                 AppConfiguration.Space.expanded.value = false
-                                AppConfiguration.ColorSpace = ColorSpace.YCoCg
-                            }) { Text("YCoCg") }
+                            }) { Text(ColorSpace.YCoCg.GetName()) }
                         }
                     }
 
