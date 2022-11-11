@@ -50,7 +50,7 @@ class RGB() : IColorSpace {
 
         var saturation = 0f
 
-        if (lightness != 0f) {
+        if (lightness != 0f && lightness != 1f) {
             saturation = diff / (1 - abs(2 * lightness - 1))
         }
 
