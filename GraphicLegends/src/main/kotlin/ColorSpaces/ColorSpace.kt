@@ -72,4 +72,7 @@ enum class ColorSpace {
 
     abstract fun GetDefault() : ColorSpaceInstance
     abstract fun GetService() : IColorSpace
+    fun GetName() : String {
+        return this.name
+    }
 }

@@ -11,7 +11,7 @@ class P6 : IFormat {
     private val colorsByPixel = 3
     override fun HandleReader(width: Int, height: Int, maxShade: Int, byteArray: ByteArray): ImageConfiguration {
         val pixels = Array(height * width) {
-            AppConfiguration.ColorSpace.GetDefault() }
+            AppConfiguration.Space.selected.GetDefault() }
         try {
             for (posY in 0 until height) {
                 for (posX in 0 until width) {

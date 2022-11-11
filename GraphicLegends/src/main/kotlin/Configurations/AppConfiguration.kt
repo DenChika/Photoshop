@@ -1,6 +1,5 @@
 package Configurations
 
-import ColorSpaces.ColorSpace
 import Filtration.FiltrationMode
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +11,6 @@ class AppConfiguration() {
     val componentConfiguration = mutableStateOf(ComponentConfiguration())
     val bitmap : MutableState<ImageBitmap?> = mutableStateOf(null)
     val hasContent =  mutableStateOf(false)
-    val colorSpace = mutableStateOf(ColorSpaces.ColorSpace.RGB)
 
     companion object{
         private var configuration : AppConfiguration = AppConfiguration()
@@ -36,18 +34,6 @@ class AppConfiguration() {
         {
             return configuration.bitmap.value!!
         }
-        var ColorSpace : ColorSpace
-            get() {
-                return configuration.colorSpace.value
-            }
-            set(value)
-            {
-                Component.selected = FiltrationMode.ALL
-                Image.changeColorSpace(value)
-                configuration.colorSpace.value = value
-
-                updateBitmap()
-            }
 
         fun updateBitmap(){
             configuration.bitmap.value = Image.getImageBitmap()
