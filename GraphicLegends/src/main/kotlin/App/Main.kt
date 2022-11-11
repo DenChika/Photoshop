@@ -142,34 +142,33 @@ fun App() {
                         },
                         colors = ButtonDefaults.buttonColors(Color.Green)
                     ) {
-                        Text(text = "Choose filtration")
-                        Icon(Icons.Default.ArrowDropDown, contentDescription = "", modifier = Modifier.width(20.dp).height(20.dp))
+                        Text(text = AppConfiguration.Component.selected.value)
+                        Icon(
+                            Icons.Default.ArrowDropDown,
+                            contentDescription = "",
+                            modifier = Modifier.width(20.dp).height(20.dp)
+                        )
                     }
                     DropdownMenu(
                         expanded = AppConfiguration.Component.expanded.value,
                         onDismissRequest = { AppConfiguration.Component.expanded.value = false }
                     ) {
-                        Row {
-                            Checkbox(
-                                checked = AppConfiguration.Component.checkedState1.value,
-                                onCheckedChange = { AppConfiguration.Component.checkedState1.value = it }
-                            )
-                            Text(text = "1st channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
-                        }
-                        Row {
-                            Checkbox(
-                                checked = AppConfiguration.Component.checkedState2.value,
-                                onCheckedChange = { AppConfiguration.Component.checkedState2.value = it }
-                            )
-                            Text("2nd channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
-                        }
-                        Row {
-                            Checkbox(
-                                checked = AppConfiguration.Component.checkedState3.value,
-                                onCheckedChange = { AppConfiguration.Component.checkedState3.value = it }
-                            )
-                            Text("3rd channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
-                        }
+                        DropdownMenuItem(onClick = {
+                            AppConfiguration.Component.selected.value = "All channels"
+                            AppConfiguration.Component.expanded.value = false
+                        }) { Text("All channels") }
+                        DropdownMenuItem(onClick = {
+                            AppConfiguration.Component.selected.value = "Only 1st channel"
+                            AppConfiguration.Component.expanded.value = false
+                        }) { Text("Only 1st channel") }
+                        DropdownMenuItem(onClick = {
+                            AppConfiguration.Component.selected.value = "Only 2nd channel"
+                            AppConfiguration.Component.expanded.value = false
+                        }) { Text("Only 2nd channel") }
+                        DropdownMenuItem(onClick = {
+                            AppConfiguration.Component.selected.value = "Only 3rd channel"
+                            AppConfiguration.Component.expanded.value = false
+                        }) { Text("Only 3rd channel") }
                     }
                 }
             }
