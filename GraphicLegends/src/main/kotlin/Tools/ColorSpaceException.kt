@@ -8,7 +8,13 @@ class ColorSpaceException(message: String?) : GraphicLegendsException(message) {
         fun shadeIsNan() : ColorSpaceException{
             return ColorSpaceException("Shade must be a number")
         }
-        fun wrongFormat(formatName : String) : ColorSpaceException{
+        fun wrongHSVFormat() : ColorSpaceException{
+            return wrongFormat("HSV")
+        }
+        fun wrongHSLFormat() : ColorSpaceException{
+            return wrongFormat("HSL")
+        }
+        private fun wrongFormat(formatName : String) : ColorSpaceException{
             return ColorSpaceException("Error. Wrong $formatName format.")
         }
     }

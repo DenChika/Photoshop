@@ -39,7 +39,7 @@ class HSV : IColorSpace {
                 return floatArrayOf(max, min, z + min)
             }
             else -> {
-                throw ColorSpaceException.wrongFormat("HSV")
+                throw ColorSpaceException.wrongHSVFormat()
             }
         }
     }

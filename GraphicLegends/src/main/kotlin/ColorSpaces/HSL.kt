@@ -38,7 +38,7 @@ class HSL : IColorSpace {
             }
             else -> {
                 println(values[0] * 360)
-                throw ColorSpaceException.wrongFormat("HSL")
+                throw ColorSpaceException.wrongHSLFormat()
             }
         }
     }
