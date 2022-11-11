@@ -30,7 +30,6 @@ import java.nio.file.Paths
 
 @Composable
 fun App() {
-//    val appBackgroundPic = File("src/main/kotlin/Resources/app_background.jpg")
     val appBackgroundPic = File("GraphicLegends/src/main/kotlin/Resources/app_background.jpg")
 
     println("Working Directory = " + (Paths.get("").toAbsolutePath().toString()))
