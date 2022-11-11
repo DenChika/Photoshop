@@ -9,9 +9,16 @@ class ColorSpaceInstance(_kind : ColorSpace) {
     var Kind : ColorSpace
         get() {
             return kind
+
         }
         set(value) {
-            val convertedValues = ColorSpaceConverter.convert(kind, value, GetFloatArrayOfValues())
+            val convertedValues = ColorSpaceConverter.convert(
+                kind,
+                value,
+                GetFloatArrayOfValues(
+                    isFirstNeeded = true,
+                    isSecondNeeded = true,
+                    isThirdNeeded = true))
 
             if (convertedValues[0].isNaN() || convertedValues[1].isNaN() || convertedValues[2].isNaN()) {
                 throw ColorSpaceException.shadeIsNan()
@@ -26,8 +33,14 @@ class ColorSpaceInstance(_kind : ColorSpace) {
     var secondShade: Float = 0.0F
     var thirdShade: Float = 0.0F
 
-    fun GetRGBPixelValue():  FloatArray {
-        val convertedValues = ColorSpaceConverter.convert(kind, ColorSpace.RGB, GetFloatArrayOfValues())
+    fun GetRGBPixelValue(isFirstNeeded : Boolean, isSecondNeeded : Boolean, isThirdNeeded : Boolean):  FloatArray {
+        val convertedValues = ColorSpaceConverter.convert(
+            kind,
+            ColorSpace.RGB,
+            GetFloatArrayOfValues(
+                isFirstNeeded,
+                isSecondNeeded,
+                isThirdNeeded))
 
         if (convertedValues[0].isNaN() || convertedValues[1].isNaN() || convertedValues[2].isNaN()) {
             throw ColorSpaceException.shadeIsNan()
@@ -38,16 +51,27 @@ class ColorSpaceInstance(_kind : ColorSpace) {
             convertedValues[1],
             convertedValues[2])
     }
-
     fun GetBytes(): ByteArray {
         return byteArrayOf(
-            (firstShade * AppConfiguration.Image.maxShade).toInt().toByte(),
-            (secondShade * AppConfiguration.Image.maxShade).toInt().toByte(),
-            (thirdShade * AppConfiguration.Image.maxShade).toInt().toByte())
+            GetFirstByte(),
+            GetSecondByte(),
+            GetThirdByte())
+    }
+    fun GetFirstByte() : Byte{
+        return (firstShade * AppConfiguration.Image.maxShade).toInt().toByte()
+    }
+    fun GetSecondByte() : Byte{
+        return (secondShade * AppConfiguration.Image.maxShade).toInt().toByte()
+    }
+    fun GetThirdByte() : Byte{
+        return (thirdShade * AppConfiguration.Image.maxShade).toInt().toByte()
     }
 
-    private fun GetFloatArrayOfValues() : FloatArray
+    private fun GetFloatArrayOfValues(isFirstNeeded : Boolean, isSecondNeeded : Boolean, isThirdNeeded : Boolean) : FloatArray
     {
-        return floatArrayOf(firstShade, secondShade, thirdShade)
+        return floatArrayOf(
+            if (isFirstNeeded) firstShade else 0.0f,
+            if (isSecondNeeded) secondShade else 0.0f,
+            if (isThirdNeeded) thirdShade else 0.0f)
     }
 }

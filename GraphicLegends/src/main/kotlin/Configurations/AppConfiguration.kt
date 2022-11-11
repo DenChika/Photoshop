@@ -1,6 +1,7 @@
 package Configurations
 
 import ColorSpaces.ColorSpace
+import Filtration.FiltrationMode
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
@@ -21,9 +22,10 @@ class AppConfiguration() {
             }
             set(value)
             {
-                configuration.bitmap.value = value.getImageBitmap()
                 configuration.hasContent.value = true
                 configuration.imageConfiguration.value = value
+                Component.selected = FiltrationMode.ALL
+                updateBitmap()
             }
         var Space : SpaceConfiguration = configuration.spaceConfiguration.value
         var Component : ComponentConfiguration = configuration.componentConfiguration.value
@@ -40,9 +42,16 @@ class AppConfiguration() {
             }
             set(value)
             {
+                Component.selected = FiltrationMode.ALL
                 Image.changeColorSpace(value)
-                configuration.bitmap.value = Image.getImageBitmap()
                 configuration.colorSpace.value = value
+
+                updateBitmap()
             }
+
+        fun updateBitmap(){
+            configuration.bitmap.value = Image.getImageBitmap()
+        }
     }
+
 }
