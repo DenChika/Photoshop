@@ -125,22 +125,27 @@ fun App() {
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "HSL"
                             AppConfiguration.Space.expanded.value = false
+                            AppConfiguration.ColorSpace = ColorSpace.HSL
                         }) { Text("HSL") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "HSV"
                             AppConfiguration.Space.expanded.value = false
+                            AppConfiguration.ColorSpace = ColorSpace.HSV
                         }) { Text("HSV") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "YCbCr_601"
                             AppConfiguration.Space.expanded.value = false
+                            AppConfiguration.ColorSpace = ColorSpace.YCbCr601
                         }) { Text("YCbCr_601") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "YCbCr_709"
                             AppConfiguration.Space.expanded.value = false
+                            AppConfiguration.ColorSpace = ColorSpace.YCbCr709
                         }) { Text("YCbCr_709") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "YCoCg"
                             AppConfiguration.Space.expanded.value = false
+                            AppConfiguration.ColorSpace = ColorSpace.YCoCg
                         }) { Text("YCoCg") }
                     }
                 }
