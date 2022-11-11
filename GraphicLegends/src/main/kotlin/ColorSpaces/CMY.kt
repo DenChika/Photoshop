@@ -16,11 +16,13 @@ class CMY() : IColorSpace {
     }
 
     override fun ToHSL(values: FloatArray): FloatArray {
-        TODO("Not yet implemented")
+        val rgbValues = ToRGB(values)
+        return ColorSpace.RGB.GetService().ToHSL(rgbValues)
     }
 
     override fun ToHSV(values: FloatArray): FloatArray {
-        TODO("Not yet implemented")
+        val rgbValues = ToRGB(values)
+        return ColorSpace.RGB.GetService().ToHSV(rgbValues)
     }
 
     override fun ToYCbCr601(values: FloatArray): FloatArray {
@@ -34,6 +36,7 @@ class CMY() : IColorSpace {
     }
 
     override fun ToYCoCg(values: FloatArray): FloatArray {
-        TODO("Not yet implemented")
+        val rgbValues = ToRGB(values)
+        return ColorSpace.RGB.GetService().ToYCoCg(rgbValues)
     }
 }

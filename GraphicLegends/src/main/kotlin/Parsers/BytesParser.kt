@@ -16,8 +16,6 @@ class BytesParser {
         fun ParseBytesForFile(file: File): ImageConfiguration? { //TODO check return type
             val byteArray = file.readBytes()
 
-            println(byteArray)
-
             var magicNumber: String? = null
             var width = -1
             var height = -1

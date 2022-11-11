@@ -2,6 +2,7 @@ package ColorSpaces
 
 import Configurations.AppConfiguration
 import Converters.ColorSpaceConverter
+import Tools.ColorSpaceException
 
 class ColorSpaceInstance(_kind : ColorSpace) {
     private var kind = _kind
@@ -11,6 +12,11 @@ class ColorSpaceInstance(_kind : ColorSpace) {
         }
         set(value) {
             val convertedValues = ColorSpaceConverter.convert(kind, value, GetFloatArrayOfValues())
+
+            if (convertedValues[0].isNaN() || convertedValues[1].isNaN() || convertedValues[2].isNaN()) {
+                throw ColorSpaceException("Error. Shade has to be a number.")
+            }
+
             firstShade = convertedValues[0]
             secondShade = convertedValues[1]
             thirdShade = convertedValues[2]
@@ -22,6 +28,11 @@ class ColorSpaceInstance(_kind : ColorSpace) {
 
     fun GetRGBPixelValue():  FloatArray {
         val convertedValues = ColorSpaceConverter.convert(kind, ColorSpace.RGB, GetFloatArrayOfValues())
+
+        if (convertedValues[0].isNaN() || convertedValues[1].isNaN() || convertedValues[2].isNaN()) {
+            throw ColorSpaceException("Error. Shade has to be a number.")
+        }
+
         return floatArrayOf(
             convertedValues[0],
             convertedValues[1],
