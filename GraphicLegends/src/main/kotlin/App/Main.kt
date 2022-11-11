@@ -26,12 +26,17 @@ import java.awt.Dialog
 import java.awt.FileDialog
 import java.awt.FileDialog.SAVE
 import java.io.File
+import java.nio.file.Paths
 
 @Composable
 fun App() {
-    val app_back_file = File("src\\main\\kotlin\\Resources\\app_background.jpg")
-    val background: ImageBitmap = remember(app_back_file) {
-        loadImageBitmap(app_back_file.inputStream())
+//    val appBackgroundPic = File("src/main/kotlin/Resources/app_background.jpg")
+    val appBackgroundPic = File("GraphicLegends/src/main/kotlin/Resources/app_background.jpg")
+
+    println("Working Directory = " + (Paths.get("").toAbsolutePath().toString()))
+
+    val background: ImageBitmap = remember(appBackgroundPic) {
+        loadImageBitmap(appBackgroundPic.inputStream())
     }
     MaterialTheme {
         Box(
@@ -49,14 +54,11 @@ fun App() {
                         onClick = {
                             val fd = FileDialog(ComposeWindow())
                             fd.isVisible = true
-                            if (fd.files.isNotEmpty())
-                            {
+                            if (fd.files.isNotEmpty()) {
                                 val file = fd.files[0]
                                 try {
                                     AppConfiguration.Image = BytesParser.ParseBytesForFile(file)!!
-                                }
-                                catch (e: GraphicLegendsException)
-                                {
+                                } catch (e: GraphicLegendsException) {
                                     println(e.message)
                                 }
                             }
@@ -72,23 +74,23 @@ fun App() {
                     modifier = Modifier.padding(start = 15.dp),
                     onClick = {
                         if (AppConfiguration.HasContent()) {
-                            val dialog : Dialog? = null
+                            val dialog: Dialog? = null
                             val fd = FileDialog(dialog, "Write the name of file", SAVE)
                             fd.isVisible = true
-                            if (fd.files.isNotEmpty())
-                            {
+                            if (fd.files.isNotEmpty()) {
                                 val file = fd.files[0]
                                 BytesParser.ParseFileToBytes(
                                     file.absolutePath,
                                     AppConfiguration.Image.width,
                                     AppConfiguration.Image.height,
-                                    AppConfiguration.Image.maxShade)
+                                    AppConfiguration.Image.maxShade
+                                )
                             }
                         }
                     },
                     colors = ButtonDefaults.buttonColors(Color.Green)
                 ) {
-                    Text( "Save")
+                    Text("Save")
                 }
 
                 Box {
@@ -100,7 +102,11 @@ fun App() {
                         colors = ButtonDefaults.buttonColors(Color.Green)
                     ) {
                         Text(text = AppConfiguration.Space.selected.value)
-                        Icon(Icons.Default.ArrowDropDown, contentDescription = "", modifier = Modifier.width(20.dp).height(20.dp))
+                        Icon(
+                            Icons.Default.ArrowDropDown,
+                            contentDescription = "",
+                            modifier = Modifier.width(20.dp).height(20.dp)
+                        )
                     }
                     DropdownMenu(
                         expanded = AppConfiguration.Space.expanded.value,
@@ -109,28 +115,33 @@ fun App() {
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "RGB"
                             AppConfiguration.Space.expanded.value = false
-                            AppConfiguration.ColorSpace = ColorSpace.RGB }) { Text("RGB") }
+                            AppConfiguration.ColorSpace = ColorSpace.RGB
+                        }) { Text("RGB") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "CMY"
                             AppConfiguration.Space.expanded.value = false
-                            AppConfiguration.ColorSpace = ColorSpace.CMY }) { Text("CMY") }
+                            AppConfiguration.ColorSpace = ColorSpace.CMY
+                        }) { Text("CMY") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "HSL"
-                            AppConfiguration.Space.expanded.value = false }) { Text("HSL") }
+                            AppConfiguration.Space.expanded.value = false
+                        }) { Text("HSL") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "HSV"
-                            AppConfiguration.Space.expanded.value = false }) { Text("HSV") }
+                            AppConfiguration.Space.expanded.value = false
+                        }) { Text("HSV") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "YCbCr_601"
                             AppConfiguration.Space.expanded.value = false
-                            AppConfiguration.ColorSpace = ColorSpace.YCbCr601 }) { Text("YCbCr_601") }
+                        }) { Text("YCbCr_601") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "YCbCr_709"
                             AppConfiguration.Space.expanded.value = false
-                            AppConfiguration.ColorSpace = ColorSpace.YCbCr709 }) { Text("YCbCr_709") }
+                        }) { Text("YCbCr_709") }
                         DropdownMenuItem(onClick = {
                             AppConfiguration.Space.selected.value = "YCoCg"
-                            AppConfiguration.Space.expanded.value = false }) { Text("YCoCg") }
+                            AppConfiguration.Space.expanded.value = false
+                        }) { Text("YCoCg") }
                     }
                 }
 
@@ -143,7 +154,11 @@ fun App() {
                         colors = ButtonDefaults.buttonColors(Color.Green)
                     ) {
                         Text(text = "Choose filtration")
-                        Icon(Icons.Default.ArrowDropDown, contentDescription = "", modifier = Modifier.width(20.dp).height(20.dp))
+                        Icon(
+                            Icons.Default.ArrowDropDown,
+                            contentDescription = "",
+                            modifier = Modifier.width(20.dp).height(20.dp)
+                        )
                     }
                     DropdownMenu(
                         expanded = AppConfiguration.Component.expanded.value,
@@ -154,21 +169,30 @@ fun App() {
                                 checked = AppConfiguration.Component.checkedState1.value,
                                 onCheckedChange = { AppConfiguration.Component.checkedState1.value = it }
                             )
-                            Text(text = "1st channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
+                            Text(
+                                text = "1st channel",
+                                modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp)
+                            )
                         }
                         Row {
                             Checkbox(
                                 checked = AppConfiguration.Component.checkedState2.value,
                                 onCheckedChange = { AppConfiguration.Component.checkedState2.value = it }
                             )
-                            Text("2nd channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
+                            Text(
+                                "2nd channel",
+                                modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp)
+                            )
                         }
                         Row {
                             Checkbox(
                                 checked = AppConfiguration.Component.checkedState3.value,
                                 onCheckedChange = { AppConfiguration.Component.checkedState3.value = it }
                             )
-                            Text("3rd channel", modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp))
+                            Text(
+                                "3rd channel",
+                                modifier = Modifier.align(Alignment.CenterVertically).padding(end = 5.dp)
+                            )
                         }
                     }
                 }
@@ -182,10 +206,11 @@ fun App() {
                     Card(
                         elevation = 10.dp
                     ) {
-                        AppConfiguration.GetBitmap().let {
+                        AppConfiguration.Image.getImageBitmap().let {
                             Image(
                                 bitmap = it,
-                                modifier = if (it.height > 900 && it.width > 1500) Modifier.height(700.dp).width(1500.dp)
+                                modifier = if (it.height > 900 && it.width > 1500) Modifier.height(700.dp)
+                                    .width(1500.dp)
                                 else if (it.height > 900) Modifier.height(700.dp)
                                 else if (it.width > 1500) Modifier.width(1500.dp)
                                 else Modifier,
@@ -201,7 +226,8 @@ fun App() {
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication,
+    Window(
+        onCloseRequest = ::exitApplication,
         title = "Compose for Desktop",
         state = rememberWindowState(width = 700.dp, height = 700.dp)
     ) {

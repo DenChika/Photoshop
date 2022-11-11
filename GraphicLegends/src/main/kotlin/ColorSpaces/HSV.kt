@@ -1,11 +1,46 @@
 package ColorSpaces
 
 import Interfaces.IColorSpace
+import Tools.ColorSpaceException
+import kotlin.math.abs
 
 class HSV : IColorSpace {
 
     override fun ToRGB(values: FloatArray): FloatArray {
-        TODO("Not yet implemented")
+        var max = 255 * values[2]
+        var min = max * (1 - values[1])
+        var z = (max - min) * (1 - abs(values[0] / 60 % 2 - 1))
+
+        max /= 255
+        min /= 255
+        z /= 255
+
+        when (values[0]) {
+            in 0f..60f -> {
+                return floatArrayOf(max, z + min, min)
+            }
+
+            in 60f..120f -> {
+                return floatArrayOf(z + min, max, min)
+            }
+
+            in 120f..180f -> {
+                return floatArrayOf(min, max, z + min)
+            }
+
+            in 180f..240f -> {
+                return floatArrayOf(min, z + min, max)
+            }
+
+            in 240f..300f -> {
+                return floatArrayOf(z + min, min, max)
+            }
+
+            in 300f..360f -> {
+                return floatArrayOf(max, min, z + min)
+            }
+            else -> throw ColorSpaceException("Error. Wrong HSL format.")
+        }
     }
 
     override fun ToCMY(values: FloatArray): FloatArray {

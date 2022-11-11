@@ -46,8 +46,8 @@ class P5 : IFormat {
         val array = ByteArray(pixels.size)
         for (pixel in pixels.indices)
         {
-            val pp = pixels[pixel].GetBytes()[0]
-            array[pixel] = pp
+            val pixelBytes = pixels[pixel].GetBytes()[0]
+            array[pixel] = pixelBytes
         }
         return array
     }
