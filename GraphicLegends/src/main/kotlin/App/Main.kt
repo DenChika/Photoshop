@@ -2,7 +2,6 @@
 import ColorSpaces.ColorSpace
 import Configurations.AppConfiguration
 import Parsers.BytesParser
-import Tools.GraphicLegendsException
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -55,11 +54,7 @@ fun App() {
                             fd.isVisible = true
                             if (fd.files.isNotEmpty()) {
                                 val file = fd.files[0]
-                                try {
-                                    AppConfiguration.Image = BytesParser.ParseBytesForFile(file)!!
-                                } catch (e: GraphicLegendsException) {
-                                    println(e.message)
-                                }
+                                AppConfiguration.Image = BytesParser.ParseBytesForFile(file)!!
                             }
                         },
                         colors = ButtonDefaults.buttonColors(Color.Green)
