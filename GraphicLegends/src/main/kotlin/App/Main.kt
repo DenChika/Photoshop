@@ -1,6 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 import ColorSpaces.ColorSpace
 import Configurations.AppConfiguration
+import Filtration.FiltrationMode
 import Formats.Format
 import Parsers.BytesParser
 import androidx.compose.foundation.Image
@@ -84,74 +85,16 @@ fun App() {
                 ) {
                     Text("Save")
                 }
-
-                Box {
-                    Button(
-                        modifier = Modifier.padding(start = 15.dp),
-                        onClick = {
-                            AppConfiguration.Space.expanded.value = true
-                        },
-                        colors = ButtonDefaults.buttonColors(Color.Green)
-                    ) {
-                        Text(text = AppConfiguration.Space.selected.value)
-                        Icon(
-                            Icons.Default.ArrowDropDown,
-                            contentDescription = "",
-                            modifier = Modifier.width(20.dp).height(20.dp)
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = AppConfiguration.Space.expanded.value,
-                        onDismissRequest = { AppConfiguration.Space.expanded.value = false }
-                    ) {
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Space.selected.value = "RGB"
-                            AppConfiguration.Space.expanded.value = false
-                            AppConfiguration.ColorSpace = ColorSpace.RGB
-                        }) { Text("RGB") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Space.selected.value = "CMY"
-                            AppConfiguration.Space.expanded.value = false
-                            AppConfiguration.ColorSpace = ColorSpace.CMY
-                        }) { Text("CMY") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Space.selected.value = "HSL"
-                            AppConfiguration.Space.expanded.value = false
-                            AppConfiguration.ColorSpace = ColorSpace.HSL
-                        }) { Text("HSL") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Space.selected.value = "HSV"
-                            AppConfiguration.Space.expanded.value = false
-                            AppConfiguration.ColorSpace = ColorSpace.HSV
-                        }) { Text("HSV") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Space.selected.value = "YCbCr_601"
-                            AppConfiguration.Space.expanded.value = false
-                            AppConfiguration.ColorSpace = ColorSpace.YCbCr601
-                        }) { Text("YCbCr_601") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Space.selected.value = "YCbCr_709"
-                            AppConfiguration.Space.expanded.value = false
-                            AppConfiguration.ColorSpace = ColorSpace.YCbCr709
-                        }) { Text("YCbCr_709") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Space.selected.value = "YCoCg"
-                            AppConfiguration.Space.expanded.value = false
-                            AppConfiguration.ColorSpace = ColorSpace.YCoCg
-                        }) { Text("YCoCg") }
-                    }
-                }
-
-                if (AppConfiguration.Image.format != Format.P5) {
+                if (AppConfiguration.HasContent()){
                     Box {
                         Button(
                             modifier = Modifier.padding(start = 15.dp),
                             onClick = {
-                                AppConfiguration.Component.expanded.value = true
+                                AppConfiguration.Space.expanded.value = true
                             },
                             colors = ButtonDefaults.buttonColors(Color.Green)
                         ) {
-                            Text(text = AppConfiguration.Component.selected.value)
+                            Text(text = AppConfiguration.Space.selected.value)
                             Icon(
                                 Icons.Default.ArrowDropDown,
                                 contentDescription = "",
@@ -159,25 +102,85 @@ fun App() {
                             )
                         }
                         DropdownMenu(
-                            expanded = AppConfiguration.Component.expanded.value,
-                            onDismissRequest = { AppConfiguration.Component.expanded.value = false }
+                            expanded = AppConfiguration.Space.expanded.value,
+                            onDismissRequest = { AppConfiguration.Space.expanded.value = false }
                         ) {
                             DropdownMenuItem(onClick = {
-                                AppConfiguration.Component.selected.value = "All channels"
-                                AppConfiguration.Component.expanded.value = false
-                            }) { Text("All channels") }
+                                AppConfiguration.Space.selected.value = "RGB"
+                                AppConfiguration.Space.expanded.value = false
+                                AppConfiguration.ColorSpace = ColorSpace.RGB
+                            }) { Text("RGB") }
                             DropdownMenuItem(onClick = {
-                                AppConfiguration.Component.selected.value = "Only 1st channel"
-                                AppConfiguration.Component.expanded.value = false
-                            }) { Text("Only 1st channel") }
+                                AppConfiguration.Space.selected.value = "CMY"
+                                AppConfiguration.Space.expanded.value = false
+                                AppConfiguration.ColorSpace = ColorSpace.CMY
+                            }) { Text("CMY") }
                             DropdownMenuItem(onClick = {
-                                AppConfiguration.Component.selected.value = "Only 2nd channel"
-                                AppConfiguration.Component.expanded.value = false
-                            }) { Text("Only 2nd channel") }
+                                AppConfiguration.Space.selected.value = "HSL"
+                                AppConfiguration.Space.expanded.value = false
+                                AppConfiguration.ColorSpace = ColorSpace.HSL
+                            }) { Text("HSL") }
                             DropdownMenuItem(onClick = {
-                                AppConfiguration.Component.selected.value = "Only 3rd channel"
-                                AppConfiguration.Component.expanded.value = false
-                            }) { Text("Only 3rd channel") }
+                                AppConfiguration.Space.selected.value = "HSV"
+                                AppConfiguration.Space.expanded.value = false
+                                AppConfiguration.ColorSpace = ColorSpace.HSV
+                            }) { Text("HSV") }
+                            DropdownMenuItem(onClick = {
+                                AppConfiguration.Space.selected.value = "YCbCr_601"
+                                AppConfiguration.Space.expanded.value = false
+                                AppConfiguration.ColorSpace = ColorSpace.YCbCr601
+                            }) { Text("YCbCr_601") }
+                            DropdownMenuItem(onClick = {
+                                AppConfiguration.Space.selected.value = "YCbCr_709"
+                                AppConfiguration.Space.expanded.value = false
+                                AppConfiguration.ColorSpace = ColorSpace.YCbCr709
+                            }) { Text("YCbCr_709") }
+                            DropdownMenuItem(onClick = {
+                                AppConfiguration.Space.selected.value = "YCoCg"
+                                AppConfiguration.Space.expanded.value = false
+                                AppConfiguration.ColorSpace = ColorSpace.YCoCg
+                            }) { Text("YCoCg") }
+                        }
+                    }
+
+                    if (AppConfiguration.Image.format != Format.P5) {
+                        Box {
+                            Button(
+                                modifier = Modifier.padding(start = 15.dp),
+                                onClick = {
+                                    AppConfiguration.Component.expanded.value = true
+                                },
+                                colors = ButtonDefaults.buttonColors(Color.Green)
+                            ) {
+                                Text(text = AppConfiguration.Component.selected.GetName())
+                                Icon(
+                                    Icons.Default.ArrowDropDown,
+                                    contentDescription = "",
+                                    modifier = Modifier.width(20.dp).height(20.dp)
+                                )
+                            }
+                            DropdownMenu(
+                                expanded = AppConfiguration.Component.expanded.value,
+                                onDismissRequest = { AppConfiguration.Component.expanded.value = false }
+                            ) {
+                                DropdownMenuItem(onClick = {
+                                    AppConfiguration.Component.selected = FiltrationMode.ALL
+                                    AppConfiguration.Component.expanded.value = false
+                                    AppConfiguration.Component
+                                }) { Text(FiltrationMode.ALL.GetName()) }
+                                DropdownMenuItem(onClick = {
+                                    AppConfiguration.Component.selected = FiltrationMode.OnlyFirst
+                                    AppConfiguration.Component.expanded.value = false
+                                }) { Text(FiltrationMode.OnlyFirst.GetName()) }
+                                DropdownMenuItem(onClick = {
+                                    AppConfiguration.Component.selected = FiltrationMode.OnlySecond
+                                    AppConfiguration.Component.expanded.value = false
+                                }) { Text(FiltrationMode.OnlySecond.GetName()) }
+                                DropdownMenuItem(onClick = {
+                                    AppConfiguration.Component.selected = FiltrationMode.OnlyThird
+                                    AppConfiguration.Component.expanded.value = false
+                                }) { Text(FiltrationMode.OnlyThird.GetName()) }
+                            }
                         }
                     }
                 }
@@ -191,7 +194,7 @@ fun App() {
                     Card(
                         elevation = 10.dp
                     ) {
-                        AppConfiguration.Image.getImageBitmap().let {
+                        AppConfiguration.GetBitmap().let {
                             Image(
                                 bitmap = it,
                                 modifier = if (it.height > 900 && it.width > 1500) Modifier.height(700.dp)
