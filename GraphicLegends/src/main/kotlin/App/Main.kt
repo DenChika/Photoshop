@@ -32,8 +32,6 @@ import java.nio.file.Paths
 fun App() {
     val appBackgroundPic = File("GraphicLegends/src/main/kotlin/Resources/app_background.jpg")
 
-    println("Working Directory = " + (Paths.get("").toAbsolutePath().toString()))
-
     val background: ImageBitmap = remember(appBackgroundPic) {
         loadImageBitmap(appBackgroundPic.inputStream())
     }
