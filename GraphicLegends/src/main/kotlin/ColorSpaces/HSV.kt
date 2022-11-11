@@ -14,7 +14,6 @@ class HSV : IColorSpace {
         max /= 255
         min /= 255
         z /= 255
-
         when (values[0]) {
             in 0f..60f -> {
                 return floatArrayOf(max, z + min, min)
@@ -39,7 +38,10 @@ class HSV : IColorSpace {
             in 300f..360f -> {
                 return floatArrayOf(max, min, z + min)
             }
-            else -> throw ColorSpaceException("Error. Wrong HSL format.")
+            else -> {
+                println(values[0])
+                throw ColorSpaceException("Error. Wrong HSV format.")
+            }
         }
     }
 

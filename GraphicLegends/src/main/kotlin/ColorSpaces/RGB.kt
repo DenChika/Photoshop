@@ -15,7 +15,37 @@ class RGB() : IColorSpace {
         val c = 1 - values[0]
         val m = 1 - values[1]
         val y = 1 - values[2]
+
         return floatArrayOf(c, m, y)
+    }
+
+    private fun calcHue(values: FloatArray) : Float {
+        val r = values[0] * 255
+        val g = values[1] * 255
+        val b = values[2] * 255
+
+        val sqrt = sqrt(r * r + g * g + b * b - r * g - r * b - g * b)
+
+        var acos = 0f
+        if (sqrt != 0f) {
+            var cos = (r - g / 2 - b / 2) / sqrt
+
+            if (cos > 1f) {
+                cos = 1f
+            }
+
+            if (cos < 0f) {
+                cos = 0f
+            }
+
+            acos = acos(cos) / Math.PI.toFloat() * 180f
+        }
+
+        return if (g >= b) {
+            acos
+        } else {
+            360 - acos
+        }
     }
 
     override fun ToHSL(values: FloatArray): FloatArray {
@@ -31,15 +61,7 @@ class RGB() : IColorSpace {
             saturation = diff / (1 - abs(2 * lightness - 1))
         }
 
-        val r = values[0] * 255
-        val g = values[1] * 255
-        val b = values[2] * 255
-
-        val hue = if (g >= b) {
-            acos((r - g / 2 - b / 2 ) / sqrt(r * r + g * g + b * b - r * g - r * b - g * b)) / Math.PI.toFloat() * 180f
-        } else {
-            360 - acos((r - g / 2 - b / 2 ) / sqrt(r * r + g * g + b * b - r * g - r * b - g * b)) / Math.PI.toFloat() * 180f
-        }
+        val hue = calcHue(values)
 
         return floatArrayOf(hue, saturation, lightness)
     }
@@ -55,15 +77,7 @@ class RGB() : IColorSpace {
             saturation = 1 - min / max
         }
 
-        val r = values[0] * 255
-        val g = values[1] * 255
-        val b = values[2] * 255
-
-        val hue = if (g >= b) {
-            acos((r - g / 2 - b / 2 ) / sqrt(r * r + g * g + b * b - r * g - r * b - g * b)) / Math.PI.toFloat() * 180f
-        } else {
-            360 - acos((r - g / 2 - b / 2 ) / sqrt(r * r + g * g + b * b - r * g - r * b - g * b)) / Math.PI.toFloat() * 180f
-        }
+        val hue = calcHue(values)
 
         return floatArrayOf(hue, saturation, value)
     }
