@@ -12,9 +12,13 @@ class YCbCr601 : IColorSpace {
         val d = 2 * (a + b)
         val e = 2 * (1 - a)
 
-        val red = values[0] + e * values[2]
-        val green = values[0] - (a * e / b) * values[2] - (c * d / b) * values[1]
-        val blue = values[0] + d * values[1]
+        var red = values[0] + e * (values[2] - 0.5f)
+        var green = values[0] - (a * e / b) * (values[2] - 0.5f) - (c * d / b) * (values[1] - 0.5f)
+        var blue = values[0] + d * (values[1] - 0.5f)
+
+        red = minOf(maxOf(red, 0f), 1f)
+        green = minOf(maxOf(green, 0f), 1f)
+        blue = minOf(maxOf(blue, 0f), 1f)
 
         return floatArrayOf(red, green, blue)
     }

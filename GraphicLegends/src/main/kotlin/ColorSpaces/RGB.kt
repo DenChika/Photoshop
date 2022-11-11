@@ -34,8 +34,8 @@ class RGB() : IColorSpace {
                 cos = 1f
             }
 
-            if (cos < 0f) {
-                cos = 0f
+            if (cos < -1f) {
+                cos = -1f
             }
 
             acos = acos(cos) / Math.PI.toFloat() * 180f
@@ -88,8 +88,8 @@ class RGB() : IColorSpace {
         val e = 2 * (1 - a)
 
         val y  = a * values[0] + b * values[1] + c * values[2]
-        val cb = (values[2] - y) / d
-        val cr = (values[0] - y) / e
+        val cb = (values[2] - y) / d + 0.5f
+        val cr = (values[0] - y) / e + 0.5f
 
         return floatArrayOf(y, cb, cr)
     }
@@ -104,8 +104,8 @@ class RGB() : IColorSpace {
 
     override fun ToYCoCg(values: FloatArray): FloatArray {
         val y = values[0] / 4 + values[1] / 2 + values[2] / 4
-        val co = values[0]/ 2 - values[2] / 2 + 0.5F
-        val cg = -values[0] / 4 + values[1] / 2 - values[2] / 4 + 0.5F
+        val co = values[0]/ 2 - values[2] / 2
+        val cg = -values[0] / 4 + values[1] / 2 - values[2] / 4
 
         return floatArrayOf(y, co, cg)
     }
