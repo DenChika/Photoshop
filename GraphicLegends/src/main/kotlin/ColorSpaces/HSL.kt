@@ -9,10 +9,10 @@ class HSL : IColorSpace {
     override fun ToRGB(values: FloatArray): FloatArray {
         val diff = values[1] * (1 - abs(2 * values[2] - 1))
         var m = 255 * (values[2] - diff / 2)
-        val x = diff * (1 - abs(values[0] / 60 % 2 - 1))
+        val x = diff * (1 - abs(values[0] * 360 / 60 % 2 - 1))
 
         m /= 255
-        when (values[0]) {
+        when (values[0] * 360) {
             in 0f..60f -> {
                 return floatArrayOf(diff + m, x + m, m)
             }
@@ -37,7 +37,7 @@ class HSL : IColorSpace {
                 return floatArrayOf(diff + m, m, x + m)
             }
             else -> {
-                println(values[0])
+                println(values[0] * 360)
                 throw ColorSpaceException("Error. Wrong HSL format.")
             }
         }

@@ -19,33 +19,26 @@ class RGB() : IColorSpace {
         return floatArrayOf(c, m, y)
     }
 
-    private fun calcHue(values: FloatArray) : Float {
-        val r = values[0] * 255
-        val g = values[1] * 255
-        val b = values[2] * 255
+    private fun calcHue(values: FloatArray): Float {
+        val r = values[0]
+        val g = values[1]
+        val b = values[2]
 
-        val sqrt = sqrt(r * r + g * g + b * b - r * g - r * b - g * b)
+        val sqrt = sqrt(maxOf(r * r + g * g + b * b - r * g - r * b - g * b, 0f))
 
         var acos = 0f
         if (sqrt != 0f) {
             var cos = (r - g / 2 - b / 2) / sqrt
-
-            if (cos > 1f) {
-                cos = 1f
-            }
-
-            if (cos < -1f) {
-                cos = -1f
-            }
+            cos = minOf(maxOf(cos, -1f), 1f)
 
             acos = acos(cos) / Math.PI.toFloat() * 180f
         }
 
-        return if (g >= b) {
-            acos
-        } else {
-            360 - acos
+        if (acos.isNaN()) {
+            println()
         }
+
+        return if (g >= b) acos else 360 - acos
     }
 
     override fun ToHSL(values: FloatArray): FloatArray {
@@ -61,7 +54,7 @@ class RGB() : IColorSpace {
             saturation = diff / (1 - abs(2 * lightness - 1))
         }
 
-        val hue = calcHue(values)
+        val hue = calcHue(values) / 360
 
         return floatArrayOf(hue, saturation, lightness)
     }
@@ -77,17 +70,17 @@ class RGB() : IColorSpace {
             saturation = 1 - min / max
         }
 
-        val hue = calcHue(values)
+        val hue = calcHue(values) / 360
 
         return floatArrayOf(hue, saturation, value)
     }
 
-    private fun ToYCbCr(a: Float, b: Float, values: FloatArray): FloatArray{
+    private fun ToYCbCr(a: Float, b: Float, values: FloatArray): FloatArray {
         val c = 1 - a - b
         val d = 2 * (a + b)
         val e = 2 * (1 - a)
 
-        val y  = a * values[0] + b * values[1] + c * values[2]
+        val y = a * values[0] + b * values[1] + c * values[2]
         val cb = (values[2] - y) / d + 0.5f
         val cr = (values[0] - y) / e + 0.5f
 
@@ -104,7 +97,7 @@ class RGB() : IColorSpace {
 
     override fun ToYCoCg(values: FloatArray): FloatArray {
         val y = values[0] / 4 + values[1] / 2 + values[2] / 4
-        val co = values[0]/ 2 - values[2] / 2
+        val co = values[0] / 2 - values[2] / 2
         val cg = -values[0] / 4 + values[1] / 2 - values[2] / 4
 
         return floatArrayOf(y, co, cg)

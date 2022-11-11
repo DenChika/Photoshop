@@ -9,12 +9,12 @@ class HSV : IColorSpace {
     override fun ToRGB(values: FloatArray): FloatArray {
         var max = 255 * values[2]
         var min = max * (1 - values[1])
-        var z = (max - min) * (1 - abs(values[0] / 60 % 2 - 1))
+        var z = (max - min) * (1 - abs(values[0] * 360 / 60 % 2 - 1))
 
         max /= 255
         min /= 255
         z /= 255
-        when (values[0]) {
+        when (values[0] * 360) {
             in 0f..60f -> {
                 return floatArrayOf(max, z + min, min)
             }
@@ -39,7 +39,6 @@ class HSV : IColorSpace {
                 return floatArrayOf(max, min, z + min)
             }
             else -> {
-                println(values[0])
                 throw ColorSpaceException("Error. Wrong HSV format.")
             }
         }
