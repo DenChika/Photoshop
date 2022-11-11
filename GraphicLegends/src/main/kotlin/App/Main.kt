@@ -1,6 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 import ColorSpaces.ColorSpace
 import Configurations.AppConfiguration
+import Formats.Format
 import Parsers.BytesParser
 import Tools.GraphicLegendsException
 import androidx.compose.foundation.Image
@@ -147,41 +148,43 @@ fun App() {
                     }
                 }
 
-                Box {
-                    Button(
-                        modifier = Modifier.padding(start = 15.dp),
-                        onClick = {
-                            AppConfiguration.Component.expanded.value = true
-                        },
-                        colors = ButtonDefaults.buttonColors(Color.Green)
-                    ) {
-                        Text(text = AppConfiguration.Component.selected.value)
-                        Icon(
-                            Icons.Default.ArrowDropDown,
-                            contentDescription = "",
-                            modifier = Modifier.width(20.dp).height(20.dp)
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = AppConfiguration.Component.expanded.value,
-                        onDismissRequest = { AppConfiguration.Component.expanded.value = false }
-                    ) {
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Component.selected.value = "All channels"
-                            AppConfiguration.Component.expanded.value = false
-                        }) { Text("All channels") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Component.selected.value = "Only 1st channel"
-                            AppConfiguration.Component.expanded.value = false
-                        }) { Text("Only 1st channel") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Component.selected.value = "Only 2nd channel"
-                            AppConfiguration.Component.expanded.value = false
-                        }) { Text("Only 2nd channel") }
-                        DropdownMenuItem(onClick = {
-                            AppConfiguration.Component.selected.value = "Only 3rd channel"
-                            AppConfiguration.Component.expanded.value = false
-                        }) { Text("Only 3rd channel") }
+                if (AppConfiguration.Image.format != Format.P5) {
+                    Box {
+                        Button(
+                            modifier = Modifier.padding(start = 15.dp),
+                            onClick = {
+                                AppConfiguration.Component.expanded.value = true
+                            },
+                            colors = ButtonDefaults.buttonColors(Color.Green)
+                        ) {
+                            Text(text = AppConfiguration.Component.selected.value)
+                            Icon(
+                                Icons.Default.ArrowDropDown,
+                                contentDescription = "",
+                                modifier = Modifier.width(20.dp).height(20.dp)
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = AppConfiguration.Component.expanded.value,
+                            onDismissRequest = { AppConfiguration.Component.expanded.value = false }
+                        ) {
+                            DropdownMenuItem(onClick = {
+                                AppConfiguration.Component.selected.value = "All channels"
+                                AppConfiguration.Component.expanded.value = false
+                            }) { Text("All channels") }
+                            DropdownMenuItem(onClick = {
+                                AppConfiguration.Component.selected.value = "Only 1st channel"
+                                AppConfiguration.Component.expanded.value = false
+                            }) { Text("Only 1st channel") }
+                            DropdownMenuItem(onClick = {
+                                AppConfiguration.Component.selected.value = "Only 2nd channel"
+                                AppConfiguration.Component.expanded.value = false
+                            }) { Text("Only 2nd channel") }
+                            DropdownMenuItem(onClick = {
+                                AppConfiguration.Component.selected.value = "Only 3rd channel"
+                                AppConfiguration.Component.expanded.value = false
+                            }) { Text("Only 3rd channel") }
+                        }
                     }
                 }
             }
