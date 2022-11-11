@@ -5,7 +5,7 @@ import Configurations.AppConfiguration
 import Configurations.ImageConfiguration
 import Interfaces.IFormat
 import Parsers.BytesParser
-import Tools.InvalidHeaderException
+import Tools.HeaderDiscrepancyException
 
 class P5 : IFormat {
     override fun HandleReader(width: Int, height: Int, maxShade: Int, byteArray: ByteArray) : ImageConfiguration {
@@ -17,7 +17,7 @@ class P5 : IFormat {
                     val shade = (if (byteArray[posY * width + posX] < 0) byteArray[posY * width + posX] + 256 else byteArray[posY * width + posX]).toFloat()
                     if (shade > maxShade)
                     {
-                        throw InvalidHeaderException("Shade of pixel can't be greater than max shade")
+                        throw HeaderDiscrepancyException.wrongMaxShade()
                     }
                     val finalShade = shade / maxShade
                     pixels[posY * width + posX].firstShade = finalShade
@@ -28,7 +28,7 @@ class P5 : IFormat {
         }
         catch (e : IndexOutOfBoundsException)
         {
-            throw InvalidHeaderException("Byte array doesn't match width and height")
+            throw HeaderDiscrepancyException.wrongSize()
         }
 
         return ImageConfiguration(Format.P5, width, height, maxShade, pixels)

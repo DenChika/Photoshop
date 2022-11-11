@@ -5,7 +5,7 @@ import Configurations.AppConfiguration
 import Configurations.ImageConfiguration
 import Interfaces.IFormat
 import Parsers.BytesParser
-import Tools.InvalidHeaderException
+import Tools.HeaderDiscrepancyException
 
 class P6 : IFormat {
     private val colorsByPixel = 3
@@ -25,7 +25,7 @@ class P6 : IFormat {
                         byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 2] + 256 else byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 2]).toFloat()
                     if (shadeThird > maxShade || shadeSecond > maxShade || shadeFirst > maxShade)
                     {
-                        throw InvalidHeaderException("Shade of pixel can't be greater than max shade")
+                        throw HeaderDiscrepancyException.wrongMaxShade()
                     }
                     val finalShadeFirst = shadeFirst / maxShade
                     val finalShadeSecond = shadeSecond / maxShade
@@ -38,7 +38,7 @@ class P6 : IFormat {
             }
         }
         catch (e : IndexOutOfBoundsException) {
-            throw InvalidHeaderException("Byte array doesn't match width and height")
+            throw HeaderDiscrepancyException.wrongSize()
         }
 
         return ImageConfiguration(Format.P6, width, height, maxShade, pixels)

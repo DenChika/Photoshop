@@ -40,7 +40,7 @@ class BytesParser {
                         magicNumber = nextString
 
                         if (magicNumber.length != 2 || magicNumber[0] != 'P' || !fileTypeSet.contains(magicNumber[1])) {
-                            throw FormatException("File format is not P5 or P6")
+                            throw FormatException.undefined()
                         }
 
                     } else if (width == -1) {
@@ -48,22 +48,22 @@ class BytesParser {
                         try {
                             width = nextString.toInt()
                         } catch (e: NumberFormatException) {
-                            throw InvalidHeaderException("Invalid format for width")
+                            throw InvalidHeaderException.invalidWidthFormat()
                         }
                         if (width <= 0)
                         {
-                            throw InvalidHeaderException("Width can't be then zero ($width)")
+                            throw InvalidHeaderException.widthInvalidValue(width)
                         }
                     } else if (height == -1) {
 
                         try {
                             height = nextString.toInt()
                         } catch (e: NumberFormatException) {
-                            throw InvalidHeaderException("Invalid format for height")
+                            throw InvalidHeaderException.invalidHeightFormat()
                         }
                         if (height <= 0)
                         {
-                            throw InvalidHeaderException("Height can't be then zero ($height)")
+                            throw InvalidHeaderException.heightInvalidValue(height)
                         }
                     } else {
 
@@ -71,15 +71,15 @@ class BytesParser {
                             maxShade = nextString.toInt()
                             bodyStartIndex = index + 1
                         } catch (e: NumberFormatException) {
-                            throw InvalidHeaderException("Invalid format for max shade")
+                            throw InvalidHeaderException.invalidMaxShadeFormat()
                         }
                         if (maxShade <= 0)
                         {
-                            throw InvalidHeaderException("Max shade can't be then zero ($maxShade)")
+                            throw InvalidHeaderException.maxShadeInvalidValue(maxShade)
                         }
                         if (maxShade > 255)
                         {
-                            throw InvalidHeaderException("Max shade can't be then zero ($maxShade)")
+                            throw InvalidHeaderException.maxShadeInvalidValue(maxShade)
                         }
                     }
 

@@ -14,7 +14,7 @@ class ColorSpaceInstance(_kind : ColorSpace) {
             val convertedValues = ColorSpaceConverter.convert(kind, value, GetFloatArrayOfValues())
 
             if (convertedValues[0].isNaN() || convertedValues[1].isNaN() || convertedValues[2].isNaN()) {
-                throw ColorSpaceException("Error. Shade has to be a number.")
+                throw ColorSpaceException.shadeIsNan()
             }
 
             firstShade = convertedValues[0]
@@ -30,7 +30,7 @@ class ColorSpaceInstance(_kind : ColorSpace) {
         val convertedValues = ColorSpaceConverter.convert(kind, ColorSpace.RGB, GetFloatArrayOfValues())
 
         if (convertedValues[0].isNaN() || convertedValues[1].isNaN() || convertedValues[2].isNaN()) {
-            throw ColorSpaceException("Error. Shade has to be a number.")
+            throw ColorSpaceException.shadeIsNan()
         }
 
         return floatArrayOf(
