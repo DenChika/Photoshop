@@ -27,7 +27,6 @@ import java.awt.Dialog
 import java.awt.FileDialog
 import java.awt.FileDialog.SAVE
 import java.io.File
-import java.nio.file.Paths
 
 @Composable
 fun App() {
