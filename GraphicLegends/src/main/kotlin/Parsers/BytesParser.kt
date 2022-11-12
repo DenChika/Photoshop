@@ -1,24 +1,20 @@
 package Parsers
 
-import Configuration.MutableConfigurationsState
-import Formats.Modes
+import Configurations.AppConfiguration
+import Configurations.ImageConfiguration
 import Formats.P5
 import Formats.P6
 import Tools.FormatException
 import Tools.InvalidHeaderException
-import androidx.compose.ui.graphics.ImageBitmap
 import java.io.File
-import kotlin.math.pow
 
 class BytesParser {
     companion object {
 
         val fileTypeSet = hashSetOf<Char>('1', '2', '3', '4', '5', '6', '7')
 
-        fun ParseBytesForFile(file: File): ImageBitmap? { //TODO check return type
+        fun ParseBytesForFile(file: File): ImageConfiguration? { //TODO check return type
             val byteArray = file.readBytes()
-
-            println(byteArray)
 
             var magicNumber: String? = null
             var width = -1
@@ -44,7 +40,7 @@ class BytesParser {
                         magicNumber = nextString
 
                         if (magicNumber.length != 2 || magicNumber[0] != 'P' || !fileTypeSet.contains(magicNumber[1])) {
-                            throw FormatException("File format is not P5 or P6")
+                            throw FormatException.undefined()
                         }
 
                     } else if (width == -1) {
@@ -52,22 +48,22 @@ class BytesParser {
                         try {
                             width = nextString.toInt()
                         } catch (e: NumberFormatException) {
-                            throw InvalidHeaderException("Invalid format for width")
+                            throw InvalidHeaderException.invalidWidthFormat()
                         }
                         if (width <= 0)
                         {
-                            throw InvalidHeaderException("Width can't be then zero ($width)")
+                            throw InvalidHeaderException.widthInvalidValue(width)
                         }
                     } else if (height == -1) {
 
                         try {
                             height = nextString.toInt()
                         } catch (e: NumberFormatException) {
-                            throw InvalidHeaderException("Invalid format for height")
+                            throw InvalidHeaderException.invalidHeightFormat()
                         }
                         if (height <= 0)
                         {
-                            throw InvalidHeaderException("Height can't be then zero ($height)")
+                            throw InvalidHeaderException.heightInvalidValue(height)
                         }
                     } else {
 
@@ -75,15 +71,15 @@ class BytesParser {
                             maxShade = nextString.toInt()
                             bodyStartIndex = index + 1
                         } catch (e: NumberFormatException) {
-                            throw InvalidHeaderException("Invalid format for max shade")
+                            throw InvalidHeaderException.invalidMaxShadeFormat()
                         }
                         if (maxShade <= 0)
                         {
-                            throw InvalidHeaderException("Max shade can't be then zero ($maxShade)")
+                            throw InvalidHeaderException.maxShadeInvalidValue(maxShade)
                         }
                         if (maxShade > 255)
                         {
-                            throw InvalidHeaderException("Max shade can't be then zero ($maxShade)")
+                            throw InvalidHeaderException.maxShadeInvalidValue(maxShade)
                         }
                     }
 
@@ -117,37 +113,22 @@ class BytesParser {
 
             return str
         }
-        fun ParseFileInBytes(path: String, width: Int, height: Int, maxShade: Int, byteArray: ByteArray?) {
+
+        fun ParseFileToBytes(path: String, width: Int, height: Int, maxShade: Int) {
             val file = File(path)
             File(path).createNewFile()
-            when (MutableConfigurationsState.mode) {
-                Modes.P5 -> {
-                    P5().HandleWriter(width, height, maxShade, byteArray).let { file.writeBytes(it) }
-                }
-                Modes.P6 -> {
-                P6().HandleWriter(width, height, maxShade, byteArray).let { file.writeBytes(it) }
-                }
-            }
+            AppConfiguration.Component.selected.GetFormat().write(width, height, maxShade, AppConfiguration.Image.getPixels()).let { file.writeBytes(it) }
         }
 
-            fun ParseValueForBytes(value: Int): ByteArray {
-                var newByteArray = byteArrayOf()
-                var valueCopy = value
-                while (valueCopy != 0) {
-                    newByteArray += ((valueCopy % 10) + '0'.code).toByte()
-                    valueCopy /= 10
-                }
-                newByteArray.reverse()
-                return newByteArray
+        fun ParseValueForBytes(value: Int): ByteArray {
+            var newByteArray = byteArrayOf()
+            var valueCopy = value
+            while (valueCopy != 0) {
+                newByteArray += ((valueCopy % 10) + '0'.code).toByte()
+                valueCopy /= 10
             }
-
-            private fun ParseBytesForValue(byteArray: ByteArray): Int {
-                byteArray.reverse()
-                var value = 0
-                for (i in byteArray.indices) {
-                    value += (byteArray[i].toInt() - '0'.code) * 10.0.pow(i).toInt()
-                }
-                return value
-            }
+            newByteArray.reverse()
+            return newByteArray
+        }
     }
 }
