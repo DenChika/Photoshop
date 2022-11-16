@@ -1,13 +1,9 @@
 package App
 
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
@@ -16,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HeadingButton(
+fun HeaderDropdownButton(
     onClick: () -> Unit,
     text: String = ""
 ) {
@@ -26,5 +22,10 @@ fun HeadingButton(
         colors = ButtonDefaults.buttonColors(Color.Green)
     ) {
         Text(text)
+        Icon(
+            Icons.Default.ArrowDropDown,
+            contentDescription = "",
+            modifier = Modifier.width(20.dp).height(20.dp)
+        )
     }
 }

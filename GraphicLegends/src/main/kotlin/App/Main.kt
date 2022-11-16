@@ -1,13 +1,10 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-import App.HeadingButton
-import App.HeadingDropdownButton
+import App.HeaderButton
+import App.HeaderDropdownButton
 import App.OpenActivity
 import App.SaveActivity
-import ColorSpaces.ColorSpace
 import Configurations.AppConfiguration
-import Filtration.FiltrationMode
 import Formats.Format
-import Parsers.BytesParser
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,11 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import java.awt.Dialog
-import java.awt.FileDialog
-import java.awt.FileDialog.SAVE
 import java.io.File
-import javax.swing.text.html.ImageView
 
 @Composable
 fun App() {
@@ -47,14 +40,14 @@ fun App() {
                 contentScale = ContentScale.Crop
             )
             Row(Modifier.fillMaxSize()) {
-                HeadingButton(
+                HeaderButton(
                     onClick = {
                         OpenActivity()
                     },
                     text = "Open"
                 )
 
-                HeadingButton(
+                HeaderButton(
                     onClick = {
                         SaveActivity()
                     },
@@ -62,7 +55,7 @@ fun App() {
                 )
                 if (AppConfiguration.HasContent()){
                     Box {
-                        HeadingDropdownButton(
+                        HeaderDropdownButton(
                             onClick = {
                                 AppConfiguration.Space.expanded.value = true
                             },
@@ -73,7 +66,7 @@ fun App() {
 
                     if (AppConfiguration.Image.format != Format.P5) {
                         Box {
-                            HeadingDropdownButton(
+                            HeaderDropdownButton(
                                 onClick = {
                                     AppConfiguration.Component.expanded.value = true
                                 },
