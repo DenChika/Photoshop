@@ -1,4 +1,5 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+import App.HeadingButton
 import ColorSpaces.ColorSpace
 import Configurations.AppConfiguration
 import Filtration.FiltrationMode
@@ -30,7 +31,7 @@ import java.io.File
 
 @Composable
 fun App() {
-    val appBackgroundPic = File("GraphicLegends/src/main/kotlin/Resources/app_background.jpg")
+    val appBackgroundPic = File("src/main/kotlin/Resources/app_background.jpg")
 
     val background: ImageBitmap = remember(appBackgroundPic) {
         loadImageBitmap(appBackgroundPic.inputStream())
@@ -45,26 +46,19 @@ fun App() {
                 contentScale = ContentScale.Crop
             )
             Row(Modifier.fillMaxSize()) {
-                Box {
-                    Button(
-                        modifier = Modifier.padding(start = 15.dp),
-                        onClick = {
-                            val fd = FileDialog(ComposeWindow())
-                            fd.isVisible = true
-                            if (fd.files.isNotEmpty()) {
-                                val file = fd.files[0]
-                                AppConfiguration.Image = BytesParser.ParseBytesForFile(file)!!
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(Color.Green)
-                    ) {
-                        Text("Open")
-                    }
-                }
+                HeadingButton(
+                    onClick = {
+                        val fd = FileDialog(ComposeWindow())
+                        fd.isVisible = true
+                        if (fd.files.isNotEmpty()) {
+                            val file = fd.files[0]
+                            AppConfiguration.Image = BytesParser.ParseBytesForFile(file)!!
+                        }
+                    },
+                    text = "Open"
+                )
 
-
-                Button(
-                    modifier = Modifier.padding(start = 15.dp),
+                HeadingButton(
                     onClick = {
                         if (AppConfiguration.HasContent()) {
                             val dialog: Dialog? = null
@@ -81,10 +75,8 @@ fun App() {
                             }
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(Color.Green)
-                ) {
-                    Text("Save")
-                }
+                    text = "Save"
+                )
                 if (AppConfiguration.HasContent()){
                     Box {
                         Button(
