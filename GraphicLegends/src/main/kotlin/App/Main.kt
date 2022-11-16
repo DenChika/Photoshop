@@ -31,7 +31,7 @@ import java.io.File
 
 @Composable
 fun App() {
-    val appBackgroundPic = File("src/main/kotlin/Resources/app_background.jpg")
+    val appBackgroundPic = File("GraphicLegends/src/main/kotlin/Resources/app_background.jpg")
 
     val background: ImageBitmap = remember(appBackgroundPic) {
         loadImageBitmap(appBackgroundPic.inputStream())
