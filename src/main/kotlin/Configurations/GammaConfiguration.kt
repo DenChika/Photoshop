@@ -1,24 +1,35 @@
 package Configurations
 
+import Gammas.GammaAssignModes
 import androidx.compose.runtime.mutableStateOf
 
 class GammaConfiguration {
-    private val visualisationValue = mutableStateOf(2.2f)
-    private val fileValue = mutableStateOf(2.2f)
-    var forFile : Float
+    val expanded = mutableStateOf(false)
+    private val assignValue = mutableStateOf(GammaAssignModes.SRGB)
+    private val assignFloatValue = mutableStateOf(2.2f)
+    private val convertValue = mutableStateOf(1.0f)
+    var ConvertValue: Float
         get() {
-            return fileValue.value
+            return convertValue.value
         }
         set(value) {
             AppConfiguration.Image.changeGamma(value)
-            fileValue.value = value
+            convertValue.value = value
         }
-    var forVisualization : Float
+    var AssignMode: GammaAssignModes
         get() {
-            return visualisationValue.value
+            return assignValue.value
         }
         set(value) {
-            AppConfiguration.updateBitmap(value)
-            fileValue.value = value
+            assignValue.value = value
+            AppConfiguration.updateBitmap()
+        }
+    var AssignCustomValue: Float
+        get() {
+            return assignFloatValue.value
+        }
+        set(value) {
+            assignFloatValue.value = value
+            AppConfiguration.updateBitmap()
         }
 }

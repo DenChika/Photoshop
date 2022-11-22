@@ -40,10 +40,6 @@ class AppConfiguration() {
         fun updateBitmap(){
             configuration.bitmap.value = Image.getImageBitmap()
         }
-
-        fun updateBitmap(newGamma : Float){
-            configuration.bitmap.value = Image.getImageBitmap(newGamma)
-        }
     }
 
 }

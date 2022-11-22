@@ -36,26 +36,8 @@ class ImageConfiguration(
         val bufferedImage = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         for (posY in 0 until height) {
             for (posX in 0 until width) {
-                val pixel = AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX])
-                bufferedImage.setRGB(
-                    posX,
-                    posY,
-                    Color((pixel[0] * 255).toInt(), (pixel[1] * 255).toInt(), (pixel[2] * 255).toInt()).toArgb()
-                )
-            }
-        }
-        return Bitmap.imageFromBuffer(bufferedImage)
-    }
-
-    fun getImageBitmap(newGamma: Float): ImageBitmap {
-        val bufferedImage = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
-        for (posY in 0 until height) {
-            for (posX in 0 until width) {
-                val pixel = GammaConverter.ChangeForVisualization(
-                    AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX]),
-                    AppConfiguration.Gamma.forVisualization,
-                    newGamma
-                )
+                val pixel = AppConfiguration.Gamma.AssignMode.Apply(
+                    AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX]))
                 bufferedImage.setRGB(
                     posX,
                     posY,
@@ -79,9 +61,9 @@ class ImageConfiguration(
     fun changeGamma(newGamma: Float) {
         for (pixel in pixels) {
             pixel.UpdateValues(
-                GammaConverter.ChangeForFile(
+                GammaConverter.ConvertToSave(
                     pixel.GetFloatArrayOfValues(),
-                    AppConfiguration.Gamma.forFile,
+                    AppConfiguration.Gamma.ConvertValue,
                     newGamma
                 )
             )
