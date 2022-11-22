@@ -7,6 +7,7 @@ import App.OpenActivity
 import App.SaveActivity
 import Configurations.AppConfiguration
 import Formats.Format
+import Gammas.GammaAssignModes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -28,8 +29,6 @@ import java.io.File
 @Composable
 fun App() {
     val appBackgroundPic = File("src/main/kotlin/Resources/app_background.jpg")
-
-    val textFieldExpanded = remember { mutableStateOf(false) }
     val background: ImageBitmap = remember(appBackgroundPic) {
         loadImageBitmap(appBackgroundPic.inputStream())
     }
@@ -80,46 +79,50 @@ fun App() {
                     }
 
                     Box {
-                        val expanded = remember { mutableStateOf(false) }
                         val selected = remember { mutableStateOf("Assign gamma") }
                         HeaderDropdownButton(
                             onClick = {
-                                expanded.value = true
+                                AppConfiguration.Gamma.expanded.value = true
                             },
                             text = selected.value
                         )
                         DropdownMenu(
-                            expanded = expanded.value,
-                            onDismissRequest = { expanded.value = false }
+                            expanded = AppConfiguration.Gamma.expanded.value,
+                            onDismissRequest = { AppConfiguration.Gamma.expanded.value = false }
                         ) {
                             DropdownMenuItem(
                                 onClick = {
-                                    textFieldExpanded.value = true
-                                    selected.value = "Your gamma"
-                                    expanded.value = false
+                                    AppConfiguration.Gamma.AssignMode = GammaAssignModes.Custom
+                                    AppConfiguration.Gamma.expanded.value = false
                                 }
-                            ) { Text("Your gamma") }
+                            ) { Text(GammaAssignModes.Custom.GetName()) }
                             DropdownMenuItem(
                                 onClick = {
-                                    textFieldExpanded.value = false
-                                    selected.value = "sRGB = TODO"
-                                    expanded.value = false
+                                    AppConfiguration.Gamma.AssignMode = GammaAssignModes.SRGB
+                                    AppConfiguration.Gamma.expanded.value = false
                                 }
-                            ) { Text("sRGB = TODO") }
+                            ) { Text(GammaAssignModes.SRGB.GetName()) }
                         }
                     }
 
-                    if (textFieldExpanded.value) {
+                    if (AppConfiguration.Gamma.AssignMode == GammaAssignModes.Custom) {
                         Box (
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ){
-                            CustomTextField(1.0F, "Gamma", "Your gamma-correction")
+                            CustomTextField(
+                                AppConfiguration.Gamma.AssignCustomValue,
+                                "Gammas",
+                                "Your gamma-correction")
+                            TODO("Add change assign gamma value")
                         }
                     }
 
                     Box {
                         HeaderButton(
-                            onClick = {},
+                            onClick = {
+                                //AppConfiguration.Image.changeGamma(1.0F)
+                                      TODO("Add choose of gamma vale")
+                            },
                             "Convert to gamma"
                         )
                     }
