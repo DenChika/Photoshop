@@ -6,7 +6,7 @@ import Converters.GammaConverter
 enum class GammaAssignModes {
     SRGB {
         override fun Apply(shapeValues: FloatArray) : FloatArray {
-            return GammaConverter.CovertToSRGB(shapeValues)
+            return GammaConverter.ConvertToSRGB(shapeValues)
         }
 
     },

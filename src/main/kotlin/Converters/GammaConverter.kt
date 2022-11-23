@@ -6,7 +6,7 @@ class GammaConverter {
             return shapeValues
             //TODO("Add implementation")
         }
-        fun CovertToSRGB(shapeValues : FloatArray) : FloatArray {
+        fun ConvertToSRGB(shapeValues : FloatArray) : FloatArray {
             return shapeValues
             //TODO("Add implementation")
         }
