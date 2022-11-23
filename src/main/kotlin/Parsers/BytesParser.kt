@@ -130,5 +130,9 @@ class BytesParser {
             newByteArray.reverse()
             return newByteArray
         }
+
+        fun GetByteValueFromShade(value: Float) : Byte {
+            return (value * AppConfiguration.Image.maxShade).toInt().toByte()
+        }
     }
 }

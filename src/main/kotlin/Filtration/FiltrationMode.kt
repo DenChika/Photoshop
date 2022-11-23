@@ -3,6 +3,7 @@ package Filtration
 import ColorSpaces.ColorSpaceInstance
 import Configurations.AppConfiguration
 import Formats.Format
+import Parsers.BytesParser
 
 enum class FiltrationMode {
     ALL {
@@ -11,7 +12,11 @@ enum class FiltrationMode {
         }
 
         override fun GetBytes(pixel: ColorSpaceInstance): ByteArray {
-            return pixel.GetBytes()
+            return byteArrayOf(
+                BytesParser.GetByteValueFromShade(pixel.firstShade),
+                BytesParser.GetByteValueFromShade(pixel.secondShade),
+                BytesParser.GetByteValueFromShade(pixel.thirdShade)
+            )
         }
 
         override fun GetFormat(): Format {
@@ -29,9 +34,9 @@ enum class FiltrationMode {
 
         override fun GetBytes(pixel: ColorSpaceInstance): ByteArray {
             return byteArrayOf(
-                pixel.GetFirstByte(),
-                pixel.GetFirstByte(),
-                pixel.GetFirstByte()
+                BytesParser.GetByteValueFromShade(pixel.firstShade),
+                BytesParser.GetByteValueFromShade(pixel.firstShade),
+                BytesParser.GetByteValueFromShade(pixel.firstShade)
             )
         }
 
@@ -50,9 +55,9 @@ enum class FiltrationMode {
 
         override fun GetBytes(pixel: ColorSpaceInstance): ByteArray {
             return byteArrayOf(
-                pixel.GetSecondByte(),
-                pixel.GetSecondByte(),
-                pixel.GetSecondByte()
+                BytesParser.GetByteValueFromShade(pixel.secondShade),
+                BytesParser.GetByteValueFromShade(pixel.secondShade),
+                BytesParser.GetByteValueFromShade(pixel.secondShade)
             )
         }
 
@@ -71,9 +76,9 @@ enum class FiltrationMode {
 
         override fun GetBytes(pixel: ColorSpaceInstance): ByteArray {
             return byteArrayOf(
-                pixel.GetThirdByte(),
-                pixel.GetThirdByte(),
-                pixel.GetThirdByte()
+                BytesParser.GetByteValueFromShade(pixel.thirdShade),
+                BytesParser.GetByteValueFromShade(pixel.thirdShade),
+                BytesParser.GetByteValueFromShade(pixel.thirdShade)
             )
         }
 
