@@ -1,8 +1,9 @@
 package App.HeaderActivity
 
 import Configurations.GammaConfiguration
-import Tools.GraphicLegendsException
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -18,8 +19,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.lang.Exception
 
+
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CustomTextField(
     currentGamma: GammaConfiguration,
@@ -27,6 +29,17 @@ fun CustomTextField(
     placeholder: String = ""
 ) {
     val text = remember { mutableStateOf(currentGamma.AssignCustomValue.toString()) }
+    val openDialog = remember { mutableStateOf(false) }
+
+    fun submitGamma() {
+        try {
+            currentGamma.AssignCustomValue = text.value.toFloat()
+        } catch (e: Exception) {
+            openDialog.value = true
+            text.value = currentGamma.AssignCustomValue.toString()
+        }
+    }
+
     TextField(
         value = text.value,
         onValueChange = {
@@ -38,27 +51,17 @@ fun CustomTextField(
             .padding(start = 15.dp)
             .onKeyEvent {
                 if (it.type == KeyEventType.KeyUp && it.utf16CodePoint == 10) {
-                    try {
-                        currentGamma.AssignCustomValue = text.value.toFloat()
-                    } catch (e: Exception) {
-                        throw GraphicLegendsException("Error occurred while parsing new gamma value from the text field.")
-                    }
-
+                    submitGamma()
                     true
                 }
+
                 false
             },
         label = { Text(text = label, fontSize = 10.sp) },
         placeholder = { Text(text = placeholder, fontSize = 13.sp) },
         trailingIcon = {
             IconButton(onClick = {
-                println(text.value)
-
-                try {
-                    currentGamma.AssignCustomValue = text.value.toFloat()
-                } catch (e: Exception) {
-                    throw GraphicLegendsException("Error occurred while parsing new gamma value from the text field.")
-                }
+                submitGamma()
             }) {
                 Icon(
                     imageVector = Icons.Filled.Check,
@@ -72,12 +75,7 @@ fun CustomTextField(
         ),
         keyboardActions = KeyboardActions(
             onDone = {
-                println(text.value)
-                try {
-                    currentGamma.AssignCustomValue = text.value.toFloat()
-                } catch (e: Exception) {
-                    throw GraphicLegendsException("Error occurred while parsing new gamma value from the text field.")
-                }
+                submitGamma()
             },
         ),
         isError = text.value.toFloatOrNull() == null,
@@ -88,6 +86,27 @@ fun CustomTextField(
             errorCursorColor = Color.Red
         )
     )
+
+    if (openDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            modifier = Modifier
+                .width(300.dp)
+                .height(200.dp),
+            title = { Text(text = "Error") },
+            text = { Text("Error occurred while parsing new gamma value from the text field.") },
+            buttons = {
+                Button(
+                    modifier = Modifier.padding(start = 20.dp),
+                    onClick = { openDialog.value = false },
+                ) {
+                    Text("OK", fontSize = 22.sp)
+                }
+            }
+        )
+    }
 }
 
 fun TextField(
