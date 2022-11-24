@@ -37,7 +37,6 @@ class HSL : IColorSpace {
                 return floatArrayOf(diff + m, m, x + m)
             }
             else -> {
-                println(values[0] * 360)
                 throw ColorSpaceException.wrongHSLFormat()
             }
         }
