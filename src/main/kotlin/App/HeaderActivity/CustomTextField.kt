@@ -1,6 +1,7 @@
 package App.HeaderActivity
 
 import Configurations.GammaConfiguration
+import Gammas.GammaAssignModes
 import Tools.GraphicLegendsException
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,11 +34,16 @@ fun CustomTextField(
 
     fun submitGamma() {
         try {
-            if (text.value.toFloat() < 0) {
+            if (text.value.toFloat() < 0f) {
                 throw GraphicLegendsException("Error. Gamma has to be non-negative.")
             }
 
-            currentGamma.AssignCustomValue = text.value.toFloat()
+            if (text.value.toFloat() == 0f) {
+                currentGamma.AssignMode = GammaAssignModes.SRGB
+                currentGamma.expanded.value = false
+            } else {
+                currentGamma.AssignCustomValue = text.value.toFloat()
+            }
         } catch (e: Exception) {
             openDialog.value = true
             text.value = currentGamma.AssignCustomValue.toString()
