@@ -110,10 +110,9 @@ fun App() {
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ){
                             CustomTextField(
-                                AppConfiguration.Gamma.AssignCustomValue,
+                                AppConfiguration.Gamma,
                                 "Gammas",
-                                "Your gamma-correction")
-                            TODO("Add change assign gamma value")
+                                "Your gamma correction")
                         }
                     }
 
@@ -121,7 +120,7 @@ fun App() {
                         HeaderButton(
                             onClick = {
                                 //AppConfiguration.Image.changeGamma(1.0F)
-                                      TODO("Add choose of gamma vale")
+//                                      TODO("Add choose of gamma value")
                             },
                             "Convert to gamma"
                         )
