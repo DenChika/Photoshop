@@ -108,20 +108,3 @@ fun CustomTextField(
         )
     }
 }
-
-fun TextField(
-    value: String,
-    onValueChange: () -> Unit,
-    singleLine: Boolean,
-    modifier: Modifier,
-    onKeyEvent: Modifier,
-    label: () -> Unit,
-    placeholder: () -> Unit,
-    trailingIcon: () -> Unit,
-    keyboardOptions: KeyboardOptions,
-    keyboardActions: KeyboardActions,
-    isError: Boolean,
-    colors: TextFieldColors
-) {
-
-}
