@@ -1,6 +1,7 @@
 package App.HeaderActivity
 
 import Configurations.GammaConfiguration
+import Tools.GraphicLegendsException
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -20,7 +21,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CustomTextField(
@@ -33,6 +33,10 @@ fun CustomTextField(
 
     fun submitGamma() {
         try {
+            if (text.value.toFloat() < 0) {
+                throw GraphicLegendsException("Error. Gamma has to be non-negative.")
+            }
+
             currentGamma.AssignCustomValue = text.value.toFloat()
         } catch (e: Exception) {
             openDialog.value = true
@@ -95,8 +99,8 @@ fun CustomTextField(
             modifier = Modifier
                 .width(300.dp)
                 .height(200.dp),
-            title = { Text(text = "Error") },
-            text = { Text("Error occurred while parsing new gamma value from the text field.") },
+            title = { Text(text = "Gamma parsing error") },
+            text = { Text("Gamma has to be a non-negative real number.") },
             buttons = {
                 Button(
                     modifier = Modifier.padding(start = 20.dp),
