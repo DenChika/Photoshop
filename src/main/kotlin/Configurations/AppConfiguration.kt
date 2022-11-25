@@ -11,6 +11,8 @@ class AppConfiguration() {
     val componentConfiguration = mutableStateOf(ComponentConfiguration())
     val gammaConfiguration = mutableStateOf(GammaConfiguration())
     val lineConfiguration = mutableStateOf(LineConfiguration())
+    val ditheringConfiguration = mutableStateOf(DitheringConfiguration())
+    val saveScript = mutableStateOf(SaveMode.Current)
     val bitmap : MutableState<ImageBitmap?> = mutableStateOf(null)
     val hasContent =  mutableStateOf(false)
 
@@ -31,6 +33,8 @@ class AppConfiguration() {
         var Component : ComponentConfiguration = configuration.componentConfiguration.value
         var Gamma : GammaConfiguration = configuration.gammaConfiguration.value
         var Line : LineConfiguration = configuration.lineConfiguration.value
+        var Dithering : DitheringConfiguration = configuration.ditheringConfiguration.value
+        val SaveScript : SaveMode = configuration.saveScript.value
         fun HasContent() : Boolean {
             return configuration.hasContent.value
         }
@@ -39,9 +43,12 @@ class AppConfiguration() {
             return configuration.bitmap.value!!
         }
 
+        fun showDithered() {
+            configuration.bitmap.value = Image.getDitheredImageBitmap()
+        }
+
         fun updateBitmap(){
-            configuration.bitmap.value = Image.getImageBitmap()
+            configuration.bitmap.value = Image.getOriginalImageBitmap()
         }
     }
-
 }
