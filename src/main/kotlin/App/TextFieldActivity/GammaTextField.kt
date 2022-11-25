@@ -1,6 +1,6 @@
-package App.HeaderActivity
+package App.TextFieldActivity
 
-import Configurations.GammaConfiguration
+import Configurations.AppConfiguration
 import Gammas.GammaModes
 import Gammas.GammaPurpose
 import Tools.GraphicLegendsException
@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CustomTextField(
+fun GammaTextField(
     purpose: GammaPurpose,
     label: String = "",
     placeholder: String = ""
@@ -64,6 +64,7 @@ fun CustomTextField(
             .onKeyEvent {
                 if (it.type == KeyEventType.KeyUp && it.utf16CodePoint == 10) {
                     submitGamma()
+                    purpose.HideTextField()
                     true
                 }
 
@@ -74,6 +75,8 @@ fun CustomTextField(
         trailingIcon = {
             IconButton(onClick = {
                 submitGamma()
+                purpose.HideTextField()
+                AppConfiguration.Gamma.assignTextFieldHidden.value = true
             }) {
                 Icon(
                     imageVector = Icons.Filled.Check,
@@ -88,6 +91,7 @@ fun CustomTextField(
         keyboardActions = KeyboardActions(
             onDone = {
                 submitGamma()
+                purpose.HideTextField()
             },
         ),
         isError = text.value.toFloatOrNull() == null,
