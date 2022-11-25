@@ -1,30 +1,34 @@
 package Configurations
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.geometry.Offset
 
 class LineConfiguration {
-    val color = mutableStateOf(AppConfiguration.Space.selected.GetDefault())
-    val maxSaturation = mutableStateOf(1.0f)
+    private val color = mutableStateOf(floatArrayOf(0f, 0f, 0f))
+    private val maxSaturation = mutableStateOf(1.0f)
+    private val startOffset = mutableStateOf(Offset(0f, 0f))
+    private val endOffset = mutableStateOf(Offset(0f, 0f))
+    private val eventStarted = mutableStateOf(false)
     var FirstShape : Float
         get() {
-            return color.value.firstShade
+            return color.value[0]
         }
         set(value) {
-            color.value.firstShade = value
+            color.value[0] = value
         }
     var SecondShape : Float
         get() {
-            return color.value.secondShade
+            return color.value[1]
         }
         set(value) {
-            color.value.secondShade = value
+            color.value[1] = value
         }
     var ThirdShape : Float
         get() {
-            return color.value.thirdShade
+            return color.value[2]
         }
         set(value) {
-            color.value.thirdShade = value
+            color.value[2] = value
         }
     var MaxSaturation : Float
         get() {
@@ -33,4 +37,27 @@ class LineConfiguration {
         set(value) {
             maxSaturation.value = value
         }
+    var Start : Offset
+        get() {
+            return startOffset.value
+        }
+        set(value) {
+            eventStarted.value = true
+            startOffset.value = value
+        }
+    var End : Offset
+        get() {
+            return endOffset.value
+        }
+        set(value) {
+            eventStarted.value = false
+            endOffset.value = value
+        }
+    fun IsPainting() : Boolean {
+        return eventStarted.value
+    }
+    fun GetColor() : FloatArray
+    {
+        return color.value
+    }
 }
