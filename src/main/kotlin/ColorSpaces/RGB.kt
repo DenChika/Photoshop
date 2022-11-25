@@ -34,10 +34,6 @@ class RGB() : IColorSpace {
             acos = acos(cos) / Math.PI.toFloat() * 180f
         }
 
-        if (acos.isNaN()) {
-            println()
-        }
-
         return if (g >= b) acos else 360 - acos
     }
 

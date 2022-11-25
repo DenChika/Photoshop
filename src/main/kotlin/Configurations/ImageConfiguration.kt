@@ -3,16 +3,21 @@ package Configurations
 import ColorSpaces.ColorSpace
 import ColorSpaces.ColorSpaceInstance
 import Converters.Bitmap
-import Converters.GammaConverter
 import Formats.Format
+import LinePainterHelpers.OffsetCounter
+import Gammas.GammaPurpose
+import LinePainterHelpers.Painter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import java.awt.image.BufferedImage
@@ -37,7 +42,7 @@ class ImageConfiguration(
         for (posY in 0 until height) {
             for (posX in 0 until width) {
                 val pixel = AppConfiguration.Gamma.AssignMode.Apply(
-                    AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX]))
+                    AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX]), GammaPurpose.Assign)
                 bufferedImage.setRGB(
                     posX,
                     posY,
@@ -58,28 +63,44 @@ class ImageConfiguration(
         }
     }
 
-    fun changeGamma(newGamma: Float) {
-        for (pixel in pixels) {
-            pixel.UpdateValues(
-                GammaConverter.ConvertToSave(
-                    pixel.GetFloatArrayOfValues(),
-                    AppConfiguration.Gamma.ConvertValue,
-                    newGamma
-                )
-            )
+    fun updateImage(pixelsValue: Array<FloatArray>) {
+        for (pixelIndex in pixels.indices) {
+            pixels[pixelIndex].UpdateValues(pixelsValue[pixelIndex])
         }
     }
 
+
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     fun ImageView() {
         AppConfiguration.GetBitmap().let {
             Image(
                 bitmap = it,
-                modifier = if (it.height > 900 && it.width > 1500) Modifier.height(700.dp)
+                modifier = (if (it.height > 900 && it.width > 1500) Modifier.height(700.dp)
                     .width(1500.dp)
                 else if (it.height > 900) Modifier.height(700.dp)
                 else if (it.width > 1500) Modifier.width(1500.dp)
-                else Modifier,
+                else Modifier)
+                    .onPointerEvent(PointerEventType.Press) {
+                        if (!AppConfiguration.Line.IsPainting())
+                        {
+                            val position = OffsetCounter.getActualOffset(it.changes.first().position)
+                            if (OffsetCounter.checkOffSetValidity(position)) {
+                                AppConfiguration.Line.Start = position
+                            }
+                        }
+                    }
+                    .onPointerEvent(PointerEventType.Release) {
+                        if (AppConfiguration.Line.IsPainting())
+                        {
+                            val position = OffsetCounter.getActualOffset(it.changes.first().position)
+                            if (OffsetCounter.checkOffSetValidity(position)) {
+                                AppConfiguration.Line.End = position
+                                updateImage(Painter.drawLine(pixels))
+                                AppConfiguration.updateBitmap()
+                            }
+                        }
+                    },
                 contentDescription = "image",
                 contentScale = ContentScale.Crop
             )

@@ -1,5 +1,6 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 
+import App.GammaActivity.GammaActionsDropdownButton
 import App.HeaderActivity.CustomTextField
 import App.HeaderButton
 import App.HeaderDropdownButton
@@ -7,7 +8,8 @@ import App.OpenActivity
 import App.SaveActivity
 import Configurations.AppConfiguration
 import Formats.Format
-import Gammas.GammaAssignModes
+import Gammas.GammaModes
+import Gammas.GammaPurpose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -78,54 +80,30 @@ fun App() {
                         }
                     }
 
-                    Box {
-                        val selected = remember { mutableStateOf("Assign gamma") }
-                        HeaderDropdownButton(
-                            onClick = {
-                                AppConfiguration.Gamma.expanded.value = true
-                            },
-                            text = selected.value
-                        )
-                        DropdownMenu(
-                            expanded = AppConfiguration.Gamma.expanded.value,
-                            onDismissRequest = { AppConfiguration.Gamma.expanded.value = false }
-                        ) {
-                            DropdownMenuItem(
-                                onClick = {
-                                    AppConfiguration.Gamma.AssignMode = GammaAssignModes.Custom
-                                    AppConfiguration.Gamma.expanded.value = false
-                                }
-                            ) { Text(GammaAssignModes.Custom.GetName()) }
-                            DropdownMenuItem(
-                                onClick = {
-                                    AppConfiguration.Gamma.AssignMode = GammaAssignModes.SRGB
-                                    AppConfiguration.Gamma.expanded.value = false
-                                }
-                            ) { Text(GammaAssignModes.SRGB.GetName()) }
-                        }
-                    }
-
-                    if (AppConfiguration.Gamma.AssignMode == GammaAssignModes.Custom) {
+                    AppConfiguration.Gamma.GammaMenu(GammaPurpose.Assign)
+                    if (AppConfiguration.Gamma.AssignMode == GammaModes.Custom) {
                         Box (
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ){
                             CustomTextField(
-                                AppConfiguration.Gamma.AssignCustomValue,
-                                "Gammas",
-                                "Your gamma-correction")
-                            TODO("Add change assign gamma value")
+                                GammaPurpose.Assign,
+                                "Assign Gamma",
+                                "Your gamma")
                         }
                     }
 
-                    Box {
-                        HeaderButton(
-                            onClick = {
-                                //AppConfiguration.Image.changeGamma(1.0F)
-                                      TODO("Add choose of gamma vale")
-                            },
-                            "Convert to gamma"
-                        )
+                    AppConfiguration.Gamma.GammaMenu(GammaPurpose.Convert)
+                    if (AppConfiguration.Gamma.ConvertMode == GammaModes.Custom) {
+                        Box (
+                            modifier = Modifier.align(Alignment.CenterVertically)
+                        ){
+                            CustomTextField(
+                                GammaPurpose.Convert,
+                                "Convert Gamma",
+                                "Your gamma")
+                        }
                     }
+
                 }
             }
 
