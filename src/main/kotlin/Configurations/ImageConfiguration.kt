@@ -59,14 +59,6 @@ class ImageConfiguration(
         }
     }
 
-    fun changeGamma() {
-        for (pixel in pixels) {
-            pixel.UpdateValues(
-                AppConfiguration.Gamma.ConvertMode.Apply(pixel.GetFloatArrayOfValues(), GammaPurpose.Convert)
-            )
-        }
-    }
-
     @Composable
     fun ImageView() {
         AppConfiguration.GetBitmap().let {

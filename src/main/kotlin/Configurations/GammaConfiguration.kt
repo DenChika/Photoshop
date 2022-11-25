@@ -25,7 +25,6 @@ class GammaConfiguration {
         }
         set(value) {
             convertCustomValue.value = value
-            AppConfiguration.Image.changeGamma()
         }
     var AssignMode: GammaModes
         get() {
@@ -41,7 +40,6 @@ class GammaConfiguration {
         }
         set(value) {
             convertMode.value = value
-            AppConfiguration.Image.changeGamma()
         }
     var AssignCustomValue: Float
         get() {
