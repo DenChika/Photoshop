@@ -13,7 +13,7 @@ class BytesParser {
 
         val fileTypeSet = hashSetOf<Char>('1', '2', '3', '4', '5', '6', '7')
 
-        fun ParseBytesForFile(file: File): ImageConfiguration? { //TODO check return type
+        fun ParseBytesForFile(file: File): ImageConfiguration? {
             val byteArray = file.readBytes()
 
             var magicNumber: String? = null
@@ -129,6 +129,10 @@ class BytesParser {
             }
             newByteArray.reverse()
             return newByteArray
+        }
+
+        fun GetByteValueFromShade(value: Float) : Byte {
+            return (value * AppConfiguration.Image.maxShade).toInt().toByte()
         }
     }
 }
