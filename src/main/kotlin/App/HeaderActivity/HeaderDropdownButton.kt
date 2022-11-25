@@ -1,5 +1,6 @@
 package App
 
+import Configurations.AppConfiguration
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -18,7 +19,7 @@ fun HeaderDropdownButton(
 ) {
     Button(
         modifier = Modifier.padding(start = 15.dp),
-        onClick = { onClick.invoke() },
+        onClick = { AppConfiguration.HideTextFields(); onClick.invoke() },
         colors = ButtonDefaults.buttonColors(Color.Green)
     ) {
         Text(text)

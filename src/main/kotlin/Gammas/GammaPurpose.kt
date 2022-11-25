@@ -31,6 +31,14 @@ enum class GammaPurpose {
         override fun Show() {
             AppConfiguration.Gamma.assignExpanded.value = true
         }
+
+        override fun HideTextField() {
+            AppConfiguration.Gamma.assignTextFieldHidden.value = true
+        }
+
+        override fun ShowTextField() {
+            AppConfiguration.Gamma.assignTextFieldHidden.value = false
+        }
     },
     Convert {
         override fun ApplyMode(modes: GammaModes) {
@@ -60,6 +68,14 @@ enum class GammaPurpose {
         override fun Show() {
             AppConfiguration.Gamma.convertExpanded.value = true
         }
+
+        override fun HideTextField() {
+            AppConfiguration.Gamma.convertTextFieldHidden.value = true
+        }
+
+        override fun ShowTextField() {
+            AppConfiguration.Gamma.convertTextFieldHidden.value = false
+        }
     };
     abstract fun ApplyMode(modes: GammaModes)
     abstract fun GetCustomValue() : Float
@@ -68,4 +84,7 @@ enum class GammaPurpose {
     abstract fun Selected() : String
     abstract fun Hide()
     abstract fun Show()
+
+    abstract fun HideTextField()
+    abstract fun ShowTextField()
 }
