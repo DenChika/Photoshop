@@ -19,6 +19,10 @@ enum class FiltrationMode {
             )
         }
 
+        override fun GetLineColor(): FloatArray {
+            return AppConfiguration.Line.GetColor()
+        }
+
         override fun GetFormat(): Format {
             return AppConfiguration.Image.format
         }
@@ -38,6 +42,10 @@ enum class FiltrationMode {
                 BytesParser.GetByteValueFromShade(pixelValue[0]),
                 BytesParser.GetByteValueFromShade(pixelValue[0])
             )
+        }
+
+        override fun GetLineColor(): FloatArray {
+            return floatArrayOf(AppConfiguration.Line.FirstShape, 0f, 0f)
         }
 
         override fun GetFormat(): Format {
@@ -61,6 +69,10 @@ enum class FiltrationMode {
             )
         }
 
+        override fun GetLineColor(): FloatArray {
+            return floatArrayOf(0f, AppConfiguration.Line.SecondShape, 0f)
+        }
+
         override fun GetFormat(): Format {
             return Format.P5
         }
@@ -82,6 +94,10 @@ enum class FiltrationMode {
             )
         }
 
+        override fun GetLineColor(): FloatArray {
+            return floatArrayOf(0f, 0f, AppConfiguration.Line.ThirdShape)
+        }
+
         override fun GetFormat(): Format {
             return Format.P5
         }
@@ -89,6 +105,7 @@ enum class FiltrationMode {
 
     abstract fun GetRGBPixelValues(pixel: ColorSpaceInstance): FloatArray
     abstract fun GetBytes(pixelValue: FloatArray): ByteArray
+    abstract fun GetLineColor(): FloatArray
     abstract fun GetFormat(): Format
     fun GetName(): String {
         return this.name

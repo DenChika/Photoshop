@@ -10,6 +10,7 @@ class AppConfiguration() {
     val spaceConfiguration = mutableStateOf(SpaceConfiguration())
     val componentConfiguration = mutableStateOf(ComponentConfiguration())
     val gammaConfiguration = mutableStateOf(GammaConfiguration())
+    val lineConfiguration = mutableStateOf(LineConfiguration())
     val bitmap : MutableState<ImageBitmap?> = mutableStateOf(null)
     val hasContent =  mutableStateOf(false)
 
@@ -29,6 +30,7 @@ class AppConfiguration() {
         var Space : SpaceConfiguration = configuration.spaceConfiguration.value
         var Component : ComponentConfiguration = configuration.componentConfiguration.value
         var Gamma : GammaConfiguration = configuration.gammaConfiguration.value
+        var Line : LineConfiguration = configuration.lineConfiguration.value
         fun HasContent() : Boolean {
             return configuration.hasContent.value
         }
