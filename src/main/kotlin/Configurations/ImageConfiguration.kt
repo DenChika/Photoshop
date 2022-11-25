@@ -6,6 +6,7 @@ import Converters.Bitmap
 import Formats.Format
 import LinePainterHelpers.OffsetCounter
 import Gammas.GammaPurpose
+import LinePainterHelpers.Painter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -62,8 +63,10 @@ class ImageConfiguration(
         }
     }
 
-    fun drawLine() {
-        TODO("Add implementation of By algorithm")
+    fun updateImage(pixelsValue: Array<FloatArray>) {
+        for (pixelIndex in pixels.indices) {
+            pixels[pixelIndex].UpdateValues(pixelsValue[pixelIndex])
+        }
     }
 
 
@@ -73,7 +76,7 @@ class ImageConfiguration(
         AppConfiguration.GetBitmap().let {
             Image(
                 bitmap = it,
-                modifier = if (it.height > 900 && it.width > 1500) Modifier.height(700.dp)
+                modifier = (if (it.height > 900 && it.width > 1500) Modifier.height(700.dp)
                     .width(1500.dp)
                 else if (it.height > 900) Modifier.height(700.dp)
                 else if (it.width > 1500) Modifier.width(1500.dp)
@@ -93,7 +96,8 @@ class ImageConfiguration(
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
                             if (OffsetCounter.checkOffSetValidity(position)) {
                                 AppConfiguration.Line.End = position
-                                drawLine()
+                                updateImage(Painter.drawLine(pixels))
+                                AppConfiguration.updateBitmap()
                             }
                         }
                     },
