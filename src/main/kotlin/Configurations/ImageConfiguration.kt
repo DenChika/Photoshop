@@ -5,6 +5,7 @@ import ColorSpaces.ColorSpaceInstance
 import Converters.Bitmap
 import Converters.GammaConverter
 import Formats.Format
+import Gammas.GammaPurpose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -37,7 +38,7 @@ class ImageConfiguration(
         for (posY in 0 until height) {
             for (posX in 0 until width) {
                 val pixel = AppConfiguration.Gamma.AssignMode.Apply(
-                    AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX]))
+                    AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX]), GammaPurpose.Assign)
                 bufferedImage.setRGB(
                     posX,
                     posY,
@@ -55,18 +56,6 @@ class ImageConfiguration(
     fun changeColorSpace(colorSpace: ColorSpace) {
         for (pixel in pixels) {
             pixel.Kind = colorSpace
-        }
-    }
-
-    fun changeGamma(newGamma: Float) {
-        for (pixel in pixels) {
-            pixel.UpdateValues(
-                GammaConverter.ConvertToSave(
-                    pixel.GetFloatArrayOfValues(),
-                    AppConfiguration.Gamma.ConvertValue,
-                    newGamma
-                )
-            )
         }
     }
 
