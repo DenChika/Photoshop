@@ -9,6 +9,7 @@ class LineConfiguration {
     private val startOffset = mutableStateOf(Offset(0f, 0f))
     private val endOffset = mutableStateOf(Offset(0f, 0f))
     private val eventStarted = mutableStateOf(false)
+    private val thickness = mutableStateOf(0)
     var FirstShape : Float
         get() {
             return color.value[0]
@@ -53,6 +54,13 @@ class LineConfiguration {
             eventStarted.value = false
             endOffset.value = value
         }
+    var Thickness : Int
+        get() {
+            return thickness.value
+        }
+        set(value) {
+            thickness.value = value
+        }
     fun IsPainting() : Boolean {
         return eventStarted.value
     }
@@ -60,4 +68,6 @@ class LineConfiguration {
     {
         return color.value
     }
+
+
 }
