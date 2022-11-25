@@ -4,7 +4,7 @@ import kotlin.math.pow
 
 class GammaConverter {
     companion object {
-        fun ConvertToVisualize(shapeValues : FloatArray, gammaValue: Float) : FloatArray {
+        fun ConvertToCustom(shapeValues : FloatArray, gammaValue: Float) : FloatArray {
             for (i in 0..2) {
                 shapeValues[i] = shapeValues[i].pow(gammaValue / 2.2f)
             }
@@ -21,10 +21,6 @@ class GammaConverter {
             }
 
             return shapeValues
-        }
-        fun ConvertToSave(shapeValues : FloatArray, oldValue: Float, newValue: Float) : FloatArray {
-            return shapeValues
-            //TODO("Add implementation")
         }
     }
 }

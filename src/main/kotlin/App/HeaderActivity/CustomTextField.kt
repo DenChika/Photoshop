@@ -1,7 +1,8 @@
 package App.HeaderActivity
 
 import Configurations.GammaConfiguration
-import Gammas.GammaAssignModes
+import Gammas.GammaModes
+import Gammas.GammaPurpose
 import Tools.GraphicLegendsException
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,11 +26,11 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CustomTextField(
-    currentGamma: GammaConfiguration,
+    purpose: GammaPurpose,
     label: String = "",
     placeholder: String = ""
 ) {
-    val text = remember { mutableStateOf(currentGamma.AssignCustomValue.toString()) }
+    val text = remember { mutableStateOf(purpose.GetCustomValue().toString()) }
     val openDialog = remember { mutableStateOf(false) }
 
     fun submitGamma() {
@@ -39,14 +40,14 @@ fun CustomTextField(
             }
 
             if (text.value.toFloat() == 0f) {
-                currentGamma.AssignMode = GammaAssignModes.SRGB
-                currentGamma.expanded.value = false
+                purpose.ApplyMode(GammaModes.SRGB)
+                purpose.Hide()
             } else {
-                currentGamma.AssignCustomValue = text.value.toFloat()
+                purpose.ChangeCustomValue(text.value.toFloat())
             }
         } catch (e: Exception) {
             openDialog.value = true
-            text.value = currentGamma.AssignCustomValue.toString()
+            text.value = purpose.GetCustomValue().toString()
         }
     }
 
@@ -59,6 +60,7 @@ fun CustomTextField(
         modifier =
         Modifier
             .padding(start = 15.dp)
+            .width(150.dp)
             .onKeyEvent {
                 if (it.type == KeyEventType.KeyUp && it.utf16CodePoint == 10) {
                     submitGamma()
