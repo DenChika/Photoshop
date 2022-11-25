@@ -11,11 +11,11 @@ enum class FiltrationMode {
             return pixel.GetRGBPixelValue(isFirstNeeded = true, isSecondNeeded = true, isThirdNeeded = true)
         }
 
-        override fun GetBytes(pixel: ColorSpaceInstance): ByteArray {
+        override fun GetBytes(pixelValue: FloatArray): ByteArray {
             return byteArrayOf(
-                BytesParser.GetByteValueFromShade(pixel.firstShade),
-                BytesParser.GetByteValueFromShade(pixel.secondShade),
-                BytesParser.GetByteValueFromShade(pixel.thirdShade)
+                BytesParser.GetByteValueFromShade(pixelValue[0]),
+                BytesParser.GetByteValueFromShade(pixelValue[1]),
+                BytesParser.GetByteValueFromShade(pixelValue[2])
             )
         }
 
@@ -36,11 +36,11 @@ enum class FiltrationMode {
             )
         }
 
-        override fun GetBytes(pixel: ColorSpaceInstance): ByteArray {
+        override fun GetBytes(pixelValue: FloatArray): ByteArray {
             return byteArrayOf(
-                BytesParser.GetByteValueFromShade(pixel.firstShade),
-                BytesParser.GetByteValueFromShade(pixel.firstShade),
-                BytesParser.GetByteValueFromShade(pixel.firstShade)
+                BytesParser.GetByteValueFromShade(pixelValue[0]),
+                BytesParser.GetByteValueFromShade(pixelValue[0]),
+                BytesParser.GetByteValueFromShade(pixelValue[0])
             )
         }
 
@@ -61,11 +61,11 @@ enum class FiltrationMode {
             )
         }
 
-        override fun GetBytes(pixel: ColorSpaceInstance): ByteArray {
+        override fun GetBytes(pixelValue: FloatArray): ByteArray {
             return byteArrayOf(
-                BytesParser.GetByteValueFromShade(pixel.secondShade),
-                BytesParser.GetByteValueFromShade(pixel.secondShade),
-                BytesParser.GetByteValueFromShade(pixel.secondShade)
+                BytesParser.GetByteValueFromShade(pixelValue[1]),
+                BytesParser.GetByteValueFromShade(pixelValue[1]),
+                BytesParser.GetByteValueFromShade(pixelValue[1])
             )
         }
 
@@ -86,11 +86,11 @@ enum class FiltrationMode {
             )
         }
 
-        override fun GetBytes(pixel: ColorSpaceInstance): ByteArray {
+        override fun GetBytes(pixelValue: FloatArray): ByteArray {
             return byteArrayOf(
-                BytesParser.GetByteValueFromShade(pixel.thirdShade),
-                BytesParser.GetByteValueFromShade(pixel.thirdShade),
-                BytesParser.GetByteValueFromShade(pixel.thirdShade)
+                BytesParser.GetByteValueFromShade(pixelValue[2]),
+                BytesParser.GetByteValueFromShade(pixelValue[2]),
+                BytesParser.GetByteValueFromShade(pixelValue[2])
             )
         }
 
@@ -104,7 +104,7 @@ enum class FiltrationMode {
     };
 
     abstract fun GetRGBPixelValues(pixel: ColorSpaceInstance): FloatArray
-    abstract fun GetBytes(pixel: ColorSpaceInstance): ByteArray
+    abstract fun GetBytes(pixelValue: FloatArray): ByteArray
     abstract fun GetLineColor(): FloatArray
     abstract fun GetFormat(): Format
     fun GetName(): String {

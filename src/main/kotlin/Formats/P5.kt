@@ -3,6 +3,7 @@ package Formats
 import ColorSpaces.ColorSpaceInstance
 import Configurations.AppConfiguration
 import Configurations.ImageConfiguration
+import Gammas.GammaPurpose
 import Interfaces.IFormat
 import Parsers.BytesParser
 import Tools.HeaderDiscrepancyException
@@ -46,8 +47,11 @@ class P5 : IFormat {
         val array = ByteArray(pixels.size)
         for (pixel in pixels.indices)
         {
-            val pixelBytes = AppConfiguration.Component.selected.GetBytes(pixels[pixel])[0]
-            array[pixel] = pixelBytes
+            val pixelBytes = AppConfiguration.Component.selected.GetBytes(
+                AppConfiguration.Gamma.ConvertMode.Apply(pixels[pixel].GetFloatArrayOfValues(),
+                    GammaPurpose.Convert)
+            )
+            array[pixel] = pixelBytes[0]
         }
         return array
     }

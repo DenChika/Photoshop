@@ -3,9 +3,9 @@ package Configurations
 import ColorSpaces.ColorSpace
 import ColorSpaces.ColorSpaceInstance
 import Converters.Bitmap
-import Converters.GammaConverter
 import Formats.Format
 import LinePainterHelpers.OffsetCounter
+import Gammas.GammaPurpose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -41,7 +41,7 @@ class ImageConfiguration(
         for (posY in 0 until height) {
             for (posX in 0 until width) {
                 val pixel = AppConfiguration.Gamma.AssignMode.Apply(
-                    AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX]))
+                    AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX]), GammaPurpose.Assign)
                 bufferedImage.setRGB(
                     posX,
                     posY,
@@ -62,17 +62,6 @@ class ImageConfiguration(
         }
     }
 
-    fun changeGamma(newGamma: Float) {
-        for (pixel in pixels) {
-            pixel.UpdateValues(
-                GammaConverter.ConvertToSave(
-                    pixel.GetFloatArrayOfValues(),
-                    AppConfiguration.Gamma.ConvertValue,
-                    newGamma
-                )
-            )
-        }
-    }
     fun drawLine() {
         TODO("Add implementation of By algorithm")
     }
@@ -84,7 +73,7 @@ class ImageConfiguration(
         AppConfiguration.GetBitmap().let {
             Image(
                 bitmap = it,
-                modifier = (if (it.height > 900 && it.width > 1500) Modifier.height(700.dp)
+                modifier = if (it.height > 900 && it.width > 1500) Modifier.height(700.dp)
                     .width(1500.dp)
                 else if (it.height > 900) Modifier.height(700.dp)
                 else if (it.width > 1500) Modifier.width(1500.dp)
