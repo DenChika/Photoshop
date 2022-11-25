@@ -1,5 +1,7 @@
 package Interfaces
 
+import ColorSpaces.ColorSpaceInstance
+
 interface IDitheringAlgorithm {
-    fun Apply(pixels : Array<FloatArray>) : Array<FloatArray>
+    fun Apply(pixels : Array<ColorSpaceInstance>, shapeBitesCount : Int) : Array<ColorSpaceInstance>
 }
