@@ -1,5 +1,6 @@
 package App
 
+import Configurations.AppConfiguration
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -16,7 +17,7 @@ fun HeaderButton(
 ) {
     Button(
         modifier = Modifier.padding(start = 15.dp),
-        onClick = { onClick.invoke() },
+        onClick = { AppConfiguration.HideTextFields(); onClick.invoke() },
         colors = ButtonDefaults.buttonColors(Color.Green)
     ) {
         Text(text)

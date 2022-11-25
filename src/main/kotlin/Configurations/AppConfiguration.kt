@@ -1,5 +1,7 @@
 package Configurations
 
+import App.HeaderDropdownButton
+import App.TextFieldActivity.LineSettingsTextField
 import Filtration.FiltrationMode
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -39,8 +41,16 @@ class AppConfiguration() {
             return configuration.bitmap.value!!
         }
 
-        fun updateBitmap(){
+        fun updateBitmap() {
             configuration.bitmap.value = Image.getImageBitmap()
+        }
+
+        fun HideTextFields() {
+            Line.colorExpanded.value = false
+            Line.saturationExpanded.value = false
+            Line.thicknessExpanded.value = false
+            Gamma.assignTextFieldHidden.value = true
+            Gamma.convertTextFieldHidden.value = true
         }
     }
 

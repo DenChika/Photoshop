@@ -1,15 +1,16 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 
-import App.GammaActivity.GammaActionsDropdownButton
-import App.HeaderActivity.CustomTextField
+import App.TextFieldActivity.GammaTextField
 import App.HeaderButton
 import App.HeaderDropdownButton
 import App.OpenActivity
 import App.SaveActivity
+import App.TextFieldActivity.LineSettingsTextField
 import Configurations.AppConfiguration
 import Formats.Format
 import Gammas.GammaModes
 import Gammas.GammaPurpose
+import LinePainterHelpers.LineSettings
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -81,11 +82,12 @@ fun App() {
                     }
 
                     AppConfiguration.Gamma.GammaMenu(GammaPurpose.Assign)
-                    if (AppConfiguration.Gamma.AssignMode == GammaModes.Custom) {
+                    if (AppConfiguration.Gamma.AssignMode == GammaModes.Custom &&
+                        !AppConfiguration.Gamma.assignTextFieldHidden.value) {
                         Box (
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ){
-                            CustomTextField(
+                            GammaTextField(
                                 GammaPurpose.Assign,
                                 "Assign Gamma",
                                 "Your gamma")
@@ -93,17 +95,39 @@ fun App() {
                     }
 
                     AppConfiguration.Gamma.GammaMenu(GammaPurpose.Convert)
-                    if (AppConfiguration.Gamma.ConvertMode == GammaModes.Custom) {
+                    if (AppConfiguration.Gamma.ConvertMode == GammaModes.Custom &&
+                        !AppConfiguration.Gamma.convertTextFieldHidden.value) {
                         Box (
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ){
-                            CustomTextField(
+                            GammaTextField(
                                 GammaPurpose.Convert,
                                 "Convert Gamma",
                                 "Your gamma")
                         }
                     }
 
+                    Box {
+                        AppConfiguration.Line.DropdownLineSettings()
+                    }
+                    if (AppConfiguration.Line.colorExpanded.value) {
+                        AppConfiguration.Component.selected.GetLineColorTextFields()
+                    }
+
+                    if (AppConfiguration.Line.saturationExpanded.value) {
+                        LineSettingsTextField(
+                            settings = LineSettings.Saturation,
+                            label = "Saturation",
+                            placeholder = "Your value"
+                        )
+                    }
+                    if (AppConfiguration.Line.thicknessExpanded.value) {
+                        LineSettingsTextField(
+                            settings = LineSettings.Thickness,
+                            label = "Thickness",
+                            placeholder = "Your value"
+                        )
+                    }
                 }
             }
 
