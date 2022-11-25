@@ -1,7 +1,6 @@
 package Configurations
 
 import App.GammaActivity.GammaActionsDropdownButton
-import App.HeaderActivity.CustomTextField
 import App.HeaderDropdownButton
 import Gammas.GammaModes
 import Gammas.GammaPurpose
@@ -9,10 +8,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 
 class GammaConfiguration {
+    val assignTextFieldHidden = mutableStateOf(true)
+    val convertTextFieldHidden = mutableStateOf(true)
     val assignExpanded = mutableStateOf(false)
     val convertExpanded = mutableStateOf(false)
     private val assignMode = mutableStateOf(GammaModes.SRGB)
@@ -51,8 +50,8 @@ class GammaConfiguration {
         }
 
     fun ResetSettings() {
-        assignExpanded.value = false
-        convertExpanded.value = false
+        assignTextFieldHidden.value = true
+        convertTextFieldHidden.value = true
         AssignMode = GammaModes.SRGB
         ConvertMode = GammaModes.SRGB
         AssignCustomValue = 2.2f
