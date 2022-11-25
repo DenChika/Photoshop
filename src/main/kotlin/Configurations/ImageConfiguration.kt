@@ -3,10 +3,11 @@ package Configurations
 import ColorSpaces.ColorSpace
 import ColorSpaces.ColorSpaceInstance
 import Converters.Bitmap
-import Converters.GammaConverter
 import Formats.Format
 import LinePainterHelpers.ColorMixer
 import LinePainterHelpers.OffsetCounter
+import Gammas.GammaPurpose
+import LinePainterHelpers.Painter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -46,7 +47,7 @@ class ImageConfiguration(
         for (posY in 0 until height) {
             for (posX in 0 until width) {
                 val pixel = AppConfiguration.Gamma.AssignMode.Apply(
-                    AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX]))
+                    AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX]), GammaPurpose.Assign)
                 bufferedImage.setRGB(
                     posX,
                     posY,
@@ -67,15 +68,9 @@ class ImageConfiguration(
         }
     }
 
-    fun changeGamma(newGamma: Float) {
-        for (pixel in pixels) {
-            pixel.UpdateValues(
-                GammaConverter.ConvertToSave(
-                    pixel.GetFloatArrayOfValues(),
-                    AppConfiguration.Gamma.ConvertValue,
-                    newGamma
-                )
-            )
+    fun updateImage(pixelsValue: Array<FloatArray>) {
+        for (pixelIndex in pixels.indices) {
+            pixels[pixelIndex].UpdateValues(pixelsValue[pixelIndex])
         }
     }
 
@@ -154,7 +149,6 @@ class ImageConfiguration(
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
                             if (OffsetCounter.checkOffSetValidity(position)) {
                                 AppConfiguration.Line.Start = position
-                                println(position)
                             }
                         }
                     }
@@ -164,8 +158,8 @@ class ImageConfiguration(
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
                             if (OffsetCounter.checkOffSetValidity(position)) {
                                 AppConfiguration.Line.End = position
-                                println(position)
-                                drawLine(AppConfiguration.Line)
+                                updateImage(Painter.drawLine(pixels))
+                                AppConfiguration.updateBitmap()
                             }
                         }
                     },
