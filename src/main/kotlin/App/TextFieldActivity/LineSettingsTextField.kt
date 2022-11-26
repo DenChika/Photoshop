@@ -43,6 +43,7 @@ fun LineSettingsTextField(
             .width(150.dp)
             .onKeyEvent {
                 if (it.type == KeyEventType.KeyUp && it.utf16CodePoint == 10) {
+                    settings.ChangeValue(text.value)
                     true
                 }
                 false
