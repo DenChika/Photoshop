@@ -24,7 +24,7 @@ class Painter {
             var start = line.Start
             var end = line.End
 
-            var length = AppConfiguration.Image.width
+            val length = AppConfiguration.Image.width
 
             val steep = abs(end.y - start.y) > abs(end.x - start.x)
             if (steep) {
@@ -46,20 +46,28 @@ class Painter {
             }
 
             for (x in round(start.x).toInt()..round(end.x).toInt()) {
-                for (plotX in ((x - line.Thickness) / 1.0f).toInt()..((x + line.Thickness) / 1.0f).toInt()) {
+                for (plotX in (x - line.Thickness / 2.0f).toInt()..(x + line.Thickness / 2.0f).toInt()) {
                     val y = start.y + grad * (plotX - start.x)
 
-                    for (plotY in ((y - line.Thickness) / 1.0f).toInt()..((y + line.Thickness + 1f) / 1.0f).toInt()) {
+                    for (plotY in (y - line.Thickness / 2.0f - 3.0f).toInt()..(y + 1.0f + line.Thickness / 2.0f + 3.0f).toInt()) {
+                        var dist = distanceLinePoint(start, end, plotX, plotY) - line.Thickness / 2 + 1.0f * (line.Thickness + 1) % 2
+
+                        if (plotY > y && line.Thickness % 2 == 0) {
+                            dist -= 1
+                        }
+
+                        val ratio = min(1.0f, max(0.0f, 1.0f - dist / 1.3f))
+
                         if (steep) {
                             val newColor = ColorMixer.Mix(
-                                pixels[plotX * length + plotY].GetFloatArrayOfValues(), line.GetColor(),
-                                line.MaxSaturation * max(0f, min(1.0f, line.Thickness / 10f / distanceLinePoint(start, end, plotX, plotY))))
+                                pixels[plotX * length + plotY].GetFloatArrayOfValues(), line.GetColor(), ratio)
+
 
                             pixels[plotX * length + plotY].UpdateValues(newColor)
                         } else {
                             val newColor = ColorMixer.Mix(
-                                pixels[plotY * length + plotX].GetFloatArrayOfValues(), line.GetColor(),
-                                line.MaxSaturation * max(0f, min(1.0f, line.Thickness / 10f / distanceLinePoint(start, end, plotX, plotY))))
+                                pixels[plotY * length + plotX].GetFloatArrayOfValues(), line.GetColor(), ratio)
+
                             pixels[plotY * length + plotX].UpdateValues(newColor)
                         }
                     }
