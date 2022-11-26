@@ -20,7 +20,7 @@ class LineConfiguration {
     private val startOffset = mutableStateOf(Offset(0f, 0f))
     private val endOffset = mutableStateOf(Offset(0f, 0f))
     private val eventStarted = mutableStateOf(false)
-    private val thickness = mutableStateOf(0)
+    private val thickness = mutableStateOf(1)
     var FirstShade : Float
         get() {
             return color.value[0]
@@ -86,7 +86,7 @@ class LineConfiguration {
         startOffset.value = Offset(0f, 0f)
         endOffset.value = Offset(0f, 0f)
         eventStarted.value = false
-        thickness.value = 0
+        thickness.value = 1
     }
     @Composable
     fun DropdownLineSettings() {
