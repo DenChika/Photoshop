@@ -54,7 +54,6 @@ class LineConfiguration {
             return startOffset.value
         }
         set(value) {
-            eventStarted.value = true
             startOffset.value = value
         }
     var End : Offset
@@ -62,7 +61,6 @@ class LineConfiguration {
             return endOffset.value
         }
         set(value) {
-            eventStarted.value = false
             endOffset.value = value
         }
     var Thickness : Int
@@ -72,9 +70,9 @@ class LineConfiguration {
         set(value) {
             thickness.value = value
         }
-    fun IsPainting() : Boolean {
-        return eventStarted.value
-    }
+
+    var IsPainting : Boolean = eventStarted.value
+
     fun GetColor() : FloatArray
     {
         return color.value

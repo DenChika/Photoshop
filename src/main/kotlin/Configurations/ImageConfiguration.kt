@@ -86,21 +86,23 @@ class ImageConfiguration(
                 else if (it.width > 1500) Modifier.width(1500.dp)
                 else Modifier)
                     .onPointerEvent(PointerEventType.Press) {
-                        if (!AppConfiguration.Line.IsPainting())
+                        if (!AppConfiguration.Line.IsPainting)
                         {
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
                             if (OffsetCounter.checkOffSetValidity(position)) {
+                                AppConfiguration.Line.IsPainting = true
                                 AppConfiguration.Line.Start = position
                             }
                         }
                     }
                     .onPointerEvent(PointerEventType.Release) {
-                        if (AppConfiguration.Line.IsPainting())
+                        if (AppConfiguration.Line.IsPainting)
                         {
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
+                            AppConfiguration.Line.IsPainting = false
                             if (OffsetCounter.checkOffSetValidity(position)) {
                                 AppConfiguration.Line.End = position
-                                updateImage(Painter.drawLine(pixels, width, AppConfiguration.Line))
+                                Painter.drawLine(pixels, AppConfiguration.Line)
                                 AppConfiguration.updateBitmap()
                             }
                         }
