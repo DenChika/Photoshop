@@ -35,7 +35,7 @@ enum class LineSettings {
         }
 
         override fun GetDefaultValue(): String {
-            return "1.0"
+            return "0.0"
         }
 
         override fun ChangeValue(value: String) {
@@ -48,7 +48,7 @@ enum class LineSettings {
         }
 
         override fun GetDefaultValue(): String {
-            return "0.0"
+            return "1.0"
         }
 
         override fun ChangeValue(value: String) {
