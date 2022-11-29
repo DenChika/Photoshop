@@ -8,8 +8,8 @@ enum class LineSettings {
             return value.toFloatOrNull() == null || value.toFloat() > 1.0F || value.toFloat() < 0.0F
         }
 
-        override fun GetDefaultValue(): String {
-            return "0.0"
+        override fun GetValue(): String {
+            return AppConfiguration.Line.FirstShade.toString()
         }
 
         override fun ChangeValue(value: String) {
@@ -21,8 +21,8 @@ enum class LineSettings {
             return value.toFloatOrNull() == null || value.toFloat() > 1.0F || value.toFloat() < 0.0F
         }
 
-        override fun GetDefaultValue(): String {
-            return "0.0"
+        override fun GetValue(): String {
+            return AppConfiguration.Line.SecondShade.toString()
         }
 
         override fun ChangeValue(value: String) {
@@ -34,8 +34,8 @@ enum class LineSettings {
             return value.toFloatOrNull() == null || value.toFloat() > 1.0F || value.toFloat() < 0.0F
         }
 
-        override fun GetDefaultValue(): String {
-            return "0.0"
+        override fun GetValue(): String {
+            return AppConfiguration.Line.ThirdShade.toString()
         }
 
         override fun ChangeValue(value: String) {
@@ -47,8 +47,8 @@ enum class LineSettings {
             return value.toFloatOrNull() == null || value.toFloat() > 1.0F || value.toFloat() < 0.0F
         }
 
-        override fun GetDefaultValue(): String {
-            return "1.0"
+        override fun GetValue(): String {
+            return AppConfiguration.Line.MaxSaturation.toString()
         }
 
         override fun ChangeValue(value: String) {
@@ -60,8 +60,8 @@ enum class LineSettings {
             return value.toIntOrNull() == null || value.toInt() < 1
         }
 
-        override fun GetDefaultValue(): String {
-            return "1"
+        override fun GetValue(): String {
+            return AppConfiguration.Line.Thickness.toString()
         }
 
         override fun ChangeValue(value: String) {
@@ -70,7 +70,7 @@ enum class LineSettings {
     };
     abstract fun IsError(value: String) : Boolean
 
-    abstract fun GetDefaultValue() : String
+    abstract fun GetValue() : String
 
     abstract fun ChangeValue(value: String)
 }

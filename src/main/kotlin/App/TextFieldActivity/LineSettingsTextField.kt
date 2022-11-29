@@ -1,10 +1,6 @@
 package App.TextFieldActivity
 
-import Gammas.GammaModes
-import Gammas.GammaPurpose
 import LinePainterHelpers.LineSettings
-import Tools.GraphicLegendsException
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
@@ -29,7 +25,7 @@ fun LineSettingsTextField(
     label: String = "",
     placeholder: String = ""
 ) {
-    val text = remember { mutableStateOf(settings.GetDefaultValue()) }
+    val text = remember { mutableStateOf(settings.GetValue()) }
 
     TextField(
         value = text.value,
