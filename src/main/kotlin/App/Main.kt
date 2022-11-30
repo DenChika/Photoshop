@@ -5,16 +5,20 @@ import App.HeaderButton
 import App.HeaderDropdownButton
 import App.OpenActivity
 import App.SaveActivity
+import App.TextFieldActivity.CustomTextField
 import App.TextFieldActivity.LineSettingsTextField
 import Configurations.AppConfiguration
 import Formats.Format
 import Gammas.GammaModes
 import Gammas.GammaPurpose
 import LinePainterHelpers.LineSettings
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,19 +49,25 @@ fun App() {
                 contentScale = ContentScale.Crop
             )
             Row(Modifier.fillMaxWidth().height(50.dp)) {
-                HeaderButton(
-                    onClick = {
-                        OpenActivity()
-                    },
-                    text = "Open"
-                )
-
-                HeaderButton(
-                    onClick = {
-                        SaveActivity()
-                    },
-                    text = "Save"
-                )
+                Box {
+                    val expandedFilesActivity = remember { mutableStateOf(false) }
+                    Button(
+                        modifier = Modifier.padding(start = 15.dp),
+                        onClick = { expandedFilesActivity.value = true },
+                        colors = ButtonDefaults.buttonColors(Color.Green)
+                    ) {Text("File")}
+                    DropdownMenu(
+                        expanded = expandedFilesActivity.value,
+                        onDismissRequest = { expandedFilesActivity.value = false }
+                    ) {
+                        DropdownMenuItem(
+                            onClick = { OpenActivity(); expandedFilesActivity.value = false }
+                        ) {Text("Open")}
+                        DropdownMenuItem(
+                            onClick = { SaveActivity(); expandedFilesActivity.value = false }
+                        ) {Text("Save")}
+                    }
+                }
                 if (AppConfiguration.HasContent()){
                     Box {
                         HeaderDropdownButton(
@@ -126,6 +136,77 @@ fun App() {
                             settings = LineSettings.Thickness,
                             label = "Thickness",
                             placeholder = "Your value"
+                        )
+                    }
+                    val isBits = remember { mutableStateOf(false) }
+                    Box {
+                        val expanded = remember { mutableStateOf(false) }
+                        HeaderDropdownButton(
+                            onClick = {
+                                expanded.value = true
+                                if (isBits.value) isBits.value = false
+                            },
+                            text = "Dithering"
+                        )
+                        DropdownMenu(
+                            expanded = expanded.value,
+                            onDismissRequest = { expanded.value = false }
+                        ) {
+                            Box {
+                                val expandedAlgorithms = remember { mutableStateOf(false) }
+                                Button(
+                                    onClick = { expandedAlgorithms.value = true },
+                                    colors = ButtonDefaults.buttonColors(Color.White),
+                                    border = BorderStroke(0.dp, Color.White)
+                                ) {
+                                    Text("Algorithm")
+                                }
+                                DropdownMenu(
+                                    expanded = expandedAlgorithms.value,
+                                    onDismissRequest = { expandedAlgorithms.value = false }
+                                ) {
+                                    DropdownMenuItem(onClick = {
+                                        expandedAlgorithms.value = false
+                                    }) { Text("Ordered (8x8)") }
+                                    DropdownMenuItem(onClick = {
+                                        expandedAlgorithms.value = false
+                                    }) { Text("Random") }
+                                    DropdownMenuItem(onClick = {
+                                        expandedAlgorithms.value = false
+                                    }) { Text("Floyd-Steinberg") }
+                                    DropdownMenuItem(onClick = {
+                                        expandedAlgorithms.value = false
+                                    }) { Text("Atkinson") }
+                                }
+                            }
+                            DropdownMenuItem(onClick = {
+                                expanded.value = false
+                                isBits.value = true
+                            }) { Text("Bits") }
+                        }
+                    }
+                    if (isBits.value) {
+                        CustomTextField(
+                            label = "Bits Dithering",
+                            placeholder = "Your value",
+                            defaultValue = "8.0"
+                        )
+                    }
+                    val isGenerate = remember { mutableStateOf(false) }
+                    HeaderButton(
+                        onClick = { isGenerate.value = !isGenerate.value },
+                        text = "Generate"
+                    )
+                    if (isGenerate.value) {
+                        CustomTextField(
+                            label = "Set width",
+                            placeholder = "Your value",
+                            defaultValue = "100"
+                        )
+                        CustomTextField(
+                            label = "Set height",
+                            placeholder = "Your value",
+                            defaultValue = "100"
                         )
                     }
                 }
