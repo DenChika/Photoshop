@@ -91,7 +91,7 @@ class DitheringConfiguration {
             CustomTextField(
                 label = "Bits Dithering",
                 placeholder = "Your value",
-                defaultValue = "8.0",
+                defaultValue = ShadeBitesCount.toString(),
                 onClickFunc = {value ->  ShadeBitesCount = value.toInt()}
             )
         }
