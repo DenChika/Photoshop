@@ -40,8 +40,8 @@ class GenerationConfiguration {
             text = "Generate"
         )
         if (TextFieldsVisibility) {
-            GenerationTextField.Get(GenerationFieldPurpose.Width)
-            GenerationTextField.Get(GenerationFieldPurpose.Height)
+            GenerationTextField(GenerationFieldPurpose.Width)
+            GenerationTextField(GenerationFieldPurpose.Height)
         }
     }
 }
