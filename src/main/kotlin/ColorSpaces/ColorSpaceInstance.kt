@@ -80,4 +80,10 @@ class ColorSpaceInstance(_kind: ColorSpace) {
         secondShade = shapeValues[1]
         thirdShade = shapeValues[2]
     }
+
+    fun ApplyError(errors: FloatArray) {
+        firstShade += errors[0]
+        secondShade += errors[1]
+        thirdShade += errors[2]
+    }
 }
