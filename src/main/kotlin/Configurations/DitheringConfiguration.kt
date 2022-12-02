@@ -23,6 +23,8 @@ class DitheringConfiguration {
         }
         set(value) {
             AppConfiguration.Image.useDithering()
+            AppConfiguration.updateBitmap()
+            shadeBitesCount.value = 8
             _selected.value = value
         }
     var ShadeBitesCount : Int
@@ -30,6 +32,8 @@ class DitheringConfiguration {
             return shadeBitesCount.value
         }
         set(value) {
+            AppConfiguration.Image.useDithering()
+            AppConfiguration.updateBitmap()
             shadeBitesCount.value = value
         }
 
