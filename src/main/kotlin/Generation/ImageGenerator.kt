@@ -17,7 +17,7 @@ class ImageGenerator {
                     }
             }
 
-            return ImageConfiguration(Format.P5, width, height, 255, pixels)
+            return ImageConfiguration(Format.P6, width, height, 255, pixels)
         }
     }
 }

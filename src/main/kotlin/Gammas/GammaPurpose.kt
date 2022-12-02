@@ -87,4 +87,8 @@ enum class GammaPurpose {
 
     abstract fun HideTextField()
     abstract fun ShowTextField()
+
+    fun GetName(): String {
+        return this.name
+    }
 }

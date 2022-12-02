@@ -39,7 +39,7 @@ fun CustomTextField(
         modifier =
         Modifier
             .padding(start = 15.dp)
-            .width(150.dp)
+            .width(140.dp)
             .onKeyEvent {
                 if (it.type == KeyEventType.KeyUp && it.utf16CodePoint == 10) {
                     onClickFunc(text.value)

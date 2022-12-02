@@ -25,82 +25,31 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun GammaTextField(
-    purpose: GammaPurpose,
-    label: String = "",
-    placeholder: String = ""
-) {
-    val text = remember { mutableStateOf(purpose.GetCustomValue().toString()) }
+fun GammaTextField(purpose: GammaPurpose) {
     val openDialog = remember { mutableStateOf(false) }
 
-    fun submitGamma() {
+    fun submitGamma(value: String) {
         try {
-            if (text.value.toFloat() < 0f) {
+            if (value.toFloat() < 0f) {
                 throw GraphicLegendsException("Error. Gamma has to be non-negative.")
             }
 
-            if (text.value.toFloat() == 0f) {
+            if (value.toFloat() == 0f) {
                 purpose.ApplyMode(GammaModes.SRGB)
                 purpose.Hide()
             } else {
-                purpose.ChangeCustomValue(text.value.toFloat())
+                purpose.ChangeCustomValue(value.toFloat())
             }
         } catch (e: Exception) {
             openDialog.value = true
-            text.value = purpose.GetCustomValue().toString()
         }
     }
 
-    TextField(
-        value = text.value,
-        onValueChange = {
-            text.value = it
-        },
-        singleLine = true,
-        modifier =
-        Modifier
-            .padding(start = 15.dp)
-            .width(150.dp)
-            .onKeyEvent {
-                if (it.type == KeyEventType.KeyUp && it.utf16CodePoint == 10) {
-                    submitGamma()
-                    purpose.HideTextField()
-                    true
-                }
-
-                false
-            },
-        label = { Text(text = label, fontSize = 10.sp) },
-        placeholder = { Text(text = placeholder, fontSize = 13.sp) },
-        trailingIcon = {
-            IconButton(onClick = {
-                submitGamma()
-                purpose.HideTextField()
-                AppConfiguration.Gamma.assignTextFieldHidden.value = true
-            }) {
-                Icon(
-                    imageVector = Icons.Filled.Check,
-                    contentDescription = ""
-                )
-            }
-        },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                submitGamma()
-                purpose.HideTextField()
-            },
-        ),
-        isError = text.value.toFloatOrNull() == null,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = Color.White,
-            errorBorderColor = Color.Red,
-            errorLabelColor = Color.Red,
-            errorCursorColor = Color.Red
-        )
+    CustomTextField(
+        label = "${purpose.GetName()} Gamma",
+        placeholder = "Your Value",
+        defaultValue = purpose.GetCustomValue().toString(),
+        onClickFunc = { value -> submitGamma(value); purpose.HideTextField() }
     )
 
     if (openDialog.value) {

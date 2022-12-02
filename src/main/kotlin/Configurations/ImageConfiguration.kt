@@ -85,6 +85,7 @@ class ImageConfiguration(
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
                             if (OffsetCounter.checkOffSetValidity(position)) {
                                 AppConfiguration.Line.Start = position
+                                AppConfiguration.Line.IsPainting = true
                             }
                         }
                     }
@@ -92,6 +93,7 @@ class ImageConfiguration(
                         if (AppConfiguration.Line.IsPainting)
                         {
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
+                            AppConfiguration.Line.IsPainting = false
                             if (OffsetCounter.checkOffSetValidity(position)) {
                                 AppConfiguration.Line.End = position
                                 Painter.drawLine(pixels, AppConfiguration.Line)
