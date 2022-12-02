@@ -1,6 +1,7 @@
 package App
 
 import Configurations.AppConfiguration
+import Parsers.BytesParser
 import java.awt.Dialog
 import java.awt.FileDialog
 
@@ -11,7 +12,13 @@ fun SaveActivity() {
         fd.isVisible = true
         if (fd.files.isNotEmpty()) {
             val file = fd.files[0]
-            AppConfiguration.SaveScript.InFile(file)
+            BytesParser.ParseFileToBytes(
+                file.absolutePath,
+                AppConfiguration.Image.width,
+                AppConfiguration.Image.height,
+                AppConfiguration.Image.maxShade,
+                AppConfiguration.Image.getPixels()
+            )
         }
     }
 }
