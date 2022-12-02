@@ -4,7 +4,6 @@ import ColorSpaces.ColorSpace
 import ColorSpaces.ColorSpaceInstance
 import Converters.Bitmap
 import Formats.Format
-import LinePainterHelpers.ColorMixer
 import LinePainterHelpers.OffsetCounter
 import Gammas.GammaPurpose
 import LinePainterHelpers.Painter
@@ -22,10 +21,6 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import java.awt.image.BufferedImage
-import kotlin.math.abs
-import kotlin.math.min
-import kotlin.math.round
-import kotlin.math.sqrt
 
 class ImageConfiguration(
     _format: Format,
@@ -42,12 +37,12 @@ class ImageConfiguration(
 
     constructor() : this(Format.P6, 0, 0, 0, arrayOf())
 
-    private fun getImageBitmap(pixelsToVisualise: Array<ColorSpaceInstance>): ImageBitmap {
+    fun getImageBitmap(): ImageBitmap {
         val bufferedImage = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         for (posY in 0 until height) {
             for (posX in 0 until width) {
                 val pixel = AppConfiguration.Gamma.AssignMode.Apply(
-                    AppConfiguration.Component.selected.GetRGBPixelValues(pixelsToVisualise[posY * width + posX]), GammaPurpose.Assign)
+                    AppConfiguration.Component.selected.GetRGBPixelValues(pixels[posY * width + posX]), GammaPurpose.Assign)
                 bufferedImage.setRGB(
                     posX,
                     posY,
@@ -58,26 +53,18 @@ class ImageConfiguration(
         return Bitmap.imageFromBuffer(bufferedImage)
     }
 
-    fun getOriginalImageBitmap(): ImageBitmap {
-        return getImageBitmap(getPixels())
-    }
-
-    fun getDitheredImageBitmap() : ImageBitmap {
-        return getImageBitmap(getDitheredPixels())
-    }
-
     fun getPixels(): Array<ColorSpaceInstance> {
         return pixels
-    }
-
-    fun getDitheredPixels() : Array<ColorSpaceInstance> {
-        return AppConfiguration.Dithering.selected.Use(pixels, AppConfiguration.Dithering.ShadeBitesCount)
     }
 
     fun changeColorSpace(colorSpace: ColorSpace) {
         for (pixel in pixels) {
             pixel.Kind = colorSpace
         }
+    }
+
+    fun useDithering() {
+        AppConfiguration.Dithering.selected.Use(pixels, AppConfiguration.Dithering.ShadeBitesCount)
     }
 
 
@@ -107,7 +94,7 @@ class ImageConfiguration(
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
                             if (OffsetCounter.checkOffSetValidity(position)) {
                                 AppConfiguration.Line.End = position
-                                Painter.drawLine(pixels)
+                                Painter.drawLine(pixels, AppConfiguration.Line)
                                 AppConfiguration.updateBitmap()
                             }
                         }
