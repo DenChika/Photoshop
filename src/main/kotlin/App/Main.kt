@@ -1,5 +1,6 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 
+import App.HeaderButton
 import App.TextFieldActivity.GammaTextField
 import App.HeaderDropdownButton
 import App.OpenActivity
@@ -46,11 +47,10 @@ fun App() {
             Row(Modifier.fillMaxWidth().height(50.dp)) {
                 Box {
                     val expandedFilesActivity = remember { mutableStateOf(false) }
-                    Button(
-                        modifier = Modifier.padding(start = 15.dp),
+                    HeaderButton(
                         onClick = { expandedFilesActivity.value = true },
-                        colors = ButtonDefaults.buttonColors(Color.Green)
-                    ) {Text("File")}
+                        text = "File"
+                    )
                     DropdownMenu(
                         expanded = expandedFilesActivity.value,
                         onDismissRequest = { expandedFilesActivity.value = false }
@@ -92,10 +92,7 @@ fun App() {
                         Box (
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ){
-                            GammaTextField(
-                                GammaPurpose.Assign,
-                                "Assign Gamma",
-                                "Your gamma")
+                            GammaTextField(GammaPurpose.Assign)
                         }
                     }
 
@@ -105,10 +102,7 @@ fun App() {
                         Box (
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ){
-                            GammaTextField(
-                                GammaPurpose.Convert,
-                                "Convert Gamma",
-                                "Your gamma")
+                            GammaTextField(GammaPurpose.Convert)
                         }
                     }
 
@@ -122,15 +116,13 @@ fun App() {
                     if (AppConfiguration.Line.saturationExpanded.value) {
                         LineSettingsTextField(
                             settings = LineSettings.Saturation,
-                            label = "Saturation",
-                            placeholder = "Your value"
+                            label = "Saturation"
                         )
                     }
                     if (AppConfiguration.Line.thicknessExpanded.value) {
                         LineSettingsTextField(
                             settings = LineSettings.Thickness,
-                            label = "Thickness",
-                            placeholder = "Your value"
+                            label = "Thickness"
                         )
                     }
                     AppConfiguration.Dithering.DitheringMenu()
