@@ -1,7 +1,6 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 
 import App.TextFieldActivity.GammaTextField
-import App.HeaderButton
 import App.HeaderDropdownButton
 import App.OpenActivity
 import App.SaveActivity
@@ -17,8 +16,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -189,27 +186,12 @@ fun App() {
                         CustomTextField(
                             label = "Bits Dithering",
                             placeholder = "Your value",
-                            defaultValue = "8.0"
-                        )
-                    }
-                    val isGenerate = remember { mutableStateOf(false) }
-                    HeaderButton(
-                        onClick = { isGenerate.value = !isGenerate.value },
-                        text = "Generate"
-                    )
-                    if (isGenerate.value) {
-                        CustomTextField(
-                            label = "Set width",
-                            placeholder = "Your value",
-                            defaultValue = "100"
-                        )
-                        CustomTextField(
-                            label = "Set height",
-                            placeholder = "Your value",
-                            defaultValue = "100"
+                            defaultValue = "8.0",
+                            onClickFunc = {value ->  }
                         )
                     }
                 }
+                AppConfiguration.Generation.ImageGeneration()
             }
 
             Box(

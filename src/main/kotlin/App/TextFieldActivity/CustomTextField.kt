@@ -26,6 +26,7 @@ fun CustomTextField(
     label: String = "",
     placeholder: String = "",
     defaultValue: String = "",
+    onClickFunc: (value: String) -> Unit
 ) {
     val text = remember { mutableStateOf(defaultValue) }
 
@@ -41,7 +42,7 @@ fun CustomTextField(
             .width(150.dp)
             .onKeyEvent {
                 if (it.type == KeyEventType.KeyUp && it.utf16CodePoint == 10) {
-                    true
+                    onClickFunc(text.value)
                 }
                 false
             },
@@ -49,6 +50,7 @@ fun CustomTextField(
         placeholder = { Text(text = placeholder, fontSize = 13.sp) },
         trailingIcon = {
             IconButton(onClick = {
+                onClickFunc(text.value)
             }) {
                 Icon(
                     imageVector = Icons.Filled.Check,
@@ -62,6 +64,7 @@ fun CustomTextField(
         ),
         keyboardActions = KeyboardActions(
             onDone = {
+                     onClickFunc(text.value)
             },
         ),
         isError = false,
