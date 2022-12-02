@@ -6,8 +6,8 @@ class YCoCg : IColorSpace {
 
     override fun ToRGB(values: FloatArray): FloatArray {
         val r = values[0] + values[1] - values[2]
-        val g = values[0] + values[2]
-        val b = values[0] - values[1] - values[2]
+        val g = values[0] + values[2] - 0.5f
+        val b = values[0] - values[1] - values[2] + 1f
 
         return floatArrayOf(r, g, b)
     }
