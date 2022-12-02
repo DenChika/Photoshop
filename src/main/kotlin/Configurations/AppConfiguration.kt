@@ -1,7 +1,5 @@
 package Configurations
 
-import App.HeaderDropdownButton
-import App.TextFieldActivity.LineSettingsTextField
 import Filtration.FiltrationMode
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +11,8 @@ class AppConfiguration() {
     val componentConfiguration = mutableStateOf(ComponentConfiguration())
     val gammaConfiguration = mutableStateOf(GammaConfiguration())
     val lineConfiguration = mutableStateOf(LineConfiguration())
+    val ditheringConfiguration = mutableStateOf(DitheringConfiguration())
+    val generationConfiguration = mutableStateOf(GenerationConfiguration())
     val bitmap : MutableState<ImageBitmap?> = mutableStateOf(null)
     val hasContent =  mutableStateOf(false)
 
@@ -33,6 +33,8 @@ class AppConfiguration() {
         var Component : ComponentConfiguration = configuration.componentConfiguration.value
         var Gamma : GammaConfiguration = configuration.gammaConfiguration.value
         var Line : LineConfiguration = configuration.lineConfiguration.value
+        var Dithering : DitheringConfiguration = configuration.ditheringConfiguration.value
+        var Generation : GenerationConfiguration = configuration.generationConfiguration.value
         fun HasContent() : Boolean {
             return configuration.hasContent.value
         }
@@ -41,7 +43,7 @@ class AppConfiguration() {
             return configuration.bitmap.value!!
         }
 
-        fun updateBitmap() {
+        fun updateBitmap(){
             configuration.bitmap.value = Image.getImageBitmap()
         }
 
@@ -50,6 +52,7 @@ class AppConfiguration() {
             Line.saturationExpanded.value = false
             Line.thicknessExpanded.value = false
             Gamma.assignTextFieldHidden.value = true
+            Generation.TextFieldsVisibility = false
             Gamma.convertTextFieldHidden.value = true
         }
     }

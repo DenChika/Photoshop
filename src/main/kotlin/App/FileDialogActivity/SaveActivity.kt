@@ -16,7 +16,8 @@ fun SaveActivity() {
                 file.absolutePath,
                 AppConfiguration.Image.width,
                 AppConfiguration.Image.height,
-                AppConfiguration.Image.maxShade
+                AppConfiguration.Image.maxShade,
+                AppConfiguration.Image.getPixels()
             )
         }
     }

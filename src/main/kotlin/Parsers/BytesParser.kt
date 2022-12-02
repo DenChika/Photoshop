@@ -1,5 +1,6 @@
 package Parsers
 
+import ColorSpaces.ColorSpaceInstance
 import Configurations.AppConfiguration
 import Configurations.ImageConfiguration
 import Formats.P5
@@ -114,10 +115,10 @@ class BytesParser {
             return str
         }
 
-        fun ParseFileToBytes(path: String, width: Int, height: Int, maxShade: Int) {
+        fun ParseFileToBytes(path: String, width: Int, height: Int, maxShade: Int, pixels : Array<ColorSpaceInstance>) {
             val file = File(path)
             File(path).createNewFile()
-            AppConfiguration.Component.selected.GetFormat().write(width, height, maxShade, AppConfiguration.Image.getPixels()).let { file.writeBytes(it) }
+            AppConfiguration.Component.selected.GetFormat().write(width, height, maxShade, pixels).let { file.writeBytes(it) }
         }
 
         fun ParseValueForBytes(value: Int): ByteArray {

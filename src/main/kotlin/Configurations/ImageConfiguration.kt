@@ -4,7 +4,6 @@ import ColorSpaces.ColorSpace
 import ColorSpaces.ColorSpaceInstance
 import Converters.Bitmap
 import Formats.Format
-import LinePainterHelpers.ColorMixer
 import LinePainterHelpers.OffsetCounter
 import Gammas.GammaPurpose
 import LinePainterHelpers.Painter
@@ -22,10 +21,6 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import java.awt.image.BufferedImage
-import kotlin.math.abs
-import kotlin.math.min
-import kotlin.math.round
-import kotlin.math.sqrt
 
 class ImageConfiguration(
     _format: Format,
@@ -68,11 +63,10 @@ class ImageConfiguration(
         }
     }
 
-    fun updateImage(pixelsValue: Array<FloatArray>) {
-        for (pixelIndex in pixels.indices) {
-            pixels[pixelIndex].UpdateValues(pixelsValue[pixelIndex])
-        }
+    fun useDithering() {
+        AppConfiguration.Dithering.selected.Use(pixels, AppConfiguration.Dithering.ShadeBitesCount)
     }
+
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
@@ -90,7 +84,6 @@ class ImageConfiguration(
                         {
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
                             if (OffsetCounter.checkOffSetValidity(position)) {
-                                AppConfiguration.Line.IsPainting = true
                                 AppConfiguration.Line.Start = position
                             }
                         }
@@ -99,7 +92,6 @@ class ImageConfiguration(
                         if (AppConfiguration.Line.IsPainting)
                         {
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
-                            AppConfiguration.Line.IsPainting = false
                             if (OffsetCounter.checkOffSetValidity(position)) {
                                 AppConfiguration.Line.End = position
                                 Painter.drawLine(pixels, AppConfiguration.Line)
