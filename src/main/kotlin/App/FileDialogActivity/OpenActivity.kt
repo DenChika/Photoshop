@@ -13,5 +13,6 @@ fun OpenActivity() {
         val file = fd.files[0]
         AppConfiguration.Image = BytesParser.ParseBytesForFile(file)!!
         AppConfiguration.Gamma.ResetSettings()
+        AppConfiguration.Line.ResetSettings()
     }
 }

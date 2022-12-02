@@ -4,6 +4,8 @@ import ColorSpaces.ColorSpaceInstance
 import Configurations.AppConfiguration
 import Formats.Format
 import Parsers.BytesParser
+import androidx.compose.foundation.layout.Row
+import androidx.compose.runtime.Composable
 
 enum class FiltrationMode {
     ALL {
@@ -26,6 +28,15 @@ enum class FiltrationMode {
         override fun GetFormat(): Format {
             return AppConfiguration.Image.format
         }
+
+        @Composable
+        override fun GetLineColorTextFields() {
+            Row {
+                AppConfiguration.Line.GetFirstShadeTextField()
+                AppConfiguration.Line.GetSecondShadeTextField()
+                AppConfiguration.Line.GetThirdShadeTextField()
+            }
+        }
     },
     OnlyFirst {
         override fun GetRGBPixelValues(pixel: ColorSpaceInstance): FloatArray {
@@ -45,11 +56,16 @@ enum class FiltrationMode {
         }
 
         override fun GetLineColor(): FloatArray {
-            return floatArrayOf(AppConfiguration.Line.FirstShape, 0f, 0f)
+            return floatArrayOf(AppConfiguration.Line.FirstShade, 0f, 0f)
         }
 
         override fun GetFormat(): Format {
             return Format.P5
+        }
+
+        @Composable
+        override fun GetLineColorTextFields() {
+            AppConfiguration.Line.GetFirstShadeTextField()
         }
     },
     OnlySecond {
@@ -70,11 +86,16 @@ enum class FiltrationMode {
         }
 
         override fun GetLineColor(): FloatArray {
-            return floatArrayOf(0f, AppConfiguration.Line.SecondShape, 0f)
+            return floatArrayOf(0f, AppConfiguration.Line.SecondShade, 0f)
         }
 
         override fun GetFormat(): Format {
             return Format.P5
+        }
+
+        @Composable
+        override fun GetLineColorTextFields() {
+            AppConfiguration.Line.GetSecondShadeTextField()
         }
     },
     OnlyThird {
@@ -95,11 +116,16 @@ enum class FiltrationMode {
         }
 
         override fun GetLineColor(): FloatArray {
-            return floatArrayOf(0f, 0f, AppConfiguration.Line.ThirdShape)
+            return floatArrayOf(0f, 0f, AppConfiguration.Line.ThirdShade)
         }
 
         override fun GetFormat(): Format {
             return Format.P5
+        }
+
+        @Composable
+        override fun GetLineColorTextFields() {
+            AppConfiguration.Line.GetThirdShadeTextField()
         }
     };
 
@@ -107,6 +133,8 @@ enum class FiltrationMode {
     abstract fun GetBytes(pixelValue: FloatArray): ByteArray
     abstract fun GetLineColor(): FloatArray
     abstract fun GetFormat(): Format
+    @Composable
+    abstract fun GetLineColorTextFields()
     fun GetName(): String {
         return this.name
     }

@@ -4,6 +4,7 @@ import ColorSpaces.ColorSpace
 import ColorSpaces.ColorSpaceInstance
 import Converters.Bitmap
 import Formats.Format
+import LinePainterHelpers.ColorMixer
 import LinePainterHelpers.OffsetCounter
 import Gammas.GammaPurpose
 import LinePainterHelpers.Painter
@@ -21,6 +22,10 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import java.awt.image.BufferedImage
+import kotlin.math.abs
+import kotlin.math.min
+import kotlin.math.round
+import kotlin.math.sqrt
 
 class ImageConfiguration(
     _format: Format,
@@ -88,7 +93,7 @@ class ImageConfiguration(
                 else if (it.width > 1500) Modifier.width(1500.dp)
                 else Modifier)
                     .onPointerEvent(PointerEventType.Press) {
-                        if (!AppConfiguration.Line.IsPainting())
+                        if (!AppConfiguration.Line.IsPainting)
                         {
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
                             if (OffsetCounter.checkOffSetValidity(position)) {
@@ -97,7 +102,7 @@ class ImageConfiguration(
                         }
                     }
                     .onPointerEvent(PointerEventType.Release) {
-                        if (AppConfiguration.Line.IsPainting())
+                        if (AppConfiguration.Line.IsPainting)
                         {
                             val position = OffsetCounter.getActualOffset(it.changes.first().position)
                             if (OffsetCounter.checkOffSetValidity(position)) {
