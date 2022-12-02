@@ -12,7 +12,7 @@ class GenerationConfiguration {
     private val _width = mutableStateOf(500)
     private val _height = mutableStateOf(500)
 
-    var TextFieldsVisibility = _textFieldsVisibility.value
+    var TextFieldsVisibility = mutableStateOf(_textFieldsVisibility.value)
     var width : Int
         get() {
             return _width.value
@@ -34,12 +34,12 @@ class GenerationConfiguration {
     fun ImageGeneration() {
         HeaderButton(
             onClick = {
-                TextFieldsVisibility = !TextFieldsVisibility
+                TextFieldsVisibility.value = true
                 AppConfiguration.Image = ImageGenerator.Gradient(width, height)
             },
             text = "Generate"
         )
-        if (TextFieldsVisibility) {
+        if (TextFieldsVisibility.value) {
             GenerationTextField(GenerationFieldPurpose.Width)
             GenerationTextField(GenerationFieldPurpose.Height)
         }

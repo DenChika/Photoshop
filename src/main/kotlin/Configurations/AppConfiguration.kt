@@ -52,7 +52,7 @@ class AppConfiguration() {
             Line.saturationExpanded.value = false
             Line.thicknessExpanded.value = false
             Gamma.assignTextFieldHidden.value = true
-            Generation.TextFieldsVisibility = false
+            Generation.TextFieldsVisibility.value = false
             Gamma.convertTextFieldHidden.value = true
         }
     }
