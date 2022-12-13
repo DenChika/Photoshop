@@ -80,4 +80,10 @@ class ColorSpaceInstance(_kind: ColorSpace) {
         secondShade = minOf(maxOf(shapeValues[1], 0f), 1f)
         thirdShade = minOf(maxOf(shapeValues[2], 0f), 1f)
     }
+
+    fun ApplyError(errors: FloatArray) {
+        firstShade += errors[0]
+        secondShade += errors[1]
+        thirdShade += errors[2]
+    }
 }
