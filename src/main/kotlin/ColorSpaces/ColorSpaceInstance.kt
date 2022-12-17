@@ -25,9 +25,9 @@ class ColorSpaceInstance(_kind: ColorSpace) {
                 throw ColorSpaceException.shadeIsNan()
             }
 
-            firstShade = convertedValues[0]
-            secondShade = convertedValues[1]
-            thirdShade = convertedValues[2]
+            firstShade = minOf(maxOf(convertedValues[0], 0f), 1f)
+            secondShade = minOf(maxOf(convertedValues[1], 0f), 1f)
+            thirdShade = minOf(maxOf(convertedValues[2], 0f), 1f)
             kind = value
         }
     var firstShade: Float = 0.0F
@@ -50,9 +50,9 @@ class ColorSpaceInstance(_kind: ColorSpace) {
         }
 
         return floatArrayOf(
-            convertedValues[0],
-            convertedValues[1],
-            convertedValues[2]
+            minOf(maxOf(convertedValues[0], 0f), 1f),
+            minOf(maxOf(convertedValues[1], 0f), 1f),
+            minOf(maxOf(convertedValues[2], 0f), 1f)
         )
     }
 
@@ -76,8 +76,14 @@ class ColorSpaceInstance(_kind: ColorSpace) {
         )
     }
     fun UpdateValues(shapeValues: FloatArray) {
-        firstShade = shapeValues[0]
-        secondShade = shapeValues[1]
-        thirdShade = shapeValues[2]
+        firstShade = minOf(maxOf(shapeValues[0], 0f), 1f)
+        secondShade = minOf(maxOf(shapeValues[1], 0f), 1f)
+        thirdShade = minOf(maxOf(shapeValues[2], 0f), 1f)
+    }
+
+    fun ApplyError(errors: FloatArray) {
+        firstShade += errors[0]
+        secondShade += errors[1]
+        thirdShade += errors[2]
     }
 }

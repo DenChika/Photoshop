@@ -131,8 +131,7 @@ class LineConfiguration {
     fun GetFirstShadeTextField() {
         LineSettingsTextField(
             settings = LineSettings.FirstShade,
-            label = "1st channel",
-            placeholder = "Your value"
+            label = "1st channel"
         )
     }
 
@@ -140,8 +139,7 @@ class LineConfiguration {
     fun GetSecondShadeTextField() {
         LineSettingsTextField(
             settings = LineSettings.SecondShade,
-            label = "2nd channel",
-            placeholder = "Your value"
+            label = "2nd channel"
         )
     }
 
@@ -149,8 +147,7 @@ class LineConfiguration {
     fun GetThirdShadeTextField() {
         LineSettingsTextField(
             settings = LineSettings.ThirdShade,
-            label = "3rd channel",
-            placeholder = "Your value"
+            label = "3rd channel"
         )
     }
 }

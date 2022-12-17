@@ -1,7 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 
-import App.TextFieldActivity.GammaTextField
 import App.HeaderButton
+import App.TextFieldActivity.GammaTextField
 import App.HeaderDropdownButton
 import App.OpenActivity
 import App.SaveActivity
@@ -45,19 +45,24 @@ fun App() {
                 contentScale = ContentScale.Crop
             )
             Row(Modifier.fillMaxWidth().height(50.dp)) {
-                HeaderButton(
-                    onClick = {
-                        OpenActivity()
-                    },
-                    text = "Open"
-                )
-
-                HeaderButton(
-                    onClick = {
-                        SaveActivity()
-                    },
-                    text = "Save"
-                )
+                Box {
+                    val expandedFilesActivity = remember { mutableStateOf(false) }
+                    HeaderButton(
+                        onClick = { expandedFilesActivity.value = true },
+                        text = "File"
+                    )
+                    DropdownMenu(
+                        expanded = expandedFilesActivity.value,
+                        onDismissRequest = { expandedFilesActivity.value = false }
+                    ) {
+                        DropdownMenuItem(
+                            onClick = { OpenActivity(); expandedFilesActivity.value = false }
+                        ) {Text("Open")}
+                        DropdownMenuItem(
+                            onClick = { SaveActivity(); expandedFilesActivity.value = false }
+                        ) {Text("Save")}
+                    }
+                }
                 if (AppConfiguration.HasContent()){
                     Box {
                         HeaderDropdownButton(
@@ -87,10 +92,7 @@ fun App() {
                         Box (
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ){
-                            GammaTextField(
-                                GammaPurpose.Assign,
-                                "Assign Gamma",
-                                "Your gamma")
+                            GammaTextField(GammaPurpose.Assign)
                         }
                     }
 
@@ -100,10 +102,7 @@ fun App() {
                         Box (
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ){
-                            GammaTextField(
-                                GammaPurpose.Convert,
-                                "Convert Gamma",
-                                "Your gamma")
+                            GammaTextField(GammaPurpose.Convert)
                         }
                     }
 
@@ -117,18 +116,18 @@ fun App() {
                     if (AppConfiguration.Line.saturationExpanded.value) {
                         LineSettingsTextField(
                             settings = LineSettings.Saturation,
-                            label = "Saturation",
-                            placeholder = "Your value"
+                            label = "Saturation"
                         )
                     }
                     if (AppConfiguration.Line.thicknessExpanded.value) {
                         LineSettingsTextField(
                             settings = LineSettings.Thickness,
-                            label = "Thickness",
-                            placeholder = "Your value"
+                            label = "Thickness"
                         )
                     }
+                    AppConfiguration.Dithering.DitheringMenu()
                 }
+                AppConfiguration.Generation.ImageGeneration()
             }
 
             Box(
