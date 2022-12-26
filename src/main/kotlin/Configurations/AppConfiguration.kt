@@ -48,12 +48,12 @@ class AppConfiguration() {
         }
 
         fun HideTextFields() {
-            Line.colorExpanded.value = false
-            Line.saturationExpanded.value = false
-            Line.thicknessExpanded.value = false
-            Gamma.assignTextFieldHidden.value = true
-            Generation.TextFieldsVisibility.value = false
-            Gamma.convertTextFieldHidden.value = true
+            Space.expandedButton.value = false
+            Component.expandedButton.value = false
+            Gamma.assignExpandedButton.value = false
+            Gamma.convertExpandedButton.value = false
+            Line.lineSettingsExpandedButton.value = false
+            Dithering.expandedButton.value = false
         }
     }
 

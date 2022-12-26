@@ -1,6 +1,8 @@
 package Configurations
 
+import App.HeaderDropdownButton
 import Filtration.FiltrationMode
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
@@ -9,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 
 class ComponentConfiguration {
     val expanded = mutableStateOf(false)
+    val expandedButton = mutableStateOf(false)
     private var _selected = mutableStateOf(FiltrationMode.ALL)
     var selected: FiltrationMode
         get() {
@@ -19,6 +22,20 @@ class ComponentConfiguration {
             AppConfiguration.updateBitmap()
         }
 
+    @Composable
+    fun ShowTool() {
+        if (expandedButton.value) {
+            Box {
+                HeaderDropdownButton(
+                    onClick = {
+                        expanded.value = true
+                    },
+                    text = selected.GetName()
+                )
+                DropdownComponents()
+            }
+        }
+    }
     @Composable
     fun DropdownComponents() {
         DropdownMenu(

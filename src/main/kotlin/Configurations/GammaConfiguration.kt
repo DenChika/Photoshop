@@ -2,18 +2,23 @@ package Configurations
 
 import App.GammaActivity.GammaActionsDropdownButton
 import App.HeaderDropdownButton
+import App.TextFieldActivity.GammaTextField
 import Gammas.GammaModes
 import Gammas.GammaPurpose
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 
 class GammaConfiguration {
     val assignTextFieldHidden = mutableStateOf(true)
     val convertTextFieldHidden = mutableStateOf(true)
     val assignExpanded = mutableStateOf(false)
     val convertExpanded = mutableStateOf(false)
+    val assignExpandedButton = mutableStateOf(false)
+    val convertExpandedButton = mutableStateOf(false)
     private val assignMode = mutableStateOf(GammaModes.SRGB)
     private val convertMode = mutableStateOf(GammaModes.SRGB)
     private val assignCustomValue = mutableStateOf(2.2f)
