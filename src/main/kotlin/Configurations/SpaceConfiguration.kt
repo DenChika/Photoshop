@@ -1,7 +1,9 @@
 package Configurations
 
+import App.HeaderDropdownButton
 import ColorSpaces.ColorSpace
 import Filtration.FiltrationMode
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
@@ -10,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 
 class SpaceConfiguration {
     val expanded = mutableStateOf(false)
+    val expandedButton = mutableStateOf(false)
     private val _selected = mutableStateOf(ColorSpace.RGB)
     var selected: ColorSpace
         get() {
@@ -22,6 +25,20 @@ class SpaceConfiguration {
             AppConfiguration.updateBitmap()
         }
 
+    @Composable
+    fun ShowTool() {
+        if (expandedButton.value) {
+            Box {
+                HeaderDropdownButton(
+                    onClick = {
+                        expanded.value = true
+                    },
+                    text = selected.GetName()
+                )
+                DropdownSpaces()
+            }
+        }
+    }
     @Composable
     fun DropdownSpaces() {
         DropdownMenu(
