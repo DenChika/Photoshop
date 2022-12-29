@@ -1,73 +1,82 @@
 package Scaling
 
-import ColorSpaces.ColorSpaceInstance
+import Configurations.AppConfiguration
 import Configurations.ImageConfiguration
-import androidx.compose.ui.geometry.Offset
 
 enum class ScalingMode {
     NearestNeighbor {
-        override fun Scale(
-            image: ImageConfiguration,
-            zoomPoint: Offset,
-            newWidth: Int,
-            newHeight: Int
-        ): ImageConfiguration {
-            TODO("Not yet implemented")
+        override fun Do(): ImageConfiguration {
+            return NearestNeighborAlgorithm.getNewImage(
+                AppConfiguration.Space.selected,
+                AppConfiguration.Image,
+                PositionFinder.getScaledFromOriginal(
+                    AppConfiguration.Scaling.Center,
+                    AppConfiguration.Image.width,
+                    AppConfiguration.Image.height,
+                    AppConfiguration.Scaling.Width,
+                    AppConfiguration.Scaling.Height
+                ),
+                AppConfiguration.Scaling.Width,
+                AppConfiguration.Scaling.Height
+            )
         }
 
     },
     Bilinear {
-        override fun Scale(
-            image: ImageConfiguration,
-            zoomPoint: Offset,
-            newWidth: Int,
-            newHeight: Int
-        ): ImageConfiguration {
-            TODO("Not yet implemented")
+        override fun Do(): ImageConfiguration {
+            return BilinearAlgorithm.getNewImage(
+                AppConfiguration.Space.selected,
+                AppConfiguration.Image,
+                PositionFinder.getScaledFromOriginal(
+                    AppConfiguration.Scaling.Center,
+                    AppConfiguration.Image.width,
+                    AppConfiguration.Image.height,
+                    AppConfiguration.Scaling.Width,
+                    AppConfiguration.Scaling.Height
+                ),
+                AppConfiguration.Scaling.Width,
+                AppConfiguration.Scaling.Height
+            )
         }
     },
     Lanczos3 {
-        override fun Scale(
-            image: ImageConfiguration,
-            zoomPoint: Offset,
-            newWidth: Int,
-            newHeight: Int
-        ): ImageConfiguration {
-            TODO("Not yet implemented")
+        override fun Do(): ImageConfiguration {
+            return Lanczos3Algorithm.getNewImage(
+                AppConfiguration.Space.selected,
+                AppConfiguration.Image,
+                PositionFinder.getScaledFromOriginal(
+                    AppConfiguration.Scaling.Center,
+                    AppConfiguration.Image.width,
+                    AppConfiguration.Image.height,
+                    AppConfiguration.Scaling.Width,
+                    AppConfiguration.Scaling.Height
+                ),
+                AppConfiguration.Scaling.Width,
+                AppConfiguration.Scaling.Height
+            )
         }
 
     },
     BCSplines {
-        override fun Scale(
-            image: ImageConfiguration,
-            zoomPoint: Offset,
-            newWidth: Int,
-            newHeight: Int
-        ): ImageConfiguration {
-            // Тут будет вызов метода из скелийлинга
-            TODO("Not yet implemented")
+        override fun Do(): ImageConfiguration {
+            return BCSplinesAlgorithm.getNewImage(
+                AppConfiguration.Space.selected,
+                AppConfiguration.Image,
+                PositionFinder.getScaledFromOriginal(
+                    AppConfiguration.Scaling.Center,
+                    AppConfiguration.Image.width,
+                    AppConfiguration.Image.height,
+                    AppConfiguration.Scaling.Width,
+                    AppConfiguration.Scaling.Height
+                ),
+                AppConfiguration.Scaling.Width,
+                AppConfiguration.Scaling.Height,
+                AppConfiguration.Scaling.BValue,
+                AppConfiguration.Scaling.CValue
+            )
         }
 
     };
-    abstract fun Scale(
-        image : ImageConfiguration,
-        zoomPoint : Offset,
-        newWidth: Int,
-        newHeight: Int
-    ) : ImageConfiguration
-    fun GetNeededPixels(
-        image: ImageConfiguration,
-        neededWidth : Int,
-        neededHeight : Int,
-        zoomPoint: Offset
-    ) : Array<ColorSpaceInstance> {
-        TODO("Not yet implemented")
-    }
-    fun GetNeededOriginalWidth() : Int {
-        TODO("Not yet implemented")
-    }
-    fun GetNeededOriginalHeight() : Int {
-        TODO("Not yet implemented")
-    }
 
+    abstract fun Do(): ImageConfiguration
 }
