@@ -13,6 +13,7 @@ class AppConfiguration() {
     val lineConfiguration = mutableStateOf(LineConfiguration())
     val ditheringConfiguration = mutableStateOf(DitheringConfiguration())
     val generationConfiguration = mutableStateOf(GenerationConfiguration())
+    val scalingConfiguration = mutableStateOf(ScalingConfiguration())
     val bitmap : MutableState<ImageBitmap?> = mutableStateOf(null)
     val hasContent =  mutableStateOf(false)
 
@@ -35,6 +36,7 @@ class AppConfiguration() {
         var Line : LineConfiguration = configuration.lineConfiguration.value
         var Dithering : DitheringConfiguration = configuration.ditheringConfiguration.value
         var Generation : GenerationConfiguration = configuration.generationConfiguration.value
+        var Scaling : ScalingConfiguration = configuration.scalingConfiguration.value
         fun HasContent() : Boolean {
             return configuration.hasContent.value
         }
@@ -54,6 +56,7 @@ class AppConfiguration() {
             Gamma.convertExpandedButton.value = false
             Line.lineSettingsExpandedButton.value = false
             Dithering.expandedButton.value = false
+            Scaling.expandedButton.value = false
         }
     }
 

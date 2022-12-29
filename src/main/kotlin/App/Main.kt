@@ -109,6 +109,12 @@ fun App() {
                                     expandedToolsActivity.value = false
                                 }
                             ) { Text("Dithering") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Scaling.expandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Scaling") }
                         }
                     }
                 }
@@ -140,6 +146,7 @@ fun App() {
                 }
                 AppConfiguration.Line.ShowTool()
                 AppConfiguration.Dithering.ShowTool()
+                AppConfiguration.Scaling.ShowTool()
                 AppConfiguration.Generation.ImageGeneration()
             }
         }
