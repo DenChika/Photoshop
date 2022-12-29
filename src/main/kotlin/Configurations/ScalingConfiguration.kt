@@ -1,0 +1,4 @@
+package Configurations
+
+class ScalingConfiguration {
+}
