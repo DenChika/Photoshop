@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 
 class DitheringConfiguration {
     val expanded = mutableStateOf(false)
+    val expandedButton = mutableStateOf(false)
     val expandedAlgorithms = mutableStateOf(false)
     val expandedTextField = mutableStateOf(false)
     val shadeBitesCount = mutableStateOf(8)
@@ -35,6 +36,12 @@ class DitheringConfiguration {
             shadeBitesCount.value = value
         }
 
+    @Composable
+    fun ShowTool() {
+        if (expandedButton.value) {
+            DitheringMenu()
+        }
+    }
     @Composable
     fun DitheringMenu() {
         Box {

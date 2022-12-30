@@ -3,6 +3,7 @@ package Configurations
 import App.HeaderDropdownButton
 import App.TextFieldActivity.LineSettingsTextField
 import LinePainterHelpers.LineSettings
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
@@ -14,6 +15,7 @@ class LineConfiguration {
     val colorExpanded = mutableStateOf(false)
     val saturationExpanded = mutableStateOf(false)
     val thicknessExpanded = mutableStateOf(false)
+    val lineSettingsExpandedButton = mutableStateOf(false)
     private val menuExpanded = mutableStateOf(false)
     private val color = mutableStateOf(floatArrayOf(0f, 0f, 0f))
     private val maxSaturation = mutableStateOf(1.0f)
@@ -87,6 +89,30 @@ class LineConfiguration {
         endOffset.value = Offset(0f, 0f)
         eventStarted.value = false
         thickness.value = 1
+    }
+    @Composable
+    fun ShowTool() {
+        if (lineSettingsExpandedButton.value) {
+            Box {
+                DropdownLineSettings()
+            }
+            if (colorExpanded.value) {
+                AppConfiguration.Component.selected.GetLineColorTextFields()
+            }
+
+            if (saturationExpanded.value) {
+                LineSettingsTextField(
+                    settings = LineSettings.Saturation,
+                    label = "Saturation"
+                )
+            }
+            if (thicknessExpanded.value) {
+                LineSettingsTextField(
+                    settings = LineSettings.Thickness,
+                    label = "Thickness"
+                )
+            }
+        }
     }
     @Composable
     fun DropdownLineSettings() {
