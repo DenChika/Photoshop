@@ -4,9 +4,12 @@ import ColorSpaces.ColorSpaceInstance
 import Configurations.AppConfiguration
 import Configurations.ImageConfiguration
 import Formats.Format
+import Gammas.GammaModes
 import Tools.HeaderDiscrepancyException
 import Tools.PNGException
 import java.util.zip.Inflater
+import kotlin.math.abs
+import kotlin.math.floor
 import kotlin.math.pow
 
 class PNGParser {
@@ -18,6 +21,7 @@ class PNGParser {
         private const val widthHeightSize = 4
         private const val headerLength = 13
         private const val paletteBytesPerColor = 3
+        private const val gammaLength = 4
         private val power256 = intArrayOf(256 * 256 * 256, 256 * 256, 256, 1)
 
         fun Parse(byteArray: ByteArray): ImageConfiguration {
@@ -28,6 +32,7 @@ class PNGParser {
             var pngHeader: PNGHeader? = null
             var palette: ArrayList<FloatArray>
             val dataIndices: ArrayList<Int> = ArrayList()
+            var gamma: Float
 
             while (true) {
 
@@ -64,7 +69,13 @@ class PNGParser {
                             val pixels = readData(byteArray, dataIndices, pngHeader)
 
                             if (pngHeader != null) {
-                                return ImageConfiguration(Format.PNG, pngHeader.getWidth(),pngHeader.getHeight(), 255, pixels)
+                                return ImageConfiguration(
+                                    Format.PNG,
+                                    pngHeader.getWidth(),
+                                    pngHeader.getHeight(),
+                                    255,
+                                    pixels
+                                )
                             } else {
                                 throw PNGException.wrongFormat("IHDR is missing.")
                             }
@@ -81,10 +92,20 @@ class PNGParser {
                             palette = readPalette(byteArray, index, pngHeader)
                             paletteRead = true
                         }
+                    } else if (byteArray[index].toUByte().toInt().toChar() == 'g') {
+                        if (byteArray[index + 1].toUByte().toInt().toChar() == 'A' &&
+                            byteArray[index + 2].toUByte().toInt().toChar() == 'M' &&
+                            byteArray[index + 3].toUByte().toInt().toChar() == 'A'
+                        ) {
+                            gamma = readGamma(byteArray, index)
+                            AppConfiguration.Gamma.AssignMode = GammaModes.Custom
+                            AppConfiguration.Gamma.AssignCustomValue = 1 / gamma
+                        }
                     }
                 } catch (e: IndexOutOfBoundsException) {
                     throw PNGException.wrongFormat("There is no IEND.")
-                } catch (e: PNGException) {
+                }
+                catch (e: PNGException) {
                     throw e
                 } catch (e: Exception) {
                     throw PNGException.wrongFormat("Unknown error. ${e.printStackTrace()}")
@@ -166,7 +187,11 @@ class PNGParser {
                 val color = FloatArray(paletteBytesPerColor)
 
                 for (j in 0 until paletteBytesPerColor) {
-                    color[j] = (byteArray[index + i * paletteBytesPerColor + j].toUByte().toInt() / colorDepth).coerceIn(0.0f, 1.0f)
+                    color[j] =
+                        (byteArray[index + i * paletteBytesPerColor + j].toUByte().toInt() / colorDepth).coerceIn(
+                            0.0f,
+                            1.0f
+                        )
                 }
 
                 palette.add(color)
@@ -175,7 +200,11 @@ class PNGParser {
             return palette
         }
 
-        fun readData(byteArray: ByteArray, dataIndices: ArrayList<Int>, pngHeader: PNGHeader?): Array<ColorSpaceInstance> {
+        fun readData(
+            byteArray: ByteArray,
+            dataIndices: ArrayList<Int>,
+            pngHeader: PNGHeader?
+        ): Array<ColorSpaceInstance> {
             if (pngHeader == null) {
                 throw PNGException.wrongFormat("IHDR is missing.")
             }
@@ -213,30 +242,136 @@ class PNGParser {
 
             val colorsByPixel = if (pngHeader.getColorType() == 0) 1 else 3
             val maxShade = 255
-
             for (posY in 0 until height) {
                 for (posX in 0 until width) {
-                    val shadeFirst = uncompressedDataTotal[(1 + posY) + posY * width * colorsByPixel + posX * colorsByPixel].toUByte().toFloat()
+                    val shadeFirst: Float
+                    val shadeSecond: Float
+                    val shadeThird: Float
+                    if (colorsByPixel == 3) {
+                        shadeFirst = uncompressedDataTotal[(1 + posY) + posY * width * colorsByPixel + posX * colorsByPixel].toUByte().toFloat()
+                        shadeSecond = uncompressedDataTotal[(1 + posY) + posY * width * colorsByPixel + posX * colorsByPixel + 1].toUByte().toFloat()
+                        shadeThird = uncompressedDataTotal[(1 + posY) + posY * width * colorsByPixel + posX * colorsByPixel + 2].toUByte().toFloat()
+                    } else {
+                        shadeFirst = uncompressedDataTotal[(1 + posY) + posY * width * colorsByPixel + posX * colorsByPixel].toUByte().toFloat()
+                        shadeSecond = uncompressedDataTotal[(1 + posY) + posY * width * colorsByPixel + posX * colorsByPixel].toUByte().toFloat()
+                        shadeThird = uncompressedDataTotal[(1 + posY) + posY * width * colorsByPixel + posX * colorsByPixel].toUByte().toFloat()
+                    }
 
-                    val shadeSecond = uncompressedDataTotal[(1 + posY) + posY * width * colorsByPixel + posX * colorsByPixel + 1].toUByte().toFloat()
-
-                    val shadeThird = uncompressedDataTotal[(1 + posY) + posY * width * colorsByPixel + posX * colorsByPixel + 2].toUByte().toFloat()
-
-                    if (shadeThird > maxShade || shadeSecond > maxShade || shadeFirst > maxShade)
-                    {
+                    if (shadeThird > maxShade || shadeSecond > maxShade || shadeFirst > maxShade) {
                         throw HeaderDiscrepancyException.wrongMaxShade()
                     }
-                    val finalShadeFirst = shadeFirst / maxShade
-                    val finalShadeSecond = shadeSecond / maxShade
-                    val finalShadeThird = shadeThird / maxShade
+                    val finalShadeFirst = shadeFirst % 256
+                    val finalShadeSecond = shadeSecond % 256
+                    val finalShadeThird = shadeThird % 256
 
                     pixels[posY * width + posX].firstShade = finalShadeFirst
                     pixels[posY * width + posX].secondShade = finalShadeSecond
                     pixels[posY * width + posX].thirdShade = finalShadeThird
+
+                    val raw = Raw(pixels, posX, posY, width)
+                    val prior = Prior(pixels, posX, posY, width)
+                    val rawPrior = RawPrior(pixels, posX, posY, width)
+
+                    if (uncompressedData[posY + posY * width * colorsByPixel].toUByte().toInt() == 1) {
+                        pixels[posY * width + posX].firstShade += raw[0]
+                        pixels[posY * width + posX].secondShade += raw[1]
+                        pixels[posY * width + posX].thirdShade += raw[2]
+                    } else if (uncompressedData[posY + posY * width * colorsByPixel].toUByte().toInt() == 2) {
+                        pixels[posY * width + posX].firstShade += prior[0]
+                        pixels[posY * width + posX].secondShade += prior[1]
+                        pixels[posY * width + posX].thirdShade += prior[2]
+                    } else if (uncompressedData[posY + posY * width * colorsByPixel].toUByte().toInt() == 3) {
+                        pixels[posY * width + posX].firstShade += floor((raw[0] + prior[0]) / 2)
+                        pixels[posY * width + posX].secondShade += floor((raw[1] + prior[1]) / 2)
+                        pixels[posY * width + posX].thirdShade += floor((raw[2] + prior[2]) / 2)
+                    } else if (uncompressedData[posY + posY * width * colorsByPixel].toUByte().toInt() == 4) {
+                        pixels[posY * width + posX].firstShade += PaethPredictor(raw[0], prior[0], rawPrior[0])
+                        pixels[posY * width + posX].secondShade += PaethPredictor(raw[1], prior[1], rawPrior[1])
+                        pixels[posY * width + posX].thirdShade += PaethPredictor(raw[2], prior[2], rawPrior[2])
+                    }
+
+                    if (pixels[posY * width + posX].firstShade > maxShade) {
+                        pixels[posY * width + posX].firstShade %= 256
+                    }
+                    if (pixels[posY * width + posX].secondShade > maxShade) {
+                        pixels[posY * width + posX].secondShade %= 256
+                    }
+                    if (pixels[posY * width + posX].thirdShade > maxShade) {
+                        pixels[posY * width + posX].thirdShade %= 256
+                    }
                 }
             }
 
+            for (i in pixels.indices) {
+                pixels[i].firstShade /= 255
+                pixels[i].secondShade /= 255
+                pixels[i].thirdShade /= 255
+            }
+
             return pixels
+        }
+
+        fun Raw(pixels: Array<ColorSpaceInstance>, x: Int, y: Int, width: Int): FloatArray {
+            if (x - 1 < 0) {
+                return floatArrayOf(0f, 0f, 0f)
+            }
+
+            return floatArrayOf(
+                pixels[y * width + x - 1].firstShade,
+                pixels[y * width + x - 1].secondShade,
+                pixels[y * width + x - 1].thirdShade
+            )
+        }
+
+        fun Prior(pixels: Array<ColorSpaceInstance>, x: Int, y: Int, width: Int): FloatArray {
+            if (y - 1 < 0) {
+                return floatArrayOf(0f, 0f, 0f)
+            }
+
+            return floatArrayOf(
+                pixels[(y - 1) * width + x].firstShade,
+                pixels[(y - 1) * width + x].secondShade,
+                pixels[(y - 1) * width + x].thirdShade
+            )
+        }
+
+        fun RawPrior(pixels: Array<ColorSpaceInstance>, x: Int, y: Int, width: Int): FloatArray {
+            if (y - 1 < 0 || x - 1 < 0) {
+                return floatArrayOf(0f, 0f, 0f)
+            }
+
+            return floatArrayOf(
+                pixels[(y - 1) * width + x - 1].firstShade,
+                pixels[(y - 1) * width + x - 1].secondShade,
+                pixels[(y - 1) * width + x - 1].thirdShade
+            )
+        }
+
+        fun PaethPredictor(a: Float, b: Float, c: Float): Float {
+            // a = left, b = above, c = upper left
+            val p = a + b - c        //initial estimate
+            val pa = abs(p - a)    // distances to a, b, c
+            val pb = abs(p - b)
+            val pc = abs(p - c)
+            //return nearest of a, b, c,
+            // breaking ties in order a, b, c.
+            return if (pa <= pb && pa <= pc)
+                a
+            else if (pb <= pc)
+                b
+            else c
+        }
+
+        fun readGamma(byteArray: ByteArray, currentIndex: Int): Float {
+            val index = currentIndex + chunkNameSize
+
+            val gammaBytes = byteArray.slice(index until index + gammaLength)
+            var gamma = 0
+            for (i in 0 until chunkLengthSize) {
+                gamma += gammaBytes[i].toUByte().toInt() * power256[i]
+            }
+
+            return gamma / 100000f
         }
     }
 }

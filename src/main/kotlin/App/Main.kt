@@ -2,12 +2,11 @@
 
 import App.HeaderButton
 import App.HeaderDropdownButton
-import App.TextFieldActivity.GammaTextField
 import App.OpenActivity
 import App.SaveActivity
 import App.TextFieldActivity.CustomTextField
+import App.TextFieldActivity.GammaTextField
 import Configurations.AppConfiguration
-import Filtration.FiltrationMode
 import Formats.Format
 import Gammas.GammaModes
 import Gammas.GammaPurpose
@@ -15,7 +14,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -213,7 +214,7 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "Compose for Desktop",
-        state = rememberWindowState(width = 700.dp, height = 700.dp)
+        state = rememberWindowState(width = 1600.dp, height = 900.dp)
     ) {
         App()
     }
