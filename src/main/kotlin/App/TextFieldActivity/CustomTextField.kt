@@ -67,7 +67,7 @@ fun CustomTextField(
                      onClickFunc(text.value)
             },
         ),
-        isError = false,
+        isError = text.value.toFloatOrNull() == null,
         colors = TextFieldDefaults.outlinedTextFieldColors(
             backgroundColor = Color.White,
             errorBorderColor = Color.Red,

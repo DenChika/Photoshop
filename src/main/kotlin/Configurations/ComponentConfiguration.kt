@@ -1,7 +1,7 @@
 package Configurations
 
 import App.HeaderDropdownButton
-import Filtration.FiltrationMode
+import App.Components.ComponentMode
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -12,8 +12,8 @@ import androidx.compose.runtime.mutableStateOf
 class ComponentConfiguration {
     val expanded = mutableStateOf(false)
     val expandedButton = mutableStateOf(false)
-    private var _selected = mutableStateOf(FiltrationMode.ALL)
-    var selected: FiltrationMode
+    private var _selected = mutableStateOf(ComponentMode.ALL)
+    var selected: ComponentMode
         get() {
             return _selected.value
         }
@@ -43,21 +43,21 @@ class ComponentConfiguration {
             onDismissRequest = { expanded.value = false }
         ) {
             DropdownMenuItem(onClick = {
-                selected = FiltrationMode.ALL
+                selected = ComponentMode.ALL
                 expanded.value = false
-            }) { Text(FiltrationMode.ALL.GetName()) }
+            }) { Text(ComponentMode.ALL.GetName()) }
             DropdownMenuItem(onClick = {
-                selected = FiltrationMode.OnlyFirst
+                selected = ComponentMode.OnlyFirst
                 expanded.value = false
-            }) { Text(FiltrationMode.OnlyFirst.GetName()) }
+            }) { Text(ComponentMode.OnlyFirst.GetName()) }
             DropdownMenuItem(onClick = {
-                selected = FiltrationMode.OnlySecond
+                selected = ComponentMode.OnlySecond
                 expanded.value = false
-            }) { Text(FiltrationMode.OnlySecond.GetName()) }
+            }) { Text(ComponentMode.OnlySecond.GetName()) }
             DropdownMenuItem(onClick = {
-                selected = FiltrationMode.OnlyThird
+                selected = ComponentMode.OnlyThird
                 expanded.value = false
-            }) { Text(FiltrationMode.OnlyThird.GetName()) }
+            }) { Text(ComponentMode.OnlyThird.GetName()) }
         }
     }
 }

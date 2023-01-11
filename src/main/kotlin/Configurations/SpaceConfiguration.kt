@@ -2,7 +2,7 @@ package Configurations
 
 import App.HeaderDropdownButton
 import ColorSpaces.ColorSpace
-import Filtration.FiltrationMode
+import App.Components.ComponentMode
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -21,7 +21,7 @@ class SpaceConfiguration {
         set(value) {
             _selected.value = value
             AppConfiguration.Image.changeColorSpace(value)
-            AppConfiguration.Component.selected = FiltrationMode.ALL
+            AppConfiguration.Component.selected = ComponentMode.ALL
             AppConfiguration.updateBitmap()
         }
 
