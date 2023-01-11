@@ -38,3 +38,9 @@
 ![image](https://user-images.githubusercontent.com/79001610/211904921-194bc49e-8e69-4cdd-8bd5-dfcf3a356064.png)
 
 ![image](https://user-images.githubusercontent.com/79001610/211904957-fe1d6a43-8208-4056-8971-dd23e497b355.png)
+
+[Тестирование (собака)](content/dogCAS.jpg)
+
+[Тестирование (котёнок)](content/kittiesCAS.jpg)
+
+[Тестирование (пейзаж)](content/mainCAS.jpg)
