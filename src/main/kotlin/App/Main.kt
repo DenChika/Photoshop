@@ -7,7 +7,6 @@ import App.OpenActivity
 import App.SaveActivity
 import App.TextFieldActivity.CustomTextField
 import Configurations.AppConfiguration
-import Filtration.FiltrationMode
 import Formats.Format
 import Gammas.GammaModes
 import Gammas.GammaPurpose
@@ -68,7 +67,7 @@ fun App() {
                     Box {
                         val expandedToolsActivity = remember { mutableStateOf(false) }
                         HeaderButton(
-                            onClick = { expandedToolsActivity.value = true; AppConfiguration.HideTextFields() },
+                            onClick = { expandedToolsActivity.value = true; AppConfiguration.HideButtons() },
                             text = "Tools"
                         )
                         DropdownMenu(
@@ -119,6 +118,12 @@ fun App() {
                                     expandedToolsActivity.value = false
                                 }
                             ) { Text("Scaling") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Filtration.expandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Filtration") }
                         }
                     }
                 }
@@ -190,6 +195,7 @@ fun App() {
                         onClickFunc = {}
                     )
                 }
+                AppConfiguration.Filtration.ShowTool()
                 AppConfiguration.Generation.ImageGeneration()
             }
         }
