@@ -47,7 +47,7 @@ fun App() {
                 Box {
                     val expandedFilesActivity = remember { mutableStateOf(false) }
                     HeaderButton(
-                        onClick = { expandedFilesActivity.value = true },
+                        onClick = { expandedFilesActivity.value = true; AppConfiguration.HideButtons() },
                         text = "File"
                     )
                     DropdownMenu(

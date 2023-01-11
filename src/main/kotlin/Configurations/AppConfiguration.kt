@@ -56,6 +56,7 @@ class AppConfiguration() {
             Gamma.convertExpandedButton.value = false
             Line.lineSettingsExpandedButton.value = false
             Dithering.expandedButton.value = false
+            Filtration.expandedButton.value = false
         }
     }
 
