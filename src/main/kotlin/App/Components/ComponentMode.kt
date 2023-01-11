@@ -1,4 +1,4 @@
-package Filtration
+package App.Components
 
 import ColorSpaces.ColorSpaceInstance
 import Configurations.AppConfiguration
@@ -7,7 +7,7 @@ import Parsers.BytesParser
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 
-enum class FiltrationMode {
+enum class ComponentMode {
     ALL {
         override fun GetRGBPixelValues(pixel: ColorSpaceInstance): FloatArray {
             return pixel.GetRGBPixelValue(isFirstNeeded = true, isSecondNeeded = true, isThirdNeeded = true)

@@ -1,9 +1,11 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 
 import App.HeaderButton
+import App.HeaderDropdownButton
 import App.TextFieldActivity.GammaTextField
 import App.OpenActivity
 import App.SaveActivity
+import App.TextFieldActivity.CustomTextField
 import Configurations.AppConfiguration
 import Formats.Format
 import Gammas.GammaModes
@@ -64,7 +66,7 @@ fun App() {
                     Box {
                         val expandedToolsActivity = remember { mutableStateOf(false) }
                         HeaderButton(
-                            onClick = { expandedToolsActivity.value = true; AppConfiguration.HideTextFields() },
+                            onClick = { expandedToolsActivity.value = true; AppConfiguration.HideButtons() },
                             text = "Tools"
                         )
                         DropdownMenu(
@@ -115,6 +117,12 @@ fun App() {
                                     expandedToolsActivity.value = false
                                 }
                             ) { Text("Scaling") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Filtration.expandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Filtration") }
                         }
                     }
                 }
@@ -147,6 +155,7 @@ fun App() {
                 AppConfiguration.Line.ShowTool()
                 AppConfiguration.Dithering.ShowTool()
                 AppConfiguration.Scaling.ShowTool()
+                AppConfiguration.Filtration.ShowTool()
                 AppConfiguration.Generation.ImageGeneration()
             }
         }

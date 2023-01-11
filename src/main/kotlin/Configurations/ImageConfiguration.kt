@@ -72,7 +72,9 @@ class ImageConfiguration(
         AppConfiguration.Dithering.selected.Use(pixels, AppConfiguration.Dithering.ShadeBitesCount)
     }
 
-
+    fun useFiltration() {
+        AppConfiguration.Filtration.selected.Apply(pixels)
+    }
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     fun ImageView() {

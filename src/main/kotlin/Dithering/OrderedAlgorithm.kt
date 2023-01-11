@@ -18,8 +18,7 @@ class OrderedAlgorithm : IDitheringAlgorithm {
         )
 
         val width = AppConfiguration.Image.width
-        val height = AppConfiguration.Image.height
-        val r = 1f / 3f
+        val r = 1f / shapeBitsCount
 
         for (y in 0 until AppConfiguration.Image.height) {
             for (x in 0 until AppConfiguration.Image.width) {
@@ -28,9 +27,12 @@ class OrderedAlgorithm : IDitheringAlgorithm {
                 val mapX = x % 8
                 val mapY = y % 8
 
-                val midR = oldR + r * (thresholdMap[mapY * 8 + mapX] / 64 - 0.5f)
-                val midG = oldG + r * (thresholdMap[mapY * 8 + mapX] / 64 - 0.5f)
-                val midB = oldB + r * (thresholdMap[mapY * 8 + mapX] / 64 - 0.5f)
+                val norm = 0.5f
+                val matrixCoefficient = 64
+
+                val midR = oldR + r * (thresholdMap[mapY * 8 + mapX] / matrixCoefficient - norm)
+                val midG = oldG + r * (thresholdMap[mapY * 8 + mapX] / matrixCoefficient - norm)
+                val midB = oldB + r * (thresholdMap[mapY * 8 + mapX] / matrixCoefficient - norm)
 
                 val newColor = DitheringSubsidiaryFunctions.findClosestPaletteColor(midR, midG, midB, shapeBitsCount)
 
