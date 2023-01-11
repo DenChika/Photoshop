@@ -12,3 +12,5 @@
 ![image](https://user-images.githubusercontent.com/79001610/211899265-fe4a04a9-8d7b-44c9-ac39-3d01dedc82d8.png)
 
 Что и будет являться новым значением пикселя
+
+[Тестирование (собака)](content/dogSobel.jpg)
