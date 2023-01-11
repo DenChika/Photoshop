@@ -5,4 +5,4 @@
 
 Значение порога вводится пользователем
 
-[Тестирование](content/threshold.png)
+[Тестирование](content/threshold.jpg)
