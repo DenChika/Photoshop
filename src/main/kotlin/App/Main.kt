@@ -62,7 +62,6 @@ fun App() {
                         ) { Text("Save") }
                     }
                 }
-                val expandedScaling = remember { mutableStateOf(false) }
                 if (AppConfiguration.HasContent()) {
                     Box {
                         val expandedToolsActivity = remember { mutableStateOf(false) }
@@ -114,7 +113,7 @@ fun App() {
                             ) { Text("Dithering") }
                             DropdownMenuItem(
                                 onClick = {
-                                    expandedScaling.value = true
+                                    AppConfiguration.Scaling.expandedButton.value = true
                                     expandedToolsActivity.value = false
                                 }
                             ) { Text("Scaling") }
@@ -155,46 +154,7 @@ fun App() {
                 }
                 AppConfiguration.Line.ShowTool()
                 AppConfiguration.Dithering.ShowTool()
-                if (expandedScaling.value) {
-                    val expandedAlgorithm = remember { mutableStateOf(false) }
-                    Box {
-                        HeaderDropdownButton(
-                            onClick = {
-                                expandedAlgorithm.value = true
-                            },
-                            text = "Scaling algorithm"
-                        )
-                        DropdownMenu(
-                            expanded = expandedAlgorithm.value,
-                            onDismissRequest = { expandedAlgorithm.value = false }
-                        ) {
-                            DropdownMenuItem(onClick = {
-                                expandedAlgorithm.value = false
-                            }) { Text("Nearest neighbour") }
-                            DropdownMenuItem(onClick = {
-                                expandedAlgorithm.value = false
-                            }) { Text("Bilinear") }
-                            DropdownMenuItem(onClick = {
-                                expandedAlgorithm.value = false
-                            }) { Text("Lanczos3") }
-                            DropdownMenuItem(onClick = {
-                                expandedAlgorithm.value = false
-                            }) { Text("BC-splines") }
-                        }
-                    }
-                    CustomTextField(
-                        label = "Set width",
-                        placeholder = "Your value",
-                        defaultValue = AppConfiguration.Image.width.toString(),
-                        onClickFunc = {}
-                    )
-                    CustomTextField(
-                        label = "Set height",
-                        placeholder = "Your value",
-                        defaultValue = AppConfiguration.Image.height.toString(),
-                        onClickFunc = {}
-                    )
-                }
+                AppConfiguration.Scaling.ShowTool()
                 AppConfiguration.Filtration.ShowTool()
                 AppConfiguration.Generation.ImageGeneration()
             }
