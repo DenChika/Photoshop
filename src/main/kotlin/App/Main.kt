@@ -12,8 +12,15 @@ import Gammas.GammaModes
 import Gammas.GammaPurpose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.Card
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,7 +56,7 @@ fun App() {
                 Box {
                     val expandedFilesActivity = remember { mutableStateOf(false) }
                     HeaderButton(
-                        onClick = { expandedFilesActivity.value = true },
+                        onClick = { expandedFilesActivity.value = true; AppConfiguration.HideButtons() },
                         text = "File"
                     )
                     DropdownMenu(
@@ -64,12 +71,11 @@ fun App() {
                         ) { Text("Save") }
                     }
                 }
-                val expandedScaling = remember { mutableStateOf(false) }
                 if (AppConfiguration.HasContent()) {
                     Box {
                         val expandedToolsActivity = remember { mutableStateOf(false) }
                         HeaderButton(
-                            onClick = { expandedToolsActivity.value = true; AppConfiguration.HideTextFields() },
+                            onClick = { expandedToolsActivity.value = true; AppConfiguration.HideButtons() },
                             text = "Tools"
                         )
                         DropdownMenu(
@@ -116,10 +122,23 @@ fun App() {
                             ) { Text("Dithering") }
                             DropdownMenuItem(
                                 onClick = {
-                                    expandedScaling.value = true
+                                    AppConfiguration.Scaling.expandedButton.value = true
                                     expandedToolsActivity.value = false
                                 }
                             ) { Text("Scaling") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Filtration.expandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Filtration") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Histogram.updateInfo()
+                                    AppConfiguration.Histogram.expandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Histograms") }
                         }
                     }
                 }
@@ -151,61 +170,24 @@ fun App() {
                 }
                 AppConfiguration.Line.ShowTool()
                 AppConfiguration.Dithering.ShowTool()
-                if (expandedScaling.value) {
-                    val expandedAlgorithm = remember { mutableStateOf(false) }
-                    Box {
-                        HeaderDropdownButton(
-                            onClick = {
-                                expandedAlgorithm.value = true
-                            },
-                            text = "Scaling algorithm"
-                        )
-                        DropdownMenu(
-                            expanded = expandedAlgorithm.value,
-                            onDismissRequest = { expandedAlgorithm.value = false }
-                        ) {
-                            DropdownMenuItem(onClick = {
-                                expandedAlgorithm.value = false
-                            }) { Text("Nearest neighbour") }
-                            DropdownMenuItem(onClick = {
-                                expandedAlgorithm.value = false
-                            }) { Text("Bilinear") }
-                            DropdownMenuItem(onClick = {
-                                expandedAlgorithm.value = false
-                            }) { Text("Lanczos3") }
-                            DropdownMenuItem(onClick = {
-                                expandedAlgorithm.value = false
-                            }) { Text("BC-splines") }
-                        }
-                    }
-                    CustomTextField(
-                        label = "Set width",
-                        placeholder = "Your value",
-                        defaultValue = AppConfiguration.Image.width.toString(),
-                        onClickFunc = {}
-                    )
-                    CustomTextField(
-                        label = "Set height",
-                        placeholder = "Your value",
-                        defaultValue = AppConfiguration.Image.height.toString(),
-                        onClickFunc = {}
-                    )
-                }
+                AppConfiguration.Scaling.ShowTool()
+                AppConfiguration.Filtration.ShowTool()
+                AppConfiguration.Histogram.ShowTool()
                 AppConfiguration.Generation.ImageGeneration()
             }
-        }
-
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            if (AppConfiguration.HasContent()) {
-                Card(
-                    elevation = 10.dp
-                ) {
-                    AppConfiguration.Image.ImageView()
+            Box(
+                modifier = Modifier.fillMaxWidth().height(800.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (AppConfiguration.HasContent()) {
+                    Card(
+                        elevation = 10.dp
+                    ) {
+                        AppConfiguration.Image.ImageView()
+                    }
                 }
             }
+            AppConfiguration.Histogram.ShowHistograms()
         }
     }
 }
