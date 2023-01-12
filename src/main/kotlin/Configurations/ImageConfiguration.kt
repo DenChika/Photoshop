@@ -62,6 +62,10 @@ class ImageConfiguration(
         return pixels[x + y * width]
     }
 
+    fun setPixel(x : Int, y : Int, value: FloatArray) {
+        pixels[x + y * width].UpdateValues(value)
+    }
+
     fun changeColorSpace(colorSpace: ColorSpace) {
         for (pixel in pixels) {
             pixel.Kind = colorSpace
