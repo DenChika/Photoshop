@@ -37,6 +37,13 @@ enum class ComponentMode {
                 AppConfiguration.Line.GetThirdShadeTextField()
             }
         }
+
+        @Composable
+        override fun GetHistograms() {
+            AppConfiguration.Histogram.First()
+            AppConfiguration.Histogram.Second()
+            AppConfiguration.Histogram.Third()
+        }
     },
     OnlyFirst {
         override fun GetRGBPixelValues(pixel: ColorSpaceInstance): FloatArray {
@@ -66,6 +73,11 @@ enum class ComponentMode {
         @Composable
         override fun GetLineColorTextFields() {
             AppConfiguration.Line.GetFirstShadeTextField()
+        }
+
+        @Composable
+        override fun GetHistograms() {
+            AppConfiguration.Histogram.First()
         }
     },
     OnlySecond {
@@ -97,6 +109,11 @@ enum class ComponentMode {
         override fun GetLineColorTextFields() {
             AppConfiguration.Line.GetSecondShadeTextField()
         }
+
+        @Composable
+        override fun GetHistograms() {
+            AppConfiguration.Histogram.Second()
+        }
     },
     OnlyThird {
         override fun GetRGBPixelValues(pixel: ColorSpaceInstance): FloatArray {
@@ -127,6 +144,11 @@ enum class ComponentMode {
         override fun GetLineColorTextFields() {
             AppConfiguration.Line.GetThirdShadeTextField()
         }
+
+        @Composable
+        override fun GetHistograms() {
+            AppConfiguration.Histogram.Third()
+        }
     };
 
     abstract fun GetRGBPixelValues(pixel: ColorSpaceInstance): FloatArray
@@ -135,6 +157,8 @@ enum class ComponentMode {
     abstract fun GetFormat(): Format
     @Composable
     abstract fun GetLineColorTextFields()
+    @Composable
+    abstract fun GetHistograms()
     fun GetName(): String {
         return this.name
     }

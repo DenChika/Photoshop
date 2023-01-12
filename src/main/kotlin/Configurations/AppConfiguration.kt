@@ -15,6 +15,7 @@ class AppConfiguration() {
     val generationConfiguration = mutableStateOf(GenerationConfiguration())
     val scalingConfiguration = mutableStateOf(ScalingConfiguration())
     val filtrationConfiguration = mutableStateOf(FiltrationConfiguration())
+    val histogramConfiguration = mutableStateOf(HistogramConfiguration())
     val bitmap : MutableState<ImageBitmap?> = mutableStateOf(null)
     val hasContent =  mutableStateOf(false)
 
@@ -39,6 +40,7 @@ class AppConfiguration() {
         var Generation : GenerationConfiguration = configuration.generationConfiguration.value
         var Filtration : FiltrationConfiguration = configuration.filtrationConfiguration.value
         var Scaling : ScalingConfiguration = configuration.scalingConfiguration.value
+        var Histogram : HistogramConfiguration = configuration.histogramConfiguration.value
         fun HasContent() : Boolean {
             return configuration.hasContent.value
         }
@@ -59,6 +61,7 @@ class AppConfiguration() {
             Line.lineSettingsExpandedButton.value = false
             Dithering.expandedButton.value = false
             Scaling.expandedButton.value = false
+            Histogram.expandedButton.value = false
         }
     }
 

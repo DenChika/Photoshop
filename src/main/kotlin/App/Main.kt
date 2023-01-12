@@ -1,20 +1,27 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 
 import App.HeaderButton
-import App.HeaderDropdownButton
-import App.TextFieldActivity.GammaTextField
 import App.OpenActivity
 import App.SaveActivity
-import App.TextFieldActivity.CustomTextField
+import App.TextFieldActivity.GammaTextField
 import Configurations.AppConfiguration
 import Formats.Format
 import Gammas.GammaModes
 import Gammas.GammaPurpose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.Card
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -123,6 +130,13 @@ fun App() {
                                     expandedToolsActivity.value = false
                                 }
                             ) { Text("Filtration") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Histogram.updateInfo()
+                                    AppConfiguration.Histogram.expandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Histograms") }
                         }
                     }
                 }
@@ -156,21 +170,22 @@ fun App() {
                 AppConfiguration.Dithering.ShowTool()
                 AppConfiguration.Scaling.ShowTool()
                 AppConfiguration.Filtration.ShowTool()
+                AppConfiguration.Histogram.ShowTool()
                 AppConfiguration.Generation.ImageGeneration()
             }
-        }
-
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            if (AppConfiguration.HasContent()) {
-                Card(
-                    elevation = 10.dp
-                ) {
-                    AppConfiguration.Image.ImageView()
+            Box(
+                modifier = Modifier.fillMaxWidth().height(800.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (AppConfiguration.HasContent()) {
+                    Card(
+                        elevation = 10.dp
+                    ) {
+                        AppConfiguration.Image.ImageView()
+                    }
                 }
             }
+            AppConfiguration.Histogram.ShowHistograms()
         }
     }
 }
