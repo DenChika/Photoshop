@@ -15,7 +15,7 @@ class P5 : IFormat {
         try {
             for (posY in 0 until height) {
                 for (posX in 0 until width) {
-                    val shade = (if (byteArray[posY * width + posX] < 0) byteArray[posY * width + posX] + 256 else byteArray[posY * width + posX]).toFloat()
+                    val shade =  byteArray[posY * width + posX].toUByte().toFloat()
                     if (shade > maxShade)
                     {
                         throw HeaderDiscrepancyException.wrongMaxShade()

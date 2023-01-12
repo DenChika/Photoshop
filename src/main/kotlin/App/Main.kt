@@ -1,8 +1,10 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 
 import App.HeaderButton
+import App.HeaderDropdownButton
 import App.OpenActivity
 import App.SaveActivity
+import App.TextFieldActivity.CustomTextField
 import App.TextFieldActivity.GammaTextField
 import Configurations.AppConfiguration
 import Formats.Format
@@ -194,7 +196,7 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "Compose for Desktop",
-        state = rememberWindowState(width = 700.dp, height = 700.dp)
+        state = rememberWindowState(width = 1600.dp, height = 900.dp)
     ) {
         App()
     }

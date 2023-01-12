@@ -2,15 +2,12 @@ package Configurations
 
 import App.GammaActivity.GammaActionsDropdownButton
 import App.HeaderDropdownButton
-import App.TextFieldActivity.GammaTextField
 import Gammas.GammaModes
 import Gammas.GammaPurpose
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 
 class GammaConfiguration {
     val assignTextFieldHidden = mutableStateOf(true)
@@ -36,7 +33,9 @@ class GammaConfiguration {
         }
         set(value) {
             assignMode.value = value
-            AppConfiguration.updateBitmap()
+            if (AppConfiguration.Image.width != 0) {
+                AppConfiguration.updateBitmap()
+            }
         }
     var ConvertMode: GammaModes
         get() {
@@ -51,7 +50,9 @@ class GammaConfiguration {
         }
         set(value) {
             assignCustomValue.value = value
-            AppConfiguration.updateBitmap()
+            if (AppConfiguration.Image.width != 0) {
+                AppConfiguration.updateBitmap()
+            }
         }
 
     fun ResetSettings() {

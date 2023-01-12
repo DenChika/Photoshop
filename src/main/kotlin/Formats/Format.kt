@@ -23,6 +23,16 @@ enum class Format {
             return P6().HandleReader(width, height, maxShade, body)
         }
 
+    },
+    PNG {
+        override fun write(width: Int, height: Int, maxShade: Int, pixels: Array<ColorSpaceInstance>): ByteArray {
+            return PNG().HandleWriter(width, height, maxShade, pixels)
+        }
+
+        override fun read(width: Int, height: Int, maxShade: Int, body: ByteArray): ImageConfiguration {
+            return ImageConfiguration()
+        }
+
     };
     abstract fun write(width: Int, height: Int, maxShade: Int, pixels: Array<ColorSpaceInstance>) : ByteArray
     abstract fun read(width: Int, height: Int, maxShade: Int, body: ByteArray) : ImageConfiguration
