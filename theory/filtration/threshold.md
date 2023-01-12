@@ -4,3 +4,5 @@
 ![image](https://user-images.githubusercontent.com/79001610/211875845-466730ea-a422-4cc9-9d95-b3265f70f139.png)
 
 Значение порога вводится пользователем
+
+[Тестирование (изображение 2)](content/threshold.jpg)

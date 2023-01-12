@@ -61,6 +61,7 @@ class AppConfiguration() {
             Line.lineSettingsExpandedButton.value = false
             Dithering.expandedButton.value = false
             Scaling.expandedButton.value = false
+            Filtration.expandedButton.value = false
             Histogram.expandedButton.value = false
         }
     }
