@@ -19,7 +19,7 @@ fun HeaderDropdownButton(
 ) {
     Button(
         modifier = Modifier.padding(start = 15.dp),
-        onClick = { AppConfiguration.HideTextFields(); onClick.invoke() },
+        onClick = { onClick.invoke() },
         colors = ButtonDefaults.buttonColors(Color.Green)
     ) {
         Text(text)

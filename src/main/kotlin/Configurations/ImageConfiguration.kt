@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
@@ -57,6 +58,14 @@ class ImageConfiguration(
         return pixels
     }
 
+    fun getPixel(x : Int, y : Int) : ColorSpaceInstance {
+        return pixels[x + y * width]
+    }
+
+    fun setPixel(x : Int, y : Int, value: FloatArray) {
+        pixels[x + y * width].UpdateValues(value)
+    }
+
     fun changeColorSpace(colorSpace: ColorSpace) {
         for (pixel in pixels) {
             pixel.Kind = colorSpace
@@ -67,7 +76,9 @@ class ImageConfiguration(
         AppConfiguration.Dithering.selected.Use(pixels, AppConfiguration.Dithering.ShadeBitesCount)
     }
 
-
+    fun useFiltration() {
+        AppConfiguration.Filtration.selected.Apply(pixels)
+    }
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     fun ImageView() {
@@ -80,24 +91,38 @@ class ImageConfiguration(
                 else if (it.width > 1500) Modifier.width(1500.dp)
                 else Modifier)
                     .onPointerEvent(PointerEventType.Press) {
-                        if (!AppConfiguration.Line.IsPainting)
-                        {
-                            val position = OffsetCounter.getActualOffset(it.changes.first().position)
+                        if (AppConfiguration.Line.lineSettingsExpandedButton.value) {
+                            if (!AppConfiguration.Line.IsPainting)
+                            {
+                                val position = OffsetCounter.getActualOffset(it.changes.first().position)
+                                if (OffsetCounter.checkOffSetValidity(position)) {
+                                    AppConfiguration.Line.Start = position
+                                    AppConfiguration.Line.IsPainting = true
+                                }
+                            }
+                        }
+                        if (AppConfiguration.Scaling.expandedButton.value) {
+                            var position = OffsetCounter.getActualOffset(it.changes.first().position)
                             if (OffsetCounter.checkOffSetValidity(position)) {
-                                AppConfiguration.Line.Start = position
-                                AppConfiguration.Line.IsPainting = true
+                                position = Offset(
+                                    position.x - width.toFloat() / 2,
+                                    position.y - height.toFloat() / 2
+                                )
+                                AppConfiguration.Scaling.Center = position
                             }
                         }
                     }
                     .onPointerEvent(PointerEventType.Release) {
-                        if (AppConfiguration.Line.IsPainting)
-                        {
-                            val position = OffsetCounter.getActualOffset(it.changes.first().position)
-                            AppConfiguration.Line.IsPainting = false
-                            if (OffsetCounter.checkOffSetValidity(position)) {
-                                AppConfiguration.Line.End = position
-                                Painter.drawLine(pixels, AppConfiguration.Line)
-                                AppConfiguration.updateBitmap()
+                        if (AppConfiguration.Line.lineSettingsExpandedButton.value) {
+                            if (AppConfiguration.Line.IsPainting)
+                            {
+                                val position = OffsetCounter.getActualOffset(it.changes.first().position)
+                                AppConfiguration.Line.IsPainting = false
+                                if (OffsetCounter.checkOffSetValidity(position)) {
+                                    AppConfiguration.Line.End = position
+                                    Painter.drawLine(pixels, AppConfiguration.Line)
+                                    AppConfiguration.updateBitmap()
+                                }
                             }
                         }
                     },

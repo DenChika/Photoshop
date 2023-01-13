@@ -1,4 +1,4 @@
-package Filtration
+package App.Components
 
 import ColorSpaces.ColorSpaceInstance
 import Configurations.AppConfiguration
@@ -7,7 +7,7 @@ import Parsers.BytesParser
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 
-enum class FiltrationMode {
+enum class ComponentMode {
     ALL {
         override fun GetRGBPixelValues(pixel: ColorSpaceInstance): FloatArray {
             return pixel.GetRGBPixelValue(isFirstNeeded = true, isSecondNeeded = true, isThirdNeeded = true)
@@ -36,6 +36,13 @@ enum class FiltrationMode {
                 AppConfiguration.Line.GetSecondShadeTextField()
                 AppConfiguration.Line.GetThirdShadeTextField()
             }
+        }
+
+        @Composable
+        override fun GetHistograms() {
+            AppConfiguration.Histogram.First()
+            AppConfiguration.Histogram.Second()
+            AppConfiguration.Histogram.Third()
         }
     },
     OnlyFirst {
@@ -67,6 +74,11 @@ enum class FiltrationMode {
         override fun GetLineColorTextFields() {
             AppConfiguration.Line.GetFirstShadeTextField()
         }
+
+        @Composable
+        override fun GetHistograms() {
+            AppConfiguration.Histogram.First()
+        }
     },
     OnlySecond {
         override fun GetRGBPixelValues(pixel: ColorSpaceInstance): FloatArray {
@@ -96,6 +108,11 @@ enum class FiltrationMode {
         @Composable
         override fun GetLineColorTextFields() {
             AppConfiguration.Line.GetSecondShadeTextField()
+        }
+
+        @Composable
+        override fun GetHistograms() {
+            AppConfiguration.Histogram.Second()
         }
     },
     OnlyThird {
@@ -127,6 +144,11 @@ enum class FiltrationMode {
         override fun GetLineColorTextFields() {
             AppConfiguration.Line.GetThirdShadeTextField()
         }
+
+        @Composable
+        override fun GetHistograms() {
+            AppConfiguration.Histogram.Third()
+        }
     };
 
     abstract fun GetRGBPixelValues(pixel: ColorSpaceInstance): FloatArray
@@ -135,6 +157,8 @@ enum class FiltrationMode {
     abstract fun GetFormat(): Format
     @Composable
     abstract fun GetLineColorTextFields()
+    @Composable
+    abstract fun GetHistograms()
     fun GetName(): String {
         return this.name
     }

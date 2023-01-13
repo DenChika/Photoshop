@@ -1,21 +1,29 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 
 import App.HeaderButton
-import App.TextFieldActivity.GammaTextField
 import App.HeaderDropdownButton
 import App.OpenActivity
 import App.SaveActivity
-import App.TextFieldActivity.LineSettingsTextField
+import App.TextFieldActivity.CustomTextField
+import App.TextFieldActivity.GammaTextField
 import Configurations.AppConfiguration
 import Formats.Format
 import Gammas.GammaModes
 import Gammas.GammaPurpose
-import LinePainterHelpers.LineSettings
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.Card
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,7 +56,7 @@ fun App() {
                 Box {
                     val expandedFilesActivity = remember { mutableStateOf(false) }
                     HeaderButton(
-                        onClick = { expandedFilesActivity.value = true },
+                        onClick = { expandedFilesActivity.value = true; AppConfiguration.HideButtons() },
                         text = "File"
                     )
                     DropdownMenu(
@@ -57,81 +65,118 @@ fun App() {
                     ) {
                         DropdownMenuItem(
                             onClick = { OpenActivity(); expandedFilesActivity.value = false }
-                        ) {Text("Open")}
+                        ) { Text("Open") }
                         DropdownMenuItem(
                             onClick = { SaveActivity(); expandedFilesActivity.value = false }
-                        ) {Text("Save")}
+                        ) { Text("Save") }
                     }
                 }
-                if (AppConfiguration.HasContent()){
+                if (AppConfiguration.HasContent()) {
                     Box {
-                        HeaderDropdownButton(
-                            onClick = {
-                                AppConfiguration.Space.expanded.value = true
-                            },
-                            text = AppConfiguration.Space.selected.GetName()
+                        val expandedToolsActivity = remember { mutableStateOf(false) }
+                        HeaderButton(
+                            onClick = { expandedToolsActivity.value = true; AppConfiguration.HideButtons() },
+                            text = "Tools"
                         )
-                        AppConfiguration.Space.DropdownSpaces()
-                    }
-
-                    if (AppConfiguration.Image.format != Format.P5) {
-                        Box {
-                            HeaderDropdownButton(
+                        DropdownMenu(
+                            expanded = expandedToolsActivity.value,
+                            onDismissRequest = { expandedToolsActivity.value = false }
+                        ) {
+                            DropdownMenuItem(
                                 onClick = {
-                                    AppConfiguration.Component.expanded.value = true
-                                },
-                                text = AppConfiguration.Component.selected.GetName()
-                            )
-                            AppConfiguration.Component.DropdownComponents()
+                                    AppConfiguration.Space.expandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Color Spaces") }
+                            if (AppConfiguration.Image.format != Format.P5) {
+                                DropdownMenuItem(
+                                    onClick = {
+                                        AppConfiguration.Component.expandedButton.value = true
+                                        expandedToolsActivity.value = false
+                                    }
+                                ) { Text("Filter channels") }
+                            }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Gamma.assignExpandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Assign gamma") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Gamma.convertExpandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Convert gamma") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Line.lineSettingsExpandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Line settings") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Dithering.expandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Dithering") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Scaling.expandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Scaling") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Filtration.expandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Filtration") }
+                            DropdownMenuItem(
+                                onClick = {
+                                    AppConfiguration.Histogram.updateInfo()
+                                    AppConfiguration.Histogram.expandedButton.value = true
+                                    expandedToolsActivity.value = false
+                                }
+                            ) { Text("Histograms") }
                         }
                     }
-
+                }
+                AppConfiguration.Space.ShowTool()
+                AppConfiguration.Component.ShowTool()
+                if (AppConfiguration.Gamma.assignExpandedButton.value) {
                     AppConfiguration.Gamma.GammaMenu(GammaPurpose.Assign)
                     if (AppConfiguration.Gamma.AssignMode == GammaModes.Custom &&
-                        !AppConfiguration.Gamma.assignTextFieldHidden.value) {
-                        Box (
+                        !AppConfiguration.Gamma.assignTextFieldHidden.value
+                    ) {
+                        Box(
                             modifier = Modifier.align(Alignment.CenterVertically)
-                        ){
+                        ) {
                             GammaTextField(GammaPurpose.Assign)
                         }
                     }
-
+                }
+                if (AppConfiguration.Gamma.convertExpandedButton.value) {
                     AppConfiguration.Gamma.GammaMenu(GammaPurpose.Convert)
                     if (AppConfiguration.Gamma.ConvertMode == GammaModes.Custom &&
-                        !AppConfiguration.Gamma.convertTextFieldHidden.value) {
-                        Box (
+                        !AppConfiguration.Gamma.convertTextFieldHidden.value
+                    ) {
+                        Box(
                             modifier = Modifier.align(Alignment.CenterVertically)
-                        ){
+                        ) {
                             GammaTextField(GammaPurpose.Convert)
                         }
                     }
-
-                    Box {
-                        AppConfiguration.Line.DropdownLineSettings()
-                    }
-                    if (AppConfiguration.Line.colorExpanded.value) {
-                        AppConfiguration.Component.selected.GetLineColorTextFields()
-                    }
-
-                    if (AppConfiguration.Line.saturationExpanded.value) {
-                        LineSettingsTextField(
-                            settings = LineSettings.Saturation,
-                            label = "Saturation"
-                        )
-                    }
-                    if (AppConfiguration.Line.thicknessExpanded.value) {
-                        LineSettingsTextField(
-                            settings = LineSettings.Thickness,
-                            label = "Thickness"
-                        )
-                    }
-                    AppConfiguration.Dithering.DitheringMenu()
                 }
+                AppConfiguration.Line.ShowTool()
+                AppConfiguration.Dithering.ShowTool()
+                AppConfiguration.Scaling.ShowTool()
+                AppConfiguration.Filtration.ShowTool()
+                AppConfiguration.Histogram.ShowTool()
                 AppConfiguration.Generation.ImageGeneration()
             }
-
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxWidth().height(800.dp),
                 contentAlignment = Alignment.Center
             ) {
                 if (AppConfiguration.HasContent()) {
@@ -142,6 +187,7 @@ fun App() {
                     }
                 }
             }
+            AppConfiguration.Histogram.ShowHistograms()
         }
     }
 }
@@ -150,7 +196,7 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "Compose for Desktop",
-        state = rememberWindowState(width = 700.dp, height = 700.dp)
+        state = rememberWindowState(width = 1600.dp, height = 900.dp)
     ) {
         App()
     }

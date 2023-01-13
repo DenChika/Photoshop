@@ -16,14 +16,11 @@ class P6 : IFormat {
         try {
             for (posY in 0 until height) {
                 for (posX in 0 until width) {
-                    val shadeFirst = (if (byteArray[posY * width * colorsByPixel + posX * colorsByPixel] < 0)
-                        byteArray[posY * width * colorsByPixel + posX * colorsByPixel] + 256 else byteArray[posY * width * colorsByPixel + posX * colorsByPixel]).toFloat()
+                    val shadeFirst = byteArray[posY * width * colorsByPixel + posX * colorsByPixel].toUByte().toFloat()
 
-                    val shadeSecond = (if (byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 1] < 0)
-                        byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 1] + 256 else byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 1]).toFloat()
+                    val shadeSecond = byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 1].toUByte().toFloat()
 
-                    val shadeThird = (if (byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 2] < 0)
-                        byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 2] + 256 else byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 2]).toFloat()
+                    val shadeThird = byteArray[posY * width * colorsByPixel + posX * colorsByPixel + 2].toUByte().toFloat()
                     if (shadeThird > maxShade || shadeSecond > maxShade || shadeFirst > maxShade)
                     {
                         throw HeaderDiscrepancyException.wrongMaxShade()

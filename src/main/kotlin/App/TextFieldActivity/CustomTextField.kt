@@ -39,7 +39,7 @@ fun CustomTextField(
         modifier =
         Modifier
             .padding(start = 15.dp)
-            .width(140.dp)
+            .width(150.dp)
             .onKeyEvent {
                 if (it.type == KeyEventType.KeyUp && it.utf16CodePoint == 10) {
                     onClickFunc(text.value)
@@ -67,7 +67,7 @@ fun CustomTextField(
                      onClickFunc(text.value)
             },
         ),
-        isError = false,
+        isError = text.value.toFloatOrNull() == null,
         colors = TextFieldDefaults.outlinedTextFieldColors(
             backgroundColor = Color.White,
             errorBorderColor = Color.Red,

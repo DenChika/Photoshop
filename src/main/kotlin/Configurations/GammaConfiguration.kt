@@ -14,6 +14,8 @@ class GammaConfiguration {
     val convertTextFieldHidden = mutableStateOf(true)
     val assignExpanded = mutableStateOf(false)
     val convertExpanded = mutableStateOf(false)
+    val assignExpandedButton = mutableStateOf(false)
+    val convertExpandedButton = mutableStateOf(false)
     private val assignMode = mutableStateOf(GammaModes.SRGB)
     private val convertMode = mutableStateOf(GammaModes.SRGB)
     private val assignCustomValue = mutableStateOf(2.2f)
@@ -31,7 +33,9 @@ class GammaConfiguration {
         }
         set(value) {
             assignMode.value = value
-            AppConfiguration.updateBitmap()
+            if (AppConfiguration.Image.width != 0) {
+                AppConfiguration.updateBitmap()
+            }
         }
     var ConvertMode: GammaModes
         get() {
@@ -46,7 +50,9 @@ class GammaConfiguration {
         }
         set(value) {
             assignCustomValue.value = value
-            AppConfiguration.updateBitmap()
+            if (AppConfiguration.Image.width != 0) {
+                AppConfiguration.updateBitmap()
+            }
         }
 
     fun ResetSettings() {

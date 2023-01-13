@@ -1,6 +1,6 @@
 package Configurations
 
-import Filtration.FiltrationMode
+import App.Components.ComponentMode
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
@@ -13,6 +13,9 @@ class AppConfiguration() {
     val lineConfiguration = mutableStateOf(LineConfiguration())
     val ditheringConfiguration = mutableStateOf(DitheringConfiguration())
     val generationConfiguration = mutableStateOf(GenerationConfiguration())
+    val scalingConfiguration = mutableStateOf(ScalingConfiguration())
+    val filtrationConfiguration = mutableStateOf(FiltrationConfiguration())
+    val histogramConfiguration = mutableStateOf(HistogramConfiguration())
     val bitmap : MutableState<ImageBitmap?> = mutableStateOf(null)
     val hasContent =  mutableStateOf(false)
 
@@ -26,7 +29,7 @@ class AppConfiguration() {
             {
                 configuration.hasContent.value = true
                 configuration.imageConfiguration.value = value
-                Component.selected = FiltrationMode.ALL
+                Component.selected = ComponentMode.ALL
                 updateBitmap()
             }
         var Space : SpaceConfiguration = configuration.spaceConfiguration.value
@@ -35,6 +38,9 @@ class AppConfiguration() {
         var Line : LineConfiguration = configuration.lineConfiguration.value
         var Dithering : DitheringConfiguration = configuration.ditheringConfiguration.value
         var Generation : GenerationConfiguration = configuration.generationConfiguration.value
+        var Filtration : FiltrationConfiguration = configuration.filtrationConfiguration.value
+        var Scaling : ScalingConfiguration = configuration.scalingConfiguration.value
+        var Histogram : HistogramConfiguration = configuration.histogramConfiguration.value
         fun HasContent() : Boolean {
             return configuration.hasContent.value
         }
@@ -47,13 +53,16 @@ class AppConfiguration() {
             configuration.bitmap.value = Image.getImageBitmap()
         }
 
-        fun HideTextFields() {
-            Line.colorExpanded.value = false
-            Line.saturationExpanded.value = false
-            Line.thicknessExpanded.value = false
-            Gamma.assignTextFieldHidden.value = true
-            Generation.TextFieldsVisibility.value = false
-            Gamma.convertTextFieldHidden.value = true
+        fun HideButtons() {
+            Space.expandedButton.value = false
+            Component.expandedButton.value = false
+            Gamma.assignExpandedButton.value = false
+            Gamma.convertExpandedButton.value = false
+            Line.lineSettingsExpandedButton.value = false
+            Dithering.expandedButton.value = false
+            Scaling.expandedButton.value = false
+            Filtration.expandedButton.value = false
+            Histogram.expandedButton.value = false
         }
     }
 
